@@ -1,0 +1,125 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".Main"
+    android:clickable="false">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <CheckBox
+            android:id="@+id/chkTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:layout_margin="5dp"
+            android:button="@drawable/checkboxselector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Created Time"
+            android:id="@+id/time_on_tweets"
+            android:layout_weight="1.0"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:id="@+id/tweet_on_tweets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+            android:textSize="11dp"
+            android:height="50dp"
+            android:layout_toRightOf="@+id/chkTweet"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:longClickable="true"
+            android:linksClickable="true"
+            android:layout_marginTop="2dp"
+            android:clickable="false"
+            android:layout_marginRight="5dp" />
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:weightSum="20.0"
+            android:layout_gravity="left">
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="RT: "
+                android:textSize="9dp"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_alignParentTop="true"
+                android:layout_weight="10.0"
+                android:gravity="right"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp" />
+
+            <TextView
+                android:id="@+id/rtCount_on_tweets"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="9999"
+                android:textSize="9dp"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_weight="1.0"
+                android:gravity="left"
+                android:layout_alignBaseline="@+id/TextView01"
+                android:layout_alignBottom="@+id/TextView01"
+                android:layout_toRightOf="@+id/TextView01" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="FAV: "
+                android:textSize="9dp"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1.0"
+                android:gravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/rtCount_on_tweets" />
+
+            <TextView
+                android:id="@+id/favCount_on_tweets"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="9999"
+                android:textSize="9dp"
+                android:layout_row="0"
+                android:layout_column="3"
+                android:layout_weight="1.0"
+                android:gravity="left"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/textView" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

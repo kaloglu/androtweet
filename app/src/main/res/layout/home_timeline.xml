@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".Main">
+
+    <LinearLayout
+        android:id="@+id/liste"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notFoundTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Not found any tweet yet! Click &quot;Refresh Tweet(s)&quot;"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#ff7c86c4"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/tweetList_on_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:animateLayoutChanges="false"
+            android:choiceMode="singleChoice"
+            android:clickable="false"
+            android:drawSelectorOnTop="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"></ListView>
+    </LinearLayout>
+
+</LinearLayout>
