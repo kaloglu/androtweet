@@ -1794,6 +1794,7 @@
       <option name="project" value="LOCAL" />
       <updated>1444576362902</updated>
     </task>
+    <option name="localTasksCounter" value="2" />
     <task id="LOCAL-00002" summary="Test">
       <created>1444576376557</created>
       <option name="number" value="00002" />
@@ -1895,12 +1896,6 @@
       <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/timeline_header.xml">
       <provider selected="true" editor-type-id="android-designer">
@@ -1924,12 +1919,6 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/home_timeline.xml">
       <provider selected="true" editor-type-id="android-designer">
         <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/timeline_footer.xml">
@@ -1987,12 +1976,6 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/home_timeline.xml">
       <provider selected="true" editor-type-id="android-designer">
         <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
