@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2">
+
+    <item
+        jar="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false" revision="22.0.1" sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex
+            dex="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/pre-dexed/debug/classes-98097343097b0189a0654a667e24e182a2f3872b.jar" />
+    </item>
+    <item
+        jar="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.0/jars/libs/internal_impl-23.0.0.jar"
+        jumboMode="false" revision="22.0.1" sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
+        <dex
+            dex="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.0-f94d7f8a0516824cc5680460f8b42d64c8d8ccf9.jar" />
+    </item>
+    <item
+        jar="/Users/kaloglu/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.0/support-annotations-23.0.0.jar"
+        jumboMode="false" revision="22.0.1" sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
+        <dex
+            dex="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.0-1ca320e144f93c797ebc7f3ab1cdc15c89e34a99.jar" />
+    </item>
+    <item
+        jar="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/libs/twitter4j-core-4.0.3.jar"
+        jumboMode="false" revision="22.0.1" sha1="cb244e5be126bf0a8114c8a64a5d26c6490b9ef2">
+        <dex
+            dex="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/pre-dexed/debug/twitter4j-core-4.0.3-3823b6fcb149accabf7b8a580811bc2eb598d390.jar" />
+    </item>
+    <item
+        jar="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.0/jars/classes.jar"
+        jumboMode="false" revision="22.0.1" sha1="8413c27b45b7fe61dca4a98159f65e2cee215f5a">
+        <dex
+            dex="/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/build/intermediates/pre-dexed/debug/classes-0e9dcfbc58dbcf4940dd89990506763606995a91.jar" />
+    </item>
+
+</items>
