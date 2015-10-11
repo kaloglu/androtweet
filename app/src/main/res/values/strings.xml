@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="empty_string"></string>
+    <string name="app_name">AndroTweet</string>
+    <string name="action_Settings">Settings</string>
+    <string name="Tab_Home">Home</string>
+    <string name="Tab_Mentions">Mentions</string>
+    <string name="action_DM">Direct Msg</string>
+    <string name="action_Search">Search</string>
+    <string name="Tab_Profile">Profile</string>
+    <string name="action_LogOut">Sign Out</string>
+    <string name="PostTweet">Post your status here&#8230;</string>
+    <string name="Select_All">Select All</string>
+    <string name="Delete_Tweets">Delete Tweet(s)</string>
+    <string name="Refresh_Tweets">Refresh Tweet(s)</string>
+    <string name="Tweets">Tweets</string>
+    <string name="Mentions">Mentions</string>
+    <string name="RTs">RTs</string>
+</resources>
