@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/refresh"
-        android:state_pressed="false"/>
-    <item android:drawable="@drawable/refresh2"
-        android:state_pressed="true"/>
-</selector><!-- From: file:/Users/kaloglu/PersonalProjects/TweetApps/AndroTweet/app/src/main/res/drawable-hdpi/refreshbutton.xml -->

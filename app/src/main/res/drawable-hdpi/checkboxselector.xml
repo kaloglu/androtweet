@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/checkbox2"
-        android:state_checked="false"/>
-    <item android:drawable="@drawable/checked2"
-        android:state_checked="true"/>
-    <item android:drawable="@drawable/checkbox2"/>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false" android:drawable="@drawable/chk_new_unselect" />
+    <item android:state_checked="true" android:drawable="@drawable/chk_new2" />
+    <item android:drawable="@drawable/chk_new_unselect" />
 </selector>
