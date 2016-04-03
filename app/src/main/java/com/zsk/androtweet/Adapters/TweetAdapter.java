@@ -4,10 +4,13 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zsk.androtweet.Models.Tweet;
@@ -15,22 +18,32 @@ import com.zsk.androtweet.R;
 
 import java.util.List;
 
-import static android.view.LayoutInflater.from;
-
-public class TweetAdapter extends ArrayAdapter<Tweet>{
-
-    private LayoutInflater mInflater;
+public class TweetAdapter
+        extends ArrayAdapter<Tweet> {
     private List<Tweet> TwitterStatus;
     public boolean[] isSelectedPos;
-    private int selectedCount=0;
+    private LayoutInflater mInflater;
+    private LayoutInflater mInflater2;
+    private int selectedCount = 0;
 
-    public TweetAdapter(Context cntxt, int ResourceId, List<Tweet> tweetList) {
-        super(cntxt, ResourceId, tweetList);
-        mInflater = from(cntxt);
-        TwitterStatus = tweetList;
-        isSelectedPos=new boolean[500];
+    public TweetAdapter(Context paramContext, int paramInt, List<Tweet> paramList) {
+        super(paramContext, paramInt, paramList);
+        this.mInflater = LayoutInflater.from(paramContext);
+        this.TwitterStatus = paramList;
+        this.isSelectedPos = new boolean[500];
     }
 
+    public int getSelectedCount() {
+        this.selectedCount = 0;
+        int i = 0;
+        while (i < this.isSelectedPos.length) {
+            if (this.isSelectedPos[i]) {
+                this.selectedCount += 1;
+            }
+            i += 1;
+        }
+        return this.selectedCount;
+    }
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
@@ -82,20 +95,16 @@ public class TweetAdapter extends ArrayAdapter<Tweet>{
 
         return row;
     }
-
-    public int getSelectedCount() {
-        for (int i = 0; i < isSelectedPos.length; i++) {
-            if (isSelectedPos[i])
-                selectedCount++;
-        }
-        return selectedCount;
-    }
-
     public class TweetViewHolder {
         CheckBox chkTweet;
-        TextView txtTweet;
-        TextView rtTweet;
+        ImageView favImage;
         TextView favTweet;
+        ImageView rtImage;
+        TextView rtTweet;
         TextView timeTweet;
+        TextView txtTweet;
+
+        public TweetViewHolder() {
+        }
     }
 }

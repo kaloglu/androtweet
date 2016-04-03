@@ -1,83 +1,101 @@
 package com.zsk.androtweet.Models;
 
 import android.database.Cursor;
-
-import com.zsk.androtweet.Database.DB;
-
+import java.util.Date;
 import twitter4j.Status;
 
-public class Tweet {
-    protected long Id;
-    protected String TweetText;
-    protected long ReplyId;
-    protected long Time;
-    private int RTcount;
-    private int FAVcount;
-
-    public Tweet(Status tweet) {
-        setId(tweet.getId());
-        setTweetText(tweet.getText());
-        setReplyId(tweet.getInReplyToStatusId());
-        setTime(tweet.getCreatedAt().getTime());
-        setRTcount(tweet.getRetweetCount());
-        setFAVcount(tweet.getFavoriteCount());
-    }
-
-    public Tweet(Cursor c) {
-        setId(c.getLong(c.getColumnIndex(DB.Timeline.TWEET_ID)));
-        setTweetText(c.getString(c.getColumnIndex(DB.Timeline.TWEET)));
-        setReplyId(c.getLong(c.getColumnIndex(DB.Timeline.REPLY_ID)));
-        setTime(c.getLong(c.getColumnIndex(DB.Timeline.TIME)));
-        setRTcount(c.getInt(c.getColumnIndex(DB.Timeline.RT)));
-        setFAVcount(c.getInt(c.getColumnIndex(DB.Timeline.FAV)));
-    }
-
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
-
-    public String getTweetText() {
-        return TweetText;
-    }
-
-    public void setTweetText(String tweetText) {
-        TweetText = tweetText;
-    }
-
-    public long getReplyId() {
-        return ReplyId;
-    }
-
-    public void setReplyId(long replyId) {
-        ReplyId = replyId;
-    }
-
-    public long getTime() {
-        return Time;
-    }
-
-    public void setTime(long time) {
-        Time = time;
-    }
-
-    public int getRTcount() {
-        return RTcount;
-    }
-
-    public void setRTcount(int RTcount) {
-        this.RTcount = RTcount;
-    }
-
-    public int getFAVcount() {
-        return FAVcount;
-    }
-
-    public void setFAVcount(int FAVcount) {
-        this.FAVcount = FAVcount;
-    }
-
+public class Tweet
+{
+  private int FAVcount;
+  protected long Id;
+  private int RTcount;
+  protected long ReplyId;
+  protected long Time;
+  protected String TweetText;
+  
+  public Tweet(Cursor paramCursor)
+  {
+    setId(paramCursor.getLong(paramCursor.getColumnIndex("tweet_id")));
+    setTweetText(paramCursor.getString(paramCursor.getColumnIndex("tweet")));
+    setReplyId(paramCursor.getLong(paramCursor.getColumnIndex("reply_id")));
+    setTime(paramCursor.getLong(paramCursor.getColumnIndex("tweettime")));
+    setRTcount(paramCursor.getInt(paramCursor.getColumnIndex("RT")));
+    setFAVcount(paramCursor.getInt(paramCursor.getColumnIndex("FAV")));
+  }
+  
+  public Tweet(Status paramStatus)
+  {
+    setId(paramStatus.getId());
+    setTweetText(paramStatus.getText());
+    setReplyId(paramStatus.getInReplyToStatusId());
+    setTime(paramStatus.getCreatedAt().getTime());
+    setRTcount(paramStatus.getRetweetCount());
+    setFAVcount(paramStatus.getFavoriteCount());
+  }
+  
+  public int getFAVcount()
+  {
+    return this.FAVcount;
+  }
+  
+  public long getId()
+  {
+    return this.Id;
+  }
+  
+  public int getRTcount()
+  {
+    return this.RTcount;
+  }
+  
+  public long getReplyId()
+  {
+    return this.ReplyId;
+  }
+  
+  public long getTime()
+  {
+    return this.Time;
+  }
+  
+  public String getTweetText()
+  {
+    return this.TweetText;
+  }
+  
+  public void setFAVcount(int paramInt)
+  {
+    this.FAVcount = paramInt;
+  }
+  
+  public void setId(long paramLong)
+  {
+    this.Id = paramLong;
+  }
+  
+  public void setRTcount(int paramInt)
+  {
+    this.RTcount = paramInt;
+  }
+  
+  public void setReplyId(long paramLong)
+  {
+    this.ReplyId = paramLong;
+  }
+  
+  public void setTime(long paramLong)
+  {
+    this.Time = paramLong;
+  }
+  
+  public void setTweetText(String paramString)
+  {
+    this.TweetText = paramString;
+  }
 }
+
+
+/* Location:              /Users/kaloglu/Desktop/androtweet/dex2jar-2.0/classes-dex2jar.jar!/com/zsk/androtweet/Models/Tweet.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1
+ */

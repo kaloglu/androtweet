@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="empty_string"></string>
-    <string name="app_name">AndroTweet</string>
-    <string name="action_Settings">Settings</string>
+    <string name="status_bar_notification_info_overflow">999+</string>
+    <string name="Delete_Tweets">Delete Tweet(s)</string>
+    <string name="Mentions">Mentions</string>
+    <string name="PostTweet">Post your status here…</string>
+    <string name="RTs">RTs</string>
+    <string name="Refresh_Tweets">Refresh Tweet(s)</string>
+    <string name="Select_All">Select All</string>
     <string name="Tab_Home">Home</string>
     <string name="Tab_Mentions">Mentions</string>
-    <string name="action_DM">Direct Msg</string>
-    <string name="action_Search">Search</string>
     <string name="Tab_Profile">Profile</string>
-    <string name="action_LogOut">Sign Out</string>
-    <string name="PostTweet">Post your status here&#8230;</string>
-    <string name="Select_All">Select All</string>
-    <string name="Delete_Tweets">Delete Tweet(s)</string>
-    <string name="Refresh_Tweets">Refresh Tweet(s)</string>
     <string name="Tweets">Tweets</string>
-    <string name="Mentions">Mentions</string>
-    <string name="RTs">RTs</string>
+    <string name="accept">Accept</string>
+    <string name="action_DM">Direct Msg</string>
+    <string name="action_LogOut">Sign Out</string>
+    <string name="action_Search">Search</string>
+    <string name="action_Settings">Settings</string>
+    <string name="app_name">AndroTweet</string>
+    <string name="auth_google_play_services_client_facebook_display_name">Facebook</string>
+    <string name="auth_google_play_services_client_google_display_name">Google</string>
+    <string name="banner_ad_unit_id">ca-app-pub-0165663276066705/7248078142</string>
+    <string name="create_calendar_message">Allow Ad to create a calendar event?</string>
+    <string name="create_calendar_title">Create calendar event</string>
+    <string name="decline">Decline</string>
+    <string name="empty_string" />
+    <string name="no_more_selected">No more selected!</string>
+    <string name="store_picture_message">Allow Ad to store image in Picture gallery?</string>
+    <string name="store_picture_title">Save image</string>
 </resources>

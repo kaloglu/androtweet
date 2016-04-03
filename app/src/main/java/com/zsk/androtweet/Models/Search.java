@@ -1,50 +1,56 @@
 package com.zsk.androtweet.Models;
 
-/**
- * Created by kaloglu on 17.08.2015.
- */
-public class Search {
-    private boolean viewMyTweets=true;
-    private boolean viewMentions=true;
-    private boolean viewRTs=true;
-    private static Search instance=new Search();
-    public long lastTweetId;
-
-    private Search() {
-        /**
-         * This is SingleTon!
-         */
-    }
-
-    public static Search getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(Search instance) {
-        Search.instance = instance;
-    }
-
-    public boolean isViewMyTweets() {
-        return viewMyTweets;
-    }
-
-    public void setViewMyTweets(boolean viewMyTweets) {
-        this.viewMyTweets = viewMyTweets;
-    }
-
-    public boolean isViewMentions() {
-        return viewMentions;
-    }
-
-    public void setViewMentions(boolean viewMentionss) {
-        this.viewMentions = viewMentionss;
-    }
-
-    public boolean isViewRTs() {
-        return viewRTs;
-    }
-
-    public void setViewRTs(boolean viewRTs) {
-        this.viewRTs = viewRTs;
-    }
+public class Search
+{
+  private static Search instance = new Search();
+  public long lastTweetId;
+  private boolean viewMentions = true;
+  private boolean viewMyTweets = true;
+  private boolean viewRTs = true;
+  
+  public static Search getInstance()
+  {
+    return instance;
+  }
+  
+  public static void setInstance(Search paramSearch)
+  {
+    instance = paramSearch;
+  }
+  
+  public boolean isViewMentions()
+  {
+    return this.viewMentions;
+  }
+  
+  public boolean isViewMyTweets()
+  {
+    return this.viewMyTweets;
+  }
+  
+  public boolean isViewRTs()
+  {
+    return this.viewRTs;
+  }
+  
+  public void setViewMentions(boolean paramBoolean)
+  {
+    this.viewMentions = paramBoolean;
+  }
+  
+  public void setViewMyTweets(boolean paramBoolean)
+  {
+    this.viewMyTweets = paramBoolean;
+  }
+  
+  public void setViewRTs(boolean paramBoolean)
+  {
+    this.viewRTs = paramBoolean;
+  }
 }
+
+
+/* Location:              /Users/kaloglu/Desktop/androtweet/dex2jar-2.0/classes-dex2jar.jar!/com/zsk/androtweet/Models/Search.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       0.7.1
+ */

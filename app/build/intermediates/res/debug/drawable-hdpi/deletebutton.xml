@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/clear2"
-        android:state_pressed="true"/>
-    <item android:drawable="@drawable/clear"
-        android:state_pressed="false"/>
-</selector><!-- From: file:/D:/Dropbox/workspace_AndroidStudio/AndroTweet/app/src/main/res/drawable-hdpi/deletebutton.xml -->
