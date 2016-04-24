@@ -13,6 +13,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zsk.androtweet.Main;
 import com.zsk.androtweet.Models.Tweet;
 import com.zsk.androtweet.R;
 
@@ -34,24 +35,22 @@ public class TweetAdapter
     }
 
     public int getSelectedCount() {
-        this.selectedCount = 0;
-        int i = 0;
-        while (i < this.isSelectedPos.length) {
-            if (this.isSelectedPos[i]) {
-                this.selectedCount += 1;
-            }
-            i += 1;
+        int count = 0;
+        for (int i = 0; i < isSelectedPos.length; i++) {
+            if (isSelectedPos[i])
+                count += 1;
         }
+        selectedCount = count;
         return this.selectedCount;
     }
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        View row=convertView;
+        View row = convertView;
 
         TweetViewHolder tweetVH;
-        if (row==null) {
-            row= mInflater.inflate(R.layout.tweets_layout, null);
+        if (row == null) {
+            row = mInflater.inflate(R.layout.tweets_layout, null);
 
             tweetVH = new TweetViewHolder();
 
@@ -62,7 +61,7 @@ public class TweetAdapter
             tweetVH.chkTweet = (CheckBox) row.findViewById(R.id.chkTweet);
 
             row.setTag(tweetVH);
-        }else {
+        } else {
             tweetVH = (TweetViewHolder) row.getTag();
         }
         Tweet tweet = TwitterStatus.get(position);
@@ -71,8 +70,8 @@ public class TweetAdapter
 
             @Override
             public void onClick(View view) {
-                CheckBox c=(CheckBox)view;
-                boolean isChecked=(c.isChecked());
+                CheckBox c = (CheckBox) view;
+                boolean isChecked = (c.isChecked());
                 isSelectedPos[position] = isChecked;
             }
 
@@ -83,6 +82,7 @@ public class TweetAdapter
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isSelectedPos[position] = isChecked;
+                Main.selectedCountChange(getSelectedCount());
             }
         });
 
@@ -95,6 +95,7 @@ public class TweetAdapter
 
         return row;
     }
+
     public class TweetViewHolder {
         CheckBox chkTweet;
         ImageView favImage;
