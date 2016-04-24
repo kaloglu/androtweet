@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.zsk.androtweet.Database.DB_Model;
 import com.zsk.androtweet.Models.Tweet;
 import com.zsk.androtweet.R;
@@ -189,6 +190,7 @@ public class Commons {
         @Override
         protected void onPostExecute(Boolean response) {
             if (response) {
+                refreshTweetList((Activity) context);
                 progress.hide();
             }
         }
