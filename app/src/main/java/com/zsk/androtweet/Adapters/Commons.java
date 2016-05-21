@@ -11,21 +11,17 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Window;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.InterstitialAd;
 import com.zsk.androtweet.Database.DB_Model;
 import com.zsk.androtweet.Models.Tweet;
 import com.zsk.androtweet.R;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import twitter4j.Paging;
 import twitter4j.RateLimitStatus;
@@ -103,8 +99,8 @@ public class Commons {
         Editor localEditor = pref_AndroTweet.edit();
         localEditor.putString("CONSUMER_KEY", "d2XSeF6fXPtVClaG3DALLjMT4");
         localEditor.putString("CONSUMER_SECRET", "e9UJ6mQuLK0pkFl4OTghjjHp1NR6PqkbdqwIiwgEIR9zEXTbQU");
-        localEditor.commit();
-        if ((pref_AndroTweet.getString("ACCESS_TOKEN", "") != null) && (!"".equals(pref_AndroTweet.getString("ACCESS_TOKEN", "")))) {
+        localEditor.apply();
+        if ((!"".equals(pref_AndroTweet.getString("ACCESS_TOKEN", "")))) {
             return;
         }
         new DB_Model(context).deleteOldTweets();
@@ -119,7 +115,7 @@ public class Commons {
         Editor localEditor = pref_AndroTweet.edit();
         localEditor.putString("ACCESS_TOKEN", "");
         localEditor.putString("ACCESS_TOKEN_SECRET", "");
-        localEditor.commit();
+        localEditor.apply();
         new DB_Model(context).drop();
         isLogon(context);
     }
@@ -149,6 +145,7 @@ public class Commons {
         Toast.makeText(activity, "Refreshed...", Toast.LENGTH_SHORT).show();
     }
 
+
     static class AccessTokenGet extends AsyncTask<String, String, Boolean> {
 
         private Context context;
@@ -177,8 +174,8 @@ public class Commons {
                 SharedPreferences.Editor edit = pref_AndroTweet.edit();
                 edit.putString("ACCESS_TOKEN", accessToken.getToken());
                 edit.putString("ACCESS_TOKEN_SECRET", accessToken.getTokenSecret());
-
-                edit.commit();
+                edit.putString("userName", twitter.getScreenName()).apply();
+                edit.apply();
 
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -352,7 +349,9 @@ public class Commons {
 
     }
 
+
     static class TokenGet extends AsyncTask<String, String, String> {
+
 
         private Context context;
         Twitter twitter;

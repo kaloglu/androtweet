@@ -2,6 +2,8 @@ package com.zsk.androtweet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,10 @@ import com.zsk.androtweet.Adapters.Commons;
 import com.zsk.androtweet.Adapters.TweetAdapter;
 import com.zsk.androtweet.Database.DB_Model;
 import com.zsk.androtweet.Models.Search;
+import com.zsk.androtweet.Models.Tweet;
+
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 public class Main
         extends Activity {
@@ -35,12 +41,14 @@ public class Main
     Search search;
     private static TextView txt_selected;
     private InterstitialAd mInterstitialAd;
-    private int actionCount=4;
+    private int actionCount = 4;
+    private boolean showInterstitial = true;
+    private int daysAgo = 4;
 
     private void init() {
         context = this;
         tweetList = ((ListView) findViewById(R.id.tweetList_on_home));
-        Commons.refreshTweetList(this, tweetList);
+
         chk_All = ((CheckBox) findViewById(R.id.chk_SelectAll));
         chk_MyTweets = (CheckBox) findViewById(R.id.chk_MyTweets);
         chk_Mentions = (CheckBox) findViewById(R.id.chk_MyTweets);
@@ -52,19 +60,72 @@ public class Main
     private void init_Ads() {
         ((AdView) findViewById(R.id.adViewBanner)).loadAd(new AdRequest.Builder().build());
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-
-            }
-        });
-
-        requestNewInterstitial();
+        try {
+            new checkSharing().execute();
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
     }
+
+    public class checkSharing extends AsyncTask<Void, Void, Boolean> {
+        private final SharedPreferences pref_AndroTweet;
+        private final Twitter twitterObject;
+        String userName, tweetId;
+        private String tweetTime;
+
+        public checkSharing() throws TwitterException {
+            twitterObject = Commons.getTwitterObject();
+            pref_AndroTweet = Main.this.getSharedPreferences(TAG, 0);
+            userName = pref_AndroTweet.getString("userName", "");
+            tweetId = pref_AndroTweet.getString(userName + "_sharedTweetID", "501045709710561281");
+
+            if (userName.equals("")) {
+                pref_AndroTweet.edit().putString("userName", twitterObject.getScreenName()).apply();
+                userName = pref_AndroTweet.getString("userName", "");
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean result;
+            if (userName.equals("") || tweetId.equals(""))
+                return true;
+
+            try {
+                Tweet tweet = new Tweet(twitterObject.showStatus(Long.parseLong(tweetId)));
+                daysAgo = (int) ((System.currentTimeMillis() - tweet.getTime()) / (1000 * 60 * 60 * 24));
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+
+            if ((daysAgo < 4))
+                return false;
+            else
+                return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean showInterstitial) {
+            Main.this.showInterstitial = showInterstitial;
+
+            if (showInterstitial) {
+                mInterstitialAd = new InterstitialAd(getBaseContext());
+                mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
+
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        requestNewInterstitial();
+
+                    }
+                });
+
+                requestNewInterstitial();
+            }
+            super.onPostExecute(showInterstitial);
+        }
+    }
+
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
 //                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -72,6 +133,7 @@ public class Main
 
         mInterstitialAd.loadAd(adRequest);
     }
+
     private void init_Listeners() {
         chk_All.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton paramAnonymousCompoundButton, boolean paramAnonymousBoolean) {
@@ -122,9 +184,9 @@ public class Main
         if (TheAdapter == null) {
             TheAdapter = ((TweetAdapter) tweetList.getAdapter());
         }
-        actionCount+=1;
-        if ((actionCount % 5)==0) {
-            if (mInterstitialAd.isLoaded())
+        actionCount += 1;
+        if ((actionCount % 5) == 0) {
+            if (mInterstitialAd!=null && mInterstitialAd.isLoaded())
                 mInterstitialAd.show();
         }
         switch (paramView.getId()) {
@@ -152,6 +214,9 @@ public class Main
         init();
         init_Listeners();
         init_Ads();
+
+
+        Commons.refreshTweetList(this, tweetList);
     }
 
     public static void selectedCountChange(int isSelectedCount) {
