@@ -60,7 +60,18 @@ public class Main
 
     private void init_Ads() {
         ((AdView) findViewById(R.id.adViewBanner)).loadAd(new AdRequest.Builder().build());
+        mInterstitialAd = new InterstitialAd(getBaseContext());
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
 
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+
+            }
+        });
+
+        requestNewInterstitial();
         try {
             new CheckSharing().execute();
         } catch (TwitterException e) {
@@ -79,18 +90,18 @@ public class Main
             userName = pref_AndroTweet.getString("userName", "");
             tweetId = pref_AndroTweet.getString(userName + "_sharedTweetID", "");
 
-            if (userName.equals("")) {
-                pref_AndroTweet.edit().putString("userName", twitterObject.getScreenName()).apply();
-                userName = pref_AndroTweet.getString("userName", "");
-            }
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            if (userName.equals("") || tweetId.equals(""))
-                return true;
 
             try {
+                if (userName.equals("")) {
+                    pref_AndroTweet.edit().putString("userName", twitterObject.getScreenName()).apply();
+                    userName = pref_AndroTweet.getString("userName", "");
+                }
+                if (userName.equals("") || tweetId.equals(""))
+                    return true;
                 Tweet tweet = new Tweet(twitterObject.showStatus(Long.parseLong(tweetId)));
                 daysAgo = (int) ((System.currentTimeMillis() - tweet.getTime()) / (1000 * 60 * 60 * 24));
             } catch (TwitterException e) {

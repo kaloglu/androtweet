@@ -113,6 +113,7 @@ public class TweetAdapter
         TextView txtTweet;
 
         public TweetViewHolder() {
+
         }
     }
 }
