@@ -57,15 +57,16 @@ public class CustomDialog extends Dialog {
             rules.setText("");
         }
 
+
+        okButton = (Button) findViewById(R.id.dialog_okButton);
+
         actionButton = (Button) findViewById(R.id.dialog_actionButton);
         if (actionButtonID != 0) {
             actionButton.setText(getString(actionButtonID));
         } else {
+            okButton.setBackground(context.getResources().getDrawable(R.drawable.pop_up_accept));
             actionButton.setVisibility(View.GONE);
         }
-
-        okButton = (Button) findViewById(R.id.dialog_okButton);
-
         if (dialogType != null) {
             switch (dialogType) {
                 case info:

@@ -70,17 +70,25 @@ public class Commons {
         return getProgress(context, title, DB_Model.HOLDED_REC_COUNT);
     }
 
+    public static ProgressDialog getProgress(Context context, String title, int maxProgress,String message) {
+        return getProgress(context,title,maxProgress,ProgressDialog.STYLE_HORIZONTAL,message);
+    }
     public static ProgressDialog getProgress(Context context, String title, int maxProgress) {
         return getProgress(context, title, maxProgress, ProgressDialog.STYLE_HORIZONTAL);
     }
 
     public static ProgressDialog getProgress(Context context, String title, int maxProgress, int progressStyle) {
+        return getProgress(context,title,maxProgress,progressStyle,null);
+    }
+    public static ProgressDialog getProgress(Context context, String title, int maxProgress, int progressStyle, String message) {
         ProgressDialog progressdialog = new ProgressDialog(context);
         progressdialog.setTitle(title);
         progressdialog.setMax(maxProgress);
         progressdialog.setProgressStyle(progressStyle);
         progressdialog.setIndeterminate(false);
         progressdialog.setCanceledOnTouchOutside(false);
+        if (message!=null && !message.equals(""))
+        progressdialog.setMessage(message);
         return progressdialog;
     }
 
@@ -213,19 +221,7 @@ public class Commons {
 
         @Override
         protected void onPreExecute() {
-            final CustomDialog customDialog = new CustomDialog(context, R.string.deleteTweets_title, R.string.deleteTweets_desc, 0, R.string.accept);
-            customDialog.initOkButtonClickListener(new CustomDialog.okButtonClickListener() {
-                @Override
-                public void onClick() {
-                    customDialog.dismiss();
-                }
-            });
-            customDialog.initActionButtonClickListener(new CustomDialog.actionButtonClickListener() {
-                @Override
-                public void onClick() {
-                    customDialog.dismiss();
-                }
-            });
+
             if (selectedItems > 0) {
                 progress = getProgress(context, "Deleting Selected Tweets...", selectedItems);
                 progress.show();
@@ -305,7 +301,19 @@ public class Commons {
             if (selectedItems > 0) progress.dismiss();
             if (aBoolean) {
                 theAdapter.notifyDataSetChanged();
-
+                final CustomDialog customDialog = new CustomDialog(context, R.string.deleteTweets_title, R.string.deleteTweets_desc, R.string.twitter_clear_cache, 0);
+                customDialog.initOkButtonClickListener(new CustomDialog.okButtonClickListener() {
+                    @Override
+                    public void onClick() {
+                        customDialog.dismiss();
+                    }
+                });
+                customDialog.initActionButtonClickListener(new CustomDialog.actionButtonClickListener() {
+                    @Override
+                    public void onClick() {
+                        customDialog.dismiss();
+                    }
+                });
 //                refreshTweetList((Activity) context,false);
             }
 

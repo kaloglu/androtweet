@@ -41,14 +41,15 @@
     </string>
     <string name="no_more_ads_rules">* When you delete sharing tweets before 3 days premium access automatically finished.</string>
     <string name="no_more_ads_actionButton">Win premium access</string>
-    <string name="deleteTweets_title">Attention! Deleted your tweets</string>
+    <string name="deleteTweets_title">Attention!</string>
     <string name="deleteTweets_desc">Deleted all selected tweets!
     \n
     \n
     if you use twitter mobile app you should clean your app cash.
-    \n
-    \n
-    Settings -> Applications -> Twitter -> Clear Data on your android device.
-    Other hands yo can check on full web site on browser.
     </string>
+    <string name="twitter_clear_cache"> Settings -> Applications -> Twitter
+    \n
+    \n
+    Touch Clear Data on your android device.
+    Other hands yo can check on full web site on browser.</string>
 </resources>

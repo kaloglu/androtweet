@@ -1,8 +1,6 @@
 package com.zsk.androtweet;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -46,7 +44,6 @@ public class Main
     private static TextView txt_selected;
     private InterstitialAd mInterstitialAd;
     private int actionCount = 4;
-    private boolean showInterstitial = true;
     private int daysAgo = 4;
 
     private void init() {
@@ -75,7 +72,6 @@ public class Main
         private final SharedPreferences pref_AndroTweet;
         private final Twitter twitterObject;
         String userName, tweetId;
-        private String tweetTime;
 
         public CheckSharing() throws TwitterException {
             twitterObject = Commons.getTwitterObject();
@@ -91,7 +87,6 @@ public class Main
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            boolean result;
             if (userName.equals("") || tweetId.equals(""))
                 return true;
 
@@ -110,7 +105,6 @@ public class Main
 
         @Override
         protected void onPostExecute(Boolean showInterstitial) {
-            Main.this.showInterstitial = showInterstitial;
             AndroTweetApp.setDaysAgo(daysAgo);
             AndroTweetApp.setUserName(userName);
             AndroTweetApp.setTweetId(tweetId);
@@ -127,6 +121,7 @@ public class Main
                 });
 
                 requestNewInterstitial();
+
             }
             super.onPostExecute(showInterstitial);
         }
@@ -190,6 +185,23 @@ public class Main
         if (TheAdapter == null) {
             TheAdapter = ((TweetAdapter) tweetList.getAdapter());
         }
+        showAds();
+        switch (paramView.getId()) {
+            case R.id.deleteTweet:
+                Commons.deleteSelected(this, TheAdapter);
+                break;
+            case R.id.refreshTweet:
+                Commons.refreshTweetList(this, tweetList);
+                break;
+            case R.id.logOut:
+                Commons.logOut(this);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void showAds() {
         actionCount += 1;
         if ((actionCount % 5) == 0) {
             if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
@@ -216,34 +228,22 @@ public class Main
                 });
             }
         }
-        switch (paramView.getId()) {
-            case R.id.deleteTweet:
-                Commons.deleteSelected(this, TheAdapter);
-                break;
-            case R.id.refreshTweet:
-                Commons.refreshTweetList(this, tweetList);
-                break;
-            case R.id.logOut:
-                Commons.logOut(this);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        search = Search.getInstance();
         setContentView(R.layout.home_timeline);
         Commons.isLogon(this);
+        init_Ads();
+        super.onCreate(savedInstanceState);
+        search = Search.getInstance();
 
         init();
         init_Listeners();
-        init_Ads();
-
 
         Commons.refreshTweetList(this, tweetList);
+
+//        showAds();
     }
 
     public static void selectedCountChange(int isSelectedCount) {
