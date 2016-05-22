@@ -63,7 +63,7 @@ public class Commons {
     }
 
     public static ProgressDialog getProgress(Context context) {
-        return getProgress(context, "Progressing...");
+        return getProgress(context, "Progressing...",1);
     }
 
     public static ProgressDialog getProgress(Context context, String title) {
