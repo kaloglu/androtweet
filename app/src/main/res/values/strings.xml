@@ -28,4 +28,27 @@
     <string name="no_more_selected">No more selected!</string>
     <string name="store_picture_message">Allow Ad to store image in Picture gallery?</string>
     <string name="store_picture_title">Save image</string>
+    <string name="campaign_terms_and_conditions">if there is rules will be shown here</string>
+    <string name="close">Close</string>
+    <string name="no_more_ads_suggestions_title">No More Ads!</string>
+    <string name="no_more_ads_suggestions_desc">Do you wants remove Ads for 3 days?
+        \n
+        \n
+        Share your happiness with your friends and win premium access for 3 days!
+        \n
+        \n
+        No full screen Ads for only Premium Accounts.
+    </string>
+    <string name="no_more_ads_rules">* When you delete sharing tweets before 3 days premium access automatically finished.</string>
+    <string name="no_more_ads_actionButton">Win premium access</string>
+    <string name="deleteTweets_title">Attention! Deleted your tweets</string>
+    <string name="deleteTweets_desc">Deleted all selected tweets!
+    \n
+    \n
+    if you use twitter mobile app you should clean your app cash.
+    \n
+    \n
+    Settings -> Applications -> Twitter -> Clear Data on your android device.
+    Other hands yo can check on full web site on browser.
+    </string>
 </resources>

@@ -1,21 +1,13 @@
 apply plugin: 'com.android.application'
 android {
-    signingConfigs {
-        AndroTweet {
-            keyAlias 'AndroTweet'
-            keyPassword '123456'
-            storeFile file('~/Dropbox/Keystone_AndroidApp/Androtweet.kys')
-            storePassword '123456'
-        }
-    }
     compileSdkVersion 21
     buildToolsVersion "22.0.1"
     defaultConfig {
         applicationId "com.zsk.androtweet"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 9
-        versionName "2.4"
+        versionCode 10
+        versionName "2.5"
     }
     buildTypes {
         release {
@@ -30,9 +22,4 @@ android {
         compile 'com.google.android.gms:play-services-analytics:8.4.0'
         compile 'com.google.android.gms:play-services-ads:8.4.0'
     }
-    productFlavors {
-    }
-}
-
-dependencies {
 }
