@@ -13,6 +13,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zsk.androtweet.AndroTweetApp;
 import com.zsk.androtweet.Main;
 import com.zsk.androtweet.Models.Tweet;
 import com.zsk.androtweet.R;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class TweetAdapter
         extends ArrayAdapter<Tweet> {
+    private static final String TAG = "ANDROTWEET";
     private List<Tweet> TwitterStatus;
     public boolean[] isSelectedPos;
     private LayoutInflater mInflater;
@@ -92,6 +94,11 @@ public class TweetAdapter
         tweetVH.favTweet.setText(Integer.toString(tweet.getFAVcount()));
         tweetVH.timeTweet.setText(DateUtils.getRelativeTimeSpanString(tweet.getTime()));
         tweetVH.chkTweet.setChecked(isSelectedPos[position]);
+
+        if (AndroTweetApp.getTweetId()!=null && String.valueOf(tweet.getId()).equals(AndroTweetApp.getTweetId()) && AndroTweetApp.getDaysAgo()<4) {
+            tweetVH.chkTweet.setVisibility(View.INVISIBLE);
+            isSelectedPos[position]=false;
+        }
 
         return row;
     }

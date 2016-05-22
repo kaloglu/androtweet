@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.zsk.androtweet.Database.DB_Model;
+import com.zsk.androtweet.Dialog.CustomDialog;
 import com.zsk.androtweet.Models.Tweet;
 import com.zsk.androtweet.R;
 
@@ -54,7 +55,7 @@ public class Commons {
     }
 
     public static void deleteSelected(Context context, TweetAdapter theAdapter) {
-        if (theAdapter.getSelectedCount() == 0) {
+        if ((theAdapter == null) || (theAdapter.getSelectedCount() == 0)) {
             Toast.makeText(context, "Please select tweets less one or more...", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -212,7 +213,19 @@ public class Commons {
 
         @Override
         protected void onPreExecute() {
-
+            final CustomDialog customDialog = new CustomDialog(context, R.string.deleteTweets_title, R.string.deleteTweets_desc, 0, R.string.accept);
+            customDialog.initOkButtonClickListener(new CustomDialog.okButtonClickListener() {
+                @Override
+                public void onClick() {
+                    customDialog.dismiss();
+                }
+            });
+            customDialog.initActionButtonClickListener(new CustomDialog.actionButtonClickListener() {
+                @Override
+                public void onClick() {
+                    customDialog.dismiss();
+                }
+            });
             if (selectedItems > 0) {
                 progress = getProgress(context, "Deleting Selected Tweets...", selectedItems);
                 progress.show();
@@ -292,7 +305,7 @@ public class Commons {
             if (selectedItems > 0) progress.dismiss();
             if (aBoolean) {
                 theAdapter.notifyDataSetChanged();
-                ShowInfo(context, "Deleted all selected tweets!", Toast.LENGTH_LONG);
+
 //                refreshTweetList((Activity) context,false);
             }
 

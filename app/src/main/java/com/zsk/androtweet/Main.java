@@ -1,6 +1,8 @@
 package com.zsk.androtweet;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,6 +15,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -21,6 +24,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.zsk.androtweet.Adapters.Commons;
 import com.zsk.androtweet.Adapters.TweetAdapter;
 import com.zsk.androtweet.Database.DB_Model;
+import com.zsk.androtweet.Dialog.CustomDialog;
 import com.zsk.androtweet.Models.Search;
 import com.zsk.androtweet.Models.Tweet;
 
@@ -61,23 +65,23 @@ public class Main
         ((AdView) findViewById(R.id.adViewBanner)).loadAd(new AdRequest.Builder().build());
 
         try {
-            new checkSharing().execute();
+            new CheckSharing().execute();
         } catch (TwitterException e) {
             e.printStackTrace();
         }
     }
 
-    public class checkSharing extends AsyncTask<Void, Void, Boolean> {
+    public class CheckSharing extends AsyncTask<Void, Void, Boolean> {
         private final SharedPreferences pref_AndroTweet;
         private final Twitter twitterObject;
         String userName, tweetId;
         private String tweetTime;
 
-        public checkSharing() throws TwitterException {
+        public CheckSharing() throws TwitterException {
             twitterObject = Commons.getTwitterObject();
             pref_AndroTweet = Main.this.getSharedPreferences(TAG, 0);
             userName = pref_AndroTweet.getString("userName", "");
-            tweetId = pref_AndroTweet.getString(userName + "_sharedTweetID", "501045709710561281");
+            tweetId = pref_AndroTweet.getString(userName + "_sharedTweetID", "");
 
             if (userName.equals("")) {
                 pref_AndroTweet.edit().putString("userName", twitterObject.getScreenName()).apply();
@@ -107,7 +111,9 @@ public class Main
         @Override
         protected void onPostExecute(Boolean showInterstitial) {
             Main.this.showInterstitial = showInterstitial;
-
+            AndroTweetApp.setDaysAgo(daysAgo);
+            AndroTweetApp.setUserName(userName);
+            AndroTweetApp.setTweetId(tweetId);
             if (showInterstitial) {
                 mInterstitialAd = new InterstitialAd(getBaseContext());
                 mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
@@ -186,8 +192,29 @@ public class Main
         }
         actionCount += 1;
         if ((actionCount % 5) == 0) {
-            if (mInterstitialAd!=null && mInterstitialAd.isLoaded())
-                mInterstitialAd.show();
+            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                final CustomDialog dialogScreen = new CustomDialog(context, R.string.no_more_ads_suggestions_title, R.string.no_more_ads_suggestions_desc, R.string.no_more_ads_rules, R.string.no_more_ads_actionButton);
+                dialogScreen.initOkButtonClickListener(new CustomDialog.okButtonClickListener() {
+                    @Override
+                    public void onClick() {
+                        dialogScreen.dismiss();
+                        mInterstitialAd.show();
+                    }
+                });
+
+                dialogScreen.initActionButtonClickListener(new CustomDialog.actionButtonClickListener() {
+                    @Override
+                    public void onClick() {
+                        try {
+                            new ShareApp().execute();
+                        } catch (TwitterException e) {
+                            e.printStackTrace();
+                            Toast.makeText(Main.this, "Unexpected Error! Please Contact Me => AndroTweet1903@gmail.com", Toast.LENGTH_SHORT).show();
+                        }
+                        dialogScreen.dismiss();
+                    }
+                });
+            }
         }
         switch (paramView.getId()) {
             case R.id.deleteTweet:
@@ -221,6 +248,40 @@ public class Main
 
     public static void selectedCountChange(int isSelectedCount) {
         txt_selected.setText(String.valueOf(isSelectedCount));
+    }
+
+    public class ShareApp extends AsyncTask<Void, Void, Tweet> {
+        private final SharedPreferences pref_AndroTweet;
+        private final Twitter twitterObject;
+        String userName;
+        private Tweet tweet;
+
+        public ShareApp() throws TwitterException {
+            twitterObject = Commons.getTwitterObject();
+            pref_AndroTweet = Main.this.getSharedPreferences(TAG, 0);
+            userName = pref_AndroTweet.getString("userName", "");
+        }
+
+        @Override
+        protected Tweet doInBackground(Void... params) {
+            try {
+                tweet = new Tweet(twitterObject.updateStatus("Cleaned my twitter profile! " +
+                        "\n Removed tweets, mentions, and retweets by @AndroTweet1903 " +
+                        "\n http://bit.ly/AndroTweet"));
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+            return tweet;
+        }
+
+        @Override
+        protected void onPostExecute(Tweet tweet) {
+            SharedPreferences.Editor edit = pref_AndroTweet.edit();
+            edit.putString(userName + "_sharedTweetID", String.valueOf(tweet.getId()));
+            edit.apply();
+            mInterstitialAd = null;
+            super.onPostExecute(tweet);
+        }
     }
 }
 
