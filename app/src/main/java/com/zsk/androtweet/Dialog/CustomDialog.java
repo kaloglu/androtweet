@@ -3,7 +3,7 @@ package com.zsk.androtweet.Dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;

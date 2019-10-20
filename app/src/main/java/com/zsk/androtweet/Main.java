@@ -2,36 +2,36 @@ package com.zsk.androtweet;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.zsk.androtweet.Adapters.Commons;
 import com.zsk.androtweet.Adapters.TweetAdapter;
 import com.zsk.androtweet.Database.DB_Model;
-import com.zsk.androtweet.Dialog.CustomDialog;
 import com.zsk.androtweet.Models.Search;
-import com.zsk.androtweet.Models.Tweet;
-
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
 public class Main
         extends Activity {
-    private static final String TAG = "ANDROTWEET";
     TweetAdapter TheAdapter;
     private ListView tweetList;
     private CheckBox chk_All;
@@ -39,111 +39,75 @@ public class Main
     private CheckBox chk_MyTweets;
     private CheckBox chk_RTs;
     private Context context;
-    private LinearLayout lyt_selected;
     Search search;
     private static TextView txt_selected;
     private InterstitialAd mInterstitialAd;
-    private int actionCount = 4;
-    private int daysAgo = 4;
+    private RewardedAd rewardedAd;
 
     private void init() {
         context = this;
-        tweetList = ((ListView) findViewById(R.id.tweetList_on_home));
+        tweetList = findViewById(R.id.tweetList_on_home);
 
-        chk_All = ((CheckBox) findViewById(R.id.chk_SelectAll));
-        chk_MyTweets = (CheckBox) findViewById(R.id.chk_MyTweets);
-        chk_Mentions = (CheckBox) findViewById(R.id.chk_MyTweets);
-        chk_RTs = ((CheckBox) findViewById(R.id.chk_RTs));
-        lyt_selected = ((LinearLayout) findViewById(R.id.lyt_selected));
-        txt_selected = ((TextView) findViewById(R.id.txt_selectedCount));
+        chk_All = findViewById(R.id.chk_SelectAll);
+        chk_MyTweets = findViewById(R.id.chk_MyTweets);
+        chk_Mentions = findViewById(R.id.chk_Mentions);
+        chk_RTs = findViewById(R.id.chk_RTs);
+        txt_selected = findViewById(R.id.txt_selectedCount);
+    }
+
+    public void createAndLoadRewardedAd() {
+        rewardedAd = new RewardedAd(this, getResources().getString(R.string.rewarded_ad_unit_id));
+        RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+            @Override
+            public void onRewardedAdLoaded() {
+                Log.e("REWARDED_VIDEO", "LOADED!");
+            }
+
+            @Override
+            public void onRewardedAdFailedToLoad(int errorCode) {
+                Log.e("REWARDED_VIDEO", "FAILED!");
+                createAndLoadInterstitialAd();
+            }
+        };
+        rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
+    }
+
+    public void createAndLoadInterstitialAd() {
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+        mInterstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.e("INTERSTITIAL_AD", "LOADED!");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                Log.e("INTERSTITIAL_AD", "FAILED!");
+                createAndLoadRewardedAd();
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                createAndLoadRewardedAd();
+            }
+
+        });
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     private void init_Ads() {
         ((AdView) findViewById(R.id.adViewBanner)).loadAd(new AdRequest.Builder().build());
-        mInterstitialAd = new InterstitialAd(getBaseContext());
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
-
-        mInterstitialAd.setAdListener(new AdListener() {
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                createAndLoadRewardedAd();
             }
         });
-
-        requestNewInterstitial();
-        try {
-            new CheckSharing().execute();
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public class CheckSharing extends AsyncTask<Void, Void, Boolean> {
-        private final SharedPreferences pref_AndroTweet;
-        private final Twitter twitterObject;
-        String userName, tweetId;
-
-        public CheckSharing() throws TwitterException {
-            twitterObject = Commons.getTwitterObject();
-            pref_AndroTweet = Main.this.getSharedPreferences(TAG, 0);
-            userName = pref_AndroTweet.getString("userName", "");
-            tweetId = pref_AndroTweet.getString(userName + "_sharedTweetID", "");
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                if (userName.equals("")) {
-                    pref_AndroTweet.edit().putString("userName", twitterObject.getScreenName()).apply();
-                    userName = pref_AndroTweet.getString("userName", "");
-                }
-                if (userName.equals("") || tweetId.equals(""))
-                    return true;
-                Tweet tweet = new Tweet(twitterObject.showStatus(Long.parseLong(tweetId)));
-                daysAgo = (int) ((System.currentTimeMillis() - tweet.getTime()) / (1000 * 60 * 60 * 24));
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-
-            if ((daysAgo < 4))
-                return false;
-            else
-                return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean showInterstitial) {
-            AndroTweetApp.setDaysAgo(daysAgo);
-            AndroTweetApp.setUserName(userName);
-            AndroTweetApp.setTweetId(tweetId);
-            if (showInterstitial) {
-                mInterstitialAd = new InterstitialAd(getBaseContext());
-                mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
-
-                mInterstitialAd.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdClosed() {
-                        requestNewInterstitial();
-
-                    }
-                });
-
-                requestNewInterstitial();
-
-            }
-            super.onPostExecute(showInterstitial);
-        }
-    }
-
-    private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-
-        mInterstitialAd.loadAd(adRequest);
     }
 
     private void init_Listeners() {
@@ -213,32 +177,25 @@ public class Main
     }
 
     private void showAds() {
-        actionCount += 1;
-        if ((actionCount % 5) == 0) {
-            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-                final CustomDialog dialogScreen = new CustomDialog(context, R.string.no_more_ads_suggestions_title, R.string.no_more_ads_suggestions_desc, R.string.no_more_ads_rules, R.string.no_more_ads_actionButton);
-                dialogScreen.initOkButtonClickListener(new CustomDialog.okButtonClickListener() {
-                    @Override
-                    public void onClick() {
-                        dialogScreen.dismiss();
-                        mInterstitialAd.show();
-                    }
-                });
+        rewardedAd.show(this, new RewardedAdCallback() {
 
-                dialogScreen.initActionButtonClickListener(new CustomDialog.actionButtonClickListener() {
-                    @Override
-                    public void onClick() {
-                        try {
-                            new ShareApp().execute();
-                        } catch (TwitterException e) {
-                            e.printStackTrace();
-                            Toast.makeText(Main.this, "Unexpected Error! Please Contact Me => AndroTweet1903@gmail.com", Toast.LENGTH_SHORT).show();
-                        }
-                        dialogScreen.dismiss();
-                    }
-                });
+            @Override
+            public void onRewardedAdFailedToShow(int i) {
+                super.onRewardedAdFailedToShow(i);
+                mInterstitialAd.show();
             }
-        }
+
+            @Override
+            public void onRewardedAdClosed() {
+                Log.e("REWARDED_VIDEO", "VIDEO_CLOSED!");
+                createAndLoadRewardedAd();
+            }
+
+            @Override
+            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                Log.e("REWARDED_VIDEO", "REWARD!");
+            }
+        });
     }
 
     @Override
@@ -261,38 +218,5 @@ public class Main
         txt_selected.setText(String.valueOf(isSelectedCount));
     }
 
-    public class ShareApp extends AsyncTask<Void, Void, Tweet> {
-        private final SharedPreferences pref_AndroTweet;
-        private final Twitter twitterObject;
-        String userName;
-        private Tweet tweet;
-
-        public ShareApp() throws TwitterException {
-            twitterObject = Commons.getTwitterObject();
-            pref_AndroTweet = Main.this.getSharedPreferences(TAG, 0);
-            userName = pref_AndroTweet.getString("userName", "");
-        }
-
-        @Override
-        protected Tweet doInBackground(Void... params) {
-            try {
-                tweet = new Tweet(twitterObject.updateStatus("Cleaned my twitter profile! " +
-                        "\n Removed tweets, mentions, and retweets by @AndroTweet1903 " +
-                        "\n http://bit.ly/AndroTweet"));
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-            return tweet;
-        }
-
-        @Override
-        protected void onPostExecute(Tweet tweet) {
-            SharedPreferences.Editor edit = pref_AndroTweet.edit();
-            edit.putString(userName + "_sharedTweetID", String.valueOf(tweet.getId()));
-            edit.apply();
-            mInterstitialAd = null;
-            super.onPostExecute(tweet);
-        }
-    }
 }
 

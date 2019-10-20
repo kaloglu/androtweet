@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 21
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.zsk.androtweet"
         minSdkVersion 16
-        targetSdkVersion 21
-        versionCode 11
-        versionName "2.51"
+        targetSdkVersion 28
+        versionCode 12
+        versionName "2.60"
     }
     buildTypes {
         release {
@@ -16,10 +15,8 @@ android {
         }
     }
     dependencies {
-        compile files('libs/twitter4j-core-4.0.3.jar')
-        compile 'com.android.support:support-v4:21.0.0'
-        compile 'com.android.support:appcompat-v7:21.0.0'
-        compile 'com.google.android.gms:play-services-analytics:8.4.0'
-        compile 'com.google.android.gms:play-services-ads:8.4.0'
+        implementation files('libs/twitter4j-core-4.0.3.jar')
+        implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+        implementation 'com.google.android.gms:play-services-ads:18.2.0'
     }
 }
