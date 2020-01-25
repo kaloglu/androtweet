@@ -5,7 +5,7 @@ INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xm
 INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml:2:1-42:12
 INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml:2:1-42:12
 MERGED from [com.google.android.gms:play-services-analytics:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f0ee238c147d4f043bbcb0b8cc938c0e/play-services-analytics-17.0.0/AndroidManifest.xml:17:1-47:12
-MERGED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/c54c2dd5c826e88aada71e673c5859fa/jetified-play-services-ads-18.2.0/AndroidManifest.xml:17:1-25:12
+MERGED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6bbb49c025ed499b68e6d6d278e30b94/jetified-play-services-ads-18.2.0/AndroidManifest.xml:17:1-25:12
 MERGED from [com.google.android.gms:play-services-tagmanager-v4-impl:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/fc9db48eb7606a07ff0a61058febe502/play-services-tagmanager-v4-impl-17.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.gms:play-services-analytics-impl:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/04c8b3b896fcedf48549f1ce2a7b72c9/play-services-analytics-impl-17.0.0/AndroidManifest.xml:17:1-31:12
 MERGED from [com.google.android.gms:play-services-base:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/e91790921c910b5c0de2045e813ad59c/play-services-base-17.0.0/AndroidManifest.xml:17:1-29:12
@@ -19,7 +19,7 @@ MERGED from [com.google.android.gms:play-services-gass:18.2.0] /Users/kaloglu/.g
 MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/287346e905cd20ad06ee512960ac8325/play-services-tasks-17.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/befaa9fe23b6c2aa35eef81aeb9da464/play-services-measurement-sdk-api-17.0.0/AndroidManifest.xml:17:1-40:12
 MERGED from [com.google.android.gms:play-services-measurement-base:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/7ed7f7d3296adf0dfa4d0caa6408fab8/play-services-measurement-base-17.0.0/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:17:1-28:12
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:17:1-28:12
 MERGED from [androidx.browser:browser:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/bc194b84aa03b3280ef6ad274c818e45/browser-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.fragment:fragment:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/25bfa9abbe57efa7109f3ed8175af34b/fragment-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/67e3a22614326cadf216274f01d6d423/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -150,8 +150,8 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk-api:17.0.0] /U
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/befaa9fe23b6c2aa35eef81aeb9da464/play-services-measurement-sdk-api-17.0.0/AndroidManifest.xml:28:5-38:19
 MERGED from [com.google.android.gms:play-services-measurement-base:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/7ed7f7d3296adf0dfa4d0caa6408fab8/play-services-measurement-base-17.0.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-measurement-base:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/7ed7f7d3296adf0dfa4d0caa6408fab8/play-services-measurement-base-17.0.0/AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:22:5-26:19
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.core:core:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/4de34232979cbe134bd28b81339a3afe/core-1.0.0/AndroidManifest.xml:22:5-89
 MERGED from [androidx.core:core:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/4de34232979cbe134bd28b81339a3afe/core-1.0.0/AndroidManifest.xml:22:5-89
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/144fdb6eac090fb35b1d84279c68b489/versionedparcelable-1.0.0/AndroidManifest.xml:22:5-23:19
@@ -196,8 +196,8 @@ ADDED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml:2
 		ADDED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml:27:27-74
 meta-data#com.google.android.gms.version
 ADDED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml:30:9-32:69
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
 	android:value
 		ADDED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml:32:13-66
 	android:name
@@ -226,8 +226,8 @@ INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xm
 INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml
 MERGED from [com.google.android.gms:play-services-analytics:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f0ee238c147d4f043bbcb0b8cc938c0e/play-services-analytics-17.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-analytics:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f0ee238c147d4f043bbcb0b8cc938c0e/play-services-analytics-17.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/c54c2dd5c826e88aada71e673c5859fa/jetified-play-services-ads-18.2.0/AndroidManifest.xml:21:5-23:52
-MERGED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/c54c2dd5c826e88aada71e673c5859fa/jetified-play-services-ads-18.2.0/AndroidManifest.xml:21:5-23:52
+MERGED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6bbb49c025ed499b68e6d6d278e30b94/jetified-play-services-ads-18.2.0/AndroidManifest.xml:21:5-23:52
+MERGED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6bbb49c025ed499b68e6d6d278e30b94/jetified-play-services-ads-18.2.0/AndroidManifest.xml:21:5-23:52
 MERGED from [com.google.android.gms:play-services-tagmanager-v4-impl:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/fc9db48eb7606a07ff0a61058febe502/play-services-tagmanager-v4-impl-17.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-tagmanager-v4-impl:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/fc9db48eb7606a07ff0a61058febe502/play-services-tagmanager-v4-impl-17.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-analytics-impl:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/04c8b3b896fcedf48549f1ce2a7b72c9/play-services-analytics-impl-17.0.0/AndroidManifest.xml:20:5-44
@@ -254,8 +254,8 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk-api:17.0.0] /U
 MERGED from [com.google.android.gms:play-services-measurement-sdk-api:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/befaa9fe23b6c2aa35eef81aeb9da464/play-services-measurement-sdk-api-17.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement-base:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/7ed7f7d3296adf0dfa4d0caa6408fab8/play-services-measurement-base-17.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-measurement-base:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/7ed7f7d3296adf0dfa4d0caa6408fab8/play-services-measurement-base-17.0.0/AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6705d847c40959c602aac17fed71a768/jetified-play-services-basement-17.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/f031cf3e523a6cbd04b998a4d2fd818a/jetified-play-services-basement-17.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.browser:browser:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/bc194b84aa03b3280ef6ad274c818e45/browser-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.browser:browser:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/bc194b84aa03b3280ef6ad274c818e45/browser-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.fragment:fragment:1.0.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/25bfa9abbe57efa7109f3ed8175af34b/fragment-1.0.0/AndroidManifest.xml:20:5-44
@@ -309,7 +309,7 @@ MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/kaloglu/.gradle/cache
 INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml
 INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/c54c2dd5c826e88aada71e673c5859fa/jetified-play-services-ads-18.2.0/AndroidManifest.xml:23:9-49
+		ADDED from [com.google.android.gms:play-services-ads:18.2.0] /Users/kaloglu/.gradle/caches/transforms-2/files-2.1/6bbb49c025ed499b68e6d6d278e30b94/jetified-play-services-ads-18.2.0/AndroidManifest.xml:23:9-49
 	android:targetSdkVersion
 		INJECTED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml
 		ADDED from /Users/kaloglu/projects/androtweet/app/src/main/AndroidManifest.xml
