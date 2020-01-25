@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -17,6 +20,13 @@ android {
     dependencies {
         implementation files('libs/twitter4j-core-4.0.3.jar')
         implementation 'com.google.android.gms:play-services-analytics:17.0.0'
-        implementation 'com.google.android.gms:play-services-ads:18.2.0'
+        implementation 'com.google.android.gms:play-services-ads:18.3.0'
     }
+}
+dependencies {
+    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

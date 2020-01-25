@@ -12,10 +12,8 @@
 bin/
 gen/
 
-/app/build
 # Gradle files
 .gradle/
-build/
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -27,3 +25,5 @@ proguard/
 /build/
 /.idea/
 /projectFilesBackup/
+
+app/build/
