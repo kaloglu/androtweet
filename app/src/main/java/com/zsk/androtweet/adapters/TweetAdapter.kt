@@ -11,8 +11,8 @@ import android.widget.TextView
 import com.zsk.androtweet.AndroTweetApp.Companion.daysAgo
 import com.zsk.androtweet.AndroTweetApp.Companion.tweetId
 import com.zsk.androtweet.Main.Companion.selectedCountChange
-import com.zsk.androtweet.Models.Tweet
 import com.zsk.androtweet.R
+import com.zsk.androtweet.models.Tweet
 
 class TweetAdapter(paramContext: Context, paramInt: Int, paramList: List<Tweet>)
     : ArrayAdapter<Tweet?>(paramContext, paramInt, paramList) {
@@ -56,8 +56,8 @@ class TweetAdapter(paramContext: Context, paramInt: Int, paramList: List<Tweet>)
         }
         //        tweetVH.chkTweet.setText(String.valueOf(tweet.getId()));
         tweetVH.txtTweet!!.text = tweet.tweetText
-        tweetVH.rtTweet!!.text = tweet.rTcount.toString()
-        tweetVH.favTweet!!.text = tweet.faVcount.toString()
+        tweetVH.rtTweet!!.text = tweet.rtCount.toString()
+        tweetVH.favTweet!!.text = tweet.favcount.toString()
         tweetVH.timeTweet!!.text = DateUtils.getRelativeTimeSpanString(tweet.time)
         tweetVH.chkTweet!!.isChecked = isSelectedPos[position]
         if (tweetId != null && tweet.id.toString() == tweetId && daysAgo < 4) {

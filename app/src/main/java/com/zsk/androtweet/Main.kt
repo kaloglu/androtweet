@@ -14,13 +14,14 @@ import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.zsk.androtweet.Database.DB_Model
-import com.zsk.androtweet.Models.Search
+import com.zsk.androtweet.database.DBModel
 import com.zsk.androtweet.adapters.Commons
 import com.zsk.androtweet.adapters.TweetAdapter
+import com.zsk.androtweet.models.Search
 import kotlinx.android.synthetic.main.home_timeline.*
 
 class Main : Activity() {
+    private lateinit var dbModel: DBModel
     private var adapter: TweetAdapter? = null
     private var context: Context? = null
     private var search: Search? = null
@@ -29,6 +30,7 @@ class Main : Activity() {
 
     private fun init() {
         context = this
+        dbModel = DBModel(context)
         txt_selected = findViewById(R.id.txt_selectedCount)
     }
 
@@ -37,7 +39,7 @@ class Main : Activity() {
         Commons.isLogon(this)
         initAds()
         super.onCreate(savedInstanceState)
-        search = Search.getInstance()
+        search = Search.instance
         init()
         initListeners()
         Commons.refreshTweetList(this, tweetList_on_home)
@@ -56,29 +58,32 @@ class Main : Activity() {
                 createAndLoadInterstitialAd()
             }
         }
-        rewardedAd!!.loadAd(AdRequest.Builder().build(), adLoadCallback)
+        rewardedAd?.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
 
     fun createAndLoadInterstitialAd() {
         mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd!!.adUnitId = getString(R.string.interstitial_ad_unit_id)
-        mInterstitialAd!!.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                Log.e("INTERSTITIAL_AD", "LOADED!")
-            }
+        mInterstitialAd?.let {
 
-            override fun onAdFailedToLoad(i: Int) {
-                super.onAdFailedToLoad(i)
-                Log.e("INTERSTITIAL_AD", "FAILED!")
-                createAndLoadRewardedAd()
-            }
+            it.adUnitId = getString(R.string.interstitial_ad_unit_id)
+            it.adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    super.onAdLoaded()
+                    Log.e("INTERSTITIAL_AD", "LOADED!")
+                }
 
-            override fun onAdClosed() { // Load the next interstitial.
-                createAndLoadRewardedAd()
+                override fun onAdFailedToLoad(i: Int) {
+                    super.onAdFailedToLoad(i)
+                    Log.e("INTERSTITIAL_AD", "FAILED!")
+                    createAndLoadRewardedAd()
+                }
+
+                override fun onAdClosed() { // Load the next interstitial.
+                    createAndLoadRewardedAd()
+                }
             }
+            it.loadAd(AdRequest.Builder().build())
         }
-        mInterstitialAd!!.loadAd(AdRequest.Builder().build())
     }
 
     private fun initAds() {
@@ -111,24 +116,24 @@ class Main : Activity() {
         })
         chk_RTs!!.setOnCheckedChangeListener { _, paramAnonymousBoolean ->
             search!!.isViewRTs = paramAnonymousBoolean
-            Commons.refreshL(this@Main, DB_Model(this@Main), tweetList_on_home)
+            Commons.refreshL(this@Main, dbModel, tweetList_on_home)
             chk_SelectAll!!.isChecked = false
         }
         chk_Mentions!!.setOnCheckedChangeListener { _, paramAnonymousBoolean ->
             search!!.isViewMentions = paramAnonymousBoolean
-            Commons.refreshL(this@Main, DB_Model(this@Main), tweetList_on_home)
+            Commons.refreshL(this@Main, dbModel, tweetList_on_home)
             chk_SelectAll!!.isChecked = false
         }
         chk_MyTweets!!.setOnCheckedChangeListener { _, paramAnonymousBoolean ->
             search!!.isViewMyTweets = paramAnonymousBoolean
-            Commons.refreshL(this@Main, DB_Model(this@Main), tweetList_on_home)
+            Commons.refreshL(this@Main, dbModel, tweetList_on_home)
             chk_SelectAll!!.isChecked = false
         }
     }
 
     fun doThings(paramView: View) {
         if (adapter == null) {
-            adapter = tweetList_on_home!!.adapter as TweetAdapter
+            adapter = tweetList_on_home?.adapter as TweetAdapter
         }
         showAds()
         when (paramView.id) {
@@ -141,10 +146,10 @@ class Main : Activity() {
     }
 
     private fun showAds() {
-        rewardedAd!!.show(this, object : RewardedAdCallback() {
+        rewardedAd?.show(this, object : RewardedAdCallback() {
             override fun onRewardedAdFailedToShow(i: Int) {
                 super.onRewardedAdFailedToShow(i)
-                mInterstitialAd!!.show()
+                mInterstitialAd?.show()
             }
 
             override fun onRewardedAdClosed() {
