@@ -12,7 +12,7 @@ object DB {
     internal const val TIMELINE_DROP = "DROP TABLE IF EXISTS TIMELINE"
     const val TIMELINE_TABLE = "TIMELINE"
     @JvmStatic
-    fun CreateTimeLineData(paramTweet: Tweet): ContentValues {
+    fun createTimeLineData(paramTweet: Tweet): ContentValues {
         val localContentValues = ContentValues()
         localContentValues.put("tweet_id", java.lang.Long.valueOf(paramTweet.id))
         localContentValues.put("reply_id", java.lang.Long.valueOf(paramTweet.replyId))

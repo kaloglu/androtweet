@@ -2,7 +2,7 @@ package com.zsk.androtweet.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.zsk.androtweet.database.DB.CreateTimeLineData
+import com.zsk.androtweet.database.DB.createTimeLineData
 import com.zsk.androtweet.database.DB.TIMELINE_TABLE
 import com.zsk.androtweet.database.DB.Timeline
 import com.zsk.androtweet.models.Search.Companion.instance
@@ -31,7 +31,7 @@ class DBModel(context: Context?) {
             return
         }
         instance.lastTweetId = tweet.id
-        db?.insert(TIMELINE_TABLE, null, CreateTimeLineData(tweet))
+        db?.insert(TIMELINE_TABLE, null, createTimeLineData(tweet))
     }
 
     /* (non-Javadoc)
