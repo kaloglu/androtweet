@@ -14,14 +14,14 @@ import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.zsk.androtweet.database.DBModel
 import com.zsk.androtweet.adapters.Commons
 import com.zsk.androtweet.adapters.TweetAdapter
 import com.zsk.androtweet.models.Search
+import com.zsk.androtweet.models.TimelineDao
 import kotlinx.android.synthetic.main.home_timeline.*
 
 class Main : Activity() {
-    private lateinit var dbModel: DBModel
+    private lateinit var timelineDao: TimelineDao
     private var adapter: TweetAdapter? = null
     private var context: Context? = null
     private var search: Search? = null
@@ -30,7 +30,7 @@ class Main : Activity() {
 
     private fun init() {
         context = this
-        dbModel = DBModel(context)
+        timelineDao = AndroTweetApp.database.timelineDao()
         txt_selected = findViewById(R.id.txt_selectedCount)
     }
 
@@ -114,19 +114,19 @@ class Main : Activity() {
             }
             adapter!!.notifyDataSetChanged()
         })
-        chk_RTs!!.setOnCheckedChangeListener { _, paramAnonymousBoolean ->
-            search!!.isViewRTs = paramAnonymousBoolean
-            Commons.refreshL(this@Main, dbModel, tweetList_on_home)
+        chk_RTs!!.setOnCheckedChangeListener { _, isChecked ->
+            search!!.isViewRTs = isChecked
+            Commons.refreshL(this@Main, timelineDao.retweeted, tweetList_on_home)
             chk_SelectAll!!.isChecked = false
         }
-        chk_Mentions!!.setOnCheckedChangeListener { _, paramAnonymousBoolean ->
-            search!!.isViewMentions = paramAnonymousBoolean
-            Commons.refreshL(this@Main, dbModel, tweetList_on_home)
+        chk_Mentions!!.setOnCheckedChangeListener { _, isChecked ->
+            search!!.isViewMentions = isChecked
+            Commons.refreshL(this@Main, timelineDao.mentions, tweetList_on_home)
             chk_SelectAll!!.isChecked = false
         }
-        chk_MyTweets!!.setOnCheckedChangeListener { _, paramAnonymousBoolean ->
-            search!!.isViewMyTweets = paramAnonymousBoolean
-            Commons.refreshL(this@Main, dbModel, tweetList_on_home)
+        chk_MyTweets!!.setOnCheckedChangeListener { _, isChecked ->
+            search!!.isViewMyTweets = isChecked
+            Commons.refreshL(this@Main, timelineDao.justTweets, tweetList_on_home)
             chk_SelectAll!!.isChecked = false
         }
     }

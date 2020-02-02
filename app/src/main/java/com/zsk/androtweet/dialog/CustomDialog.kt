@@ -59,19 +59,24 @@ class CustomDialog(
             actionButton!!.visibility = View.GONE
         }
         if (dialogType != null && dialogType == Enums.DialogType.INFO) okButton!!.text = getString(R.string.close)
-        show()
     }
 
     private fun getString(stringResourceID: Int): String {
         return context.resources.getString(stringResourceID)
     }
 
-    fun initOkButtonClickListener(onClick: () -> Unit) {
-        okButton!!.setOnClickListener { onClick() }
+    fun initOkButtonClickListener(onClick: (Dialog) -> Unit): CustomDialog {
+        okButton!!.setOnClickListener {
+            onClick(this)
+        }
+        return this
     }
 
-    fun initActionButtonClickListener(onClick: () -> Unit) {
-        actionButton!!.setOnClickListener { onClick() }
+    fun initActionButtonClickListener(onClick: (Dialog) -> Unit): CustomDialog {
+        actionButton!!.setOnClickListener {
+            onClick(this)
+        }
+        return this
     }
 
     init {

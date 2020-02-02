@@ -27,3 +27,9 @@ proguard/
 /projectFilesBackup/
 
 app/build/
+
+*.iml
+
+app/.DS_Store
+
+app/schemas/

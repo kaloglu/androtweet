@@ -1,8 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- uygulamaya veya activity ye uygulanacak tema -->
-    <style name="OzelActionBarTemasi"
-           parent="@style/AppTheme">
-        <item name="android:windowActionBarOverlay">true</item>
-    </style>
-</resources>
+<resources />

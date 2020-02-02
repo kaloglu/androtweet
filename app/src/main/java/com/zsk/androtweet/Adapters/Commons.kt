@@ -15,8 +15,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ListView
 import android.widget.Toast
+import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.R
-import com.zsk.androtweet.database.DBModel
 import com.zsk.androtweet.dialog.CustomDialog
 import com.zsk.androtweet.models.Tweet
 import twitter4j.Paging
@@ -29,6 +29,7 @@ import twitter4j.conf.ConfigurationBuilder
 
 object Commons {
     private const val TAG = "ANDROTWEET"
+    private val timelineDao = AndroTweetApp.database.timelineDao()
     var auth_dialog: Dialog? = null
     var oauth_url: String? = null
     var oauth_verifier: String? = null
@@ -42,6 +43,29 @@ object Commons {
         toast.duration = duration
         toast.setGravity(17, 0, 0)
         toast.show()
+    }
+
+    fun deleteSelected(context: Context, selectedTweets: List<Tweet>) {
+        if (selectedTweets.isEmpty()) {
+            Toast.makeText(context, "Please select tweets less one or more...", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val customDialog = CustomDialog(
+                context,
+                R.string.deleteTweets_title,
+                R.string.deleteTweets_desc,
+                R.string.twitter_clear_cache,
+                0
+        ).initOkButtonClickListener {
+            it.dismiss()
+        }.initActionButtonClickListener {
+            it.dismiss()
+        }
+        DeleteSelectedTweets(
+                getProgress(context, "Deleting Selected Tweets...", selectedTweets.size),
+                customDialog
+        ).execute(selectedTweets)
+
     }
 
     fun deleteSelected(context: Context, theAdapter: TweetAdapter?) {
@@ -83,7 +107,8 @@ object Commons {
         if ("" != pref_AndroTweet!!.getString("ACCESS_TOKEN", "")) {
             return
         }
-        DBModel(context).deleteOldTweets()
+//        timelineDao.deleteAll()
+//        DBModel(context).deleteOldTweets()
         TokenGet(context).execute()
     }
 
@@ -92,14 +117,13 @@ object Commons {
         localEditor.putString("ACCESS_TOKEN", "")
         localEditor.putString("ACCESS_TOKEN_SECRET", "")
         localEditor.apply()
-        DBModel(context).drop()
+//        DBModel(context).drop()
         isLogon(context)
     }
 
-    fun refreshL(context: Context, db_model: DBModel, timeLine: ListView) {
-        val tweetList: List<Tweet> = db_model.tweetList
-        if (tweetList.isNotEmpty()) {
-            val adapter = TweetAdapter(context, R.layout.tweets_layout, tweetList)
+    fun refreshL(context: Context, tweets: List<Tweet>, timeLine: ListView) {
+        if (tweets.isNotEmpty()) {
+            val adapter = TweetAdapter(context, R.layout.tweets_layout, tweets)
             timeLine.adapter = adapter
         } else {
             timeLine.adapter = null
@@ -136,7 +160,8 @@ object Commons {
 
         override fun onPostExecute(response: Boolean) {
             if (response) {
-                refreshTweetList(context as Activity)
+//                refreshTweetList(context as Activity)
+                GetTweets(context).execute(true)
                 progress!!.hide()
             }
         }
@@ -144,7 +169,7 @@ object Commons {
     }
 
     private class DeleteTweets(val adapter: TweetAdapter, val context: Context) : AsyncTask<Void, Tweet, Boolean>() {
-        private val dbModel: DBModel = DBModel(context)
+        //        private val dbModel: DBModel = DBModel(context)
         private val selectedItems: Int = adapter.selectedCount
         private var progress: ProgressDialog? = null
         override fun onPreExecute() {
@@ -172,7 +197,7 @@ object Commons {
                                     adapter.remove(tweet)
                                     adapter.isSelectedPos[i] = false
                                 }
-                                dbModel.deleteTweet(tweet)
+                                timelineDao.delete(tweet)
                                 isDone = true
                             } catch (te: TwitterException) {
                             }
@@ -221,12 +246,12 @@ object Commons {
                         R.string.twitter_clear_cache,
                         0
                 )
-                customDialog.initOkButtonClickListener { customDialog.dismiss() }
-                customDialog.initActionButtonClickListener { customDialog.dismiss() }
+                customDialog.initOkButtonClickListener { it.dismiss() }
+                customDialog.initActionButtonClickListener { it.dismiss() }
                 //                refreshTweetList((Activity) context,false);
             }
             super.onPostExecute(aBoolean)
-            dbModel.close()
+//            dbModel.close()
         }
 
         init {
@@ -234,12 +259,54 @@ object Commons {
         }
     }
 
-    class LoadTweets(private val context: Context, private val showProgressDialog: Boolean, private val timeLine: ListView) : AsyncTask<Void, Void, Boolean>() {
-        private val dbModel: DBModel = DBModel(context)
+    private class DeleteSelectedTweets(val progress: ProgressDialog, val finishDialog: CustomDialog) : AsyncTask<List<Tweet>, Int, Boolean>() {
+        override fun onPreExecute() {
+            progress.show()
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg selectedTweets: List<Tweet>): Boolean {
+            var r = 0
+            selectedTweets[0]
+                    .takeIf {
+                        it.isNotEmpty()
+                    }?.forEach {
+                        try {
+                            getTwitterObject().destroyStatus(it.id)
+                            it.isSelected = false
+                            it.isRemoved = true
+                            timelineDao.setRemoved(it)
+                            r++
+                            onProgressUpdate(r)
+                            Thread.sleep(500)
+                        } catch (e: TwitterException) {
+                        }
+                    }
+            return true
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+            progress.progress = values[0] ?: 0
+        }
+
+        override fun onPostExecute(aBoolean: Boolean) {
+            progress.dismiss()
+
+            if (aBoolean) {
+                finishDialog.show()
+            }
+            super.onPostExecute(aBoolean)
+        }
+    }
+
+    class LoadTweets(private val context: Context, private val showProgressDialog: Boolean, private val timeLine: ListView) : AsyncTask<Void, Void, List<Tweet>>() {
+        private var tweets: List<Tweet> = emptyList()
+        //        private val dbModel: DBModel = DBModel(context)
         private val p = Paging()
         private var progress: ProgressDialog? = null
         override fun onPreExecute() {
-            p.count = DBModel.HOLDED_REC_COUNT
+            p.count = 150
             if (showProgressDialog) {
                 progress = getProgress(context, "Loading Tweets...", p.count, ProgressDialog.STYLE_SPINNER)
                 progress!!.show()
@@ -247,20 +314,65 @@ object Commons {
             super.onPreExecute()
         }
 
-        override fun doInBackground(vararg voids: Void): Boolean {
+        override fun doInBackground(vararg voids: Void): List<Tweet> {
             try {
-                dbModel.insertTweetList(getTwitterObject().getUserTimeline(p))
+                getTwitterObject().getUserTimeline(p).map {
+                    Tweet(it)
+                }.forEach {
+                    timelineDao.insert(it)
+                }
+
+                tweets = timelineDao.allTweets
+
             } catch (e: Exception) {
-                Log.e(TAG, e.message)
+                Log.e(TAG, e.message ?: "UNKNOWN_ERROR")
                 e.printStackTrace()
             }
-            return true
+            return tweets
         }
 
-        override fun onPostExecute(aBoolean: Boolean) { //            DB.close();
+        override fun onPostExecute(tweets: List<Tweet>) { //            DB.close();
             if (showProgressDialog) progress!!.dismiss()
-            refreshL(context, dbModel, timeLine)
-            super.onPostExecute(aBoolean)
+            refreshL(context, tweets, timeLine)
+            super.onPostExecute(tweets)
+        }
+
+    }
+
+    class GetTweets(private val context: Context, private val showProgressDialog: Boolean = true) : AsyncTask<Boolean, Void, Void>() {
+        private val p = Paging()
+        private var progress: ProgressDialog? = null
+        override fun onPreExecute() {
+            p.count = 150
+            if (showProgressDialog) {
+                progress = getProgress(context, "Loading Tweets...", p.count, ProgressDialog.STYLE_SPINNER)
+                progress!!.show()
+            }
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg params: Boolean?): Void? {
+            try {
+                if (params[0] == true)
+                    timelineDao.deleteAll()
+
+                getTwitterObject().getUserTimeline(p).map {
+                    Tweet(it)
+                }.forEach {
+                    timelineDao.insert(it)
+                }
+
+            } catch (e: Exception) {
+                Log.e(TAG, e.message ?: "UNKNOWN_ERROR")
+                e.printStackTrace()
+            }
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) { //            DB.close();
+            if (showProgressDialog) progress!!.dismiss()
+//            refreshL(context, tweets, timeLine)
+            super.onPostExecute(result)
         }
 
     }

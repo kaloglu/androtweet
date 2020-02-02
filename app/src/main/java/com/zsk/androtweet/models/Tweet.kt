@@ -1,32 +1,43 @@
 package com.zsk.androtweet.models
 
-import android.database.Cursor
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.kaloglu.library.BaseModel
 import twitter4j.Status
 
-class Tweet {
-    var favcount = 0
-    var id: Long = 0
-    var rtCount = 0
+@Entity(tableName = "tweets")
+class Tweet : BaseModel {
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    override var id: Long = 0
+    @ColumnInfo(name = "reply_id")
     var replyId: Long = 0
+    @ColumnInfo(name = "time")
     var time: Long = 0
+    @ColumnInfo(name = "text")
     var tweetText: String? = null
+    @ColumnInfo(name = "fav_count")
+    var favcount = 0
+    @ColumnInfo(name = "rt_count")
+    var rtCount = 0
+    @ColumnInfo(name = "isRemoved")
+    var isRemoved = false
+    @ColumnInfo(name = "username")
+    var username = ""
 
-    constructor(paramCursor: Cursor) {
-        id = paramCursor.getLong(paramCursor.getColumnIndex("tweet_id"))
-        tweetText = paramCursor.getString(paramCursor.getColumnIndex("tweet"))
-        replyId = paramCursor.getLong(paramCursor.getColumnIndex("reply_id"))
-        time = paramCursor.getLong(paramCursor.getColumnIndex("tweettime"))
-        rtCount = paramCursor.getInt(paramCursor.getColumnIndex("RT"))
-        favcount = paramCursor.getInt(paramCursor.getColumnIndex("FAV"))
-    }
+    var isSelected = false
 
-    constructor(paramStatus: Status) {
-        id = paramStatus.id
-        tweetText = paramStatus.text
-        replyId = paramStatus.inReplyToStatusId
-        time = paramStatus.createdAt.time
-        rtCount = paramStatus.retweetCount
-        favcount = paramStatus.favoriteCount
+    constructor()
+
+    constructor(status: Status) {
+        id = status.id
+        tweetText = status.text
+        replyId = status.inReplyToStatusId
+        time = status.createdAt.time
+        rtCount = status.retweetCount
+        favcount = status.favoriteCount
+        username = status.user.name
     }
 
 }

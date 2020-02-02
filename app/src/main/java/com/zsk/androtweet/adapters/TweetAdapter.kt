@@ -10,7 +10,6 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.zsk.androtweet.AndroTweetApp.Companion.daysAgo
 import com.zsk.androtweet.AndroTweetApp.Companion.tweetId
-import com.zsk.androtweet.Main.Companion.selectedCountChange
 import com.zsk.androtweet.R
 import com.zsk.androtweet.models.Tweet
 
@@ -28,9 +27,9 @@ class TweetAdapter(paramContext: Context, paramInt: Int, paramList: List<Tweet>)
             return count
         }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-        var row = convertView
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val tweetVH: TweetViewHolder
+        var row = convertView
         if (row == null) {
             val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             row = layoutInflater.inflate(R.layout.tweets_layout, null)
@@ -52,7 +51,7 @@ class TweetAdapter(paramContext: Context, paramInt: Int, paramList: List<Tweet>)
         }
         tweetVH.chkTweet!!.setOnCheckedChangeListener { buttonView, isChecked ->
             isSelectedPos[position] = isChecked
-            selectedCountChange(selectedCount)
+//            selectedCountChange(selectedCount)
         }
         //        tweetVH.chkTweet.setText(String.valueOf(tweet.getId()));
         tweetVH.txtTweet!!.text = tweet.tweetText
@@ -64,7 +63,7 @@ class TweetAdapter(paramContext: Context, paramInt: Int, paramList: List<Tweet>)
             tweetVH.chkTweet!!.visibility = View.INVISIBLE
             isSelectedPos[position] = false
         }
-        return row
+        return row!!
     }
 
     inner class TweetViewHolder {
