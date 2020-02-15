@@ -3,7 +3,6 @@ package com.zsk.androtweet
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -17,13 +16,7 @@ import com.kaloglu.library.setup
 import com.zsk.androtweet.adapters.Commons
 import com.zsk.androtweet.adapters.TimelineAdapter
 import com.zsk.androtweet.models.TimelineDao
-import com.zsk.androtweet.repositories.TimelineRepositoryImpl
-import com.zsk.androtweet.usecases.GetTweetsUseCasesImpl
-import com.zsk.androtweet.usecases.InsertTweetsUseCasesImpl
-import com.zsk.androtweet.usecases.RemoveTweetsUseCasesImpl
-import com.zsk.androtweet.viewmodels.TimelineViewModel
-import com.zsk.androtweet.viewmodels.TimelineViewModelFactory
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.old_activity_main.*
 
 //
 // Created by  on 2020-02-02.
@@ -42,7 +35,7 @@ class OldMainActivity : BaseActivity() {
     private var mInterstitialAd: InterstitialAd? = null
 
     override val contentResourceId: Int
-        get() = R.layout.activity_main
+        get() = R.layout.old_activity_main
 
     override fun initUserInterface() {
 
