@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/main_activity">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_Profile"
+            android:orderInCategory="100"
+            android:title="@string/Tab_Profile"
+            app:showAsAction="ifRoom" />
+        <!--         android:icon="@drawable/ic_action_search" -->
+        <item
+            android:id="@+id/action_Settings"
+            android:orderInCategory="100"
+            android:title="@string/action_Settings"
+            app:showAsAction="never" />
+        <!--         android:icon="@drawable/ic_action_search" -->
+
+        <item
+            android:id="@+id/action_LogOut"
+            android:orderInCategory="100"
+            android:title="@string/action_LogOut"
+            app:showAsAction="never" />
+        <!--         android:icon="@drawable/ic_action_search" -->
+
+        <!--     <item android:id="@+id/action_Search" -->
+        <!--           android:title="@string/action_Search" -->
+        <!--           android:icon="@drawable/ic_action_search" -->
+        <!--           app:showAsAction="ifRoom" -->
+        <!--           android:actionViewClass="android.support.v7.widget.SearchView" /> -->
+
+    </group>
+
+    <item android:title="@string/Tweets">
+        <menu>
+            <item
+                android:id="@+id/action_Home"
+                android:orderInCategory="100"
+                android:title="@string/Tab_Home"
+                app:showAsAction="ifRoom" />
+            <!--         android:icon="@drawable/ic_action_search" -->
+            <item
+                android:id="@+id/action_Mentions"
+                android:orderInCategory="100"
+                android:title="@string/Tab_Mentions"
+                app:showAsAction="ifRoom" />
+            <!--         android:icon="@drawable/ic_action_search" -->
+            <item
+                android:id="@+id/action_DM"
+                android:orderInCategory="100"
+                android:title="@string/action_DM"
+                app:showAsAction="ifRoom" />
+            <!--         android:icon="@drawable/ic_action_search" -->
+
+        </menu>
+    </item>
+
+</menu>
