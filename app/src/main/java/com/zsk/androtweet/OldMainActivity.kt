@@ -28,14 +28,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 //
 // Created by  on 2020-02-02.
 //
-class MainActivity : BaseActivity() {
-    private val timelineFactory = TimelineViewModelFactory(
+class OldMainActivity : BaseActivity() {
+    /*private val timelineFactory = TimelineViewModelFactory(
             GetTweetsUseCasesImpl(TimelineRepositoryImpl()),
             RemoveTweetsUseCasesImpl(TimelineRepositoryImpl()),
             InsertTweetsUseCasesImpl(TimelineRepositoryImpl())
     )
-    lateinit var viewModel: TimelineViewModel
-
+    private lateinit var viewModel: TimelineViewModel
+*/
     private val timelineAdapter by lazy { TimelineAdapter() }
     private lateinit var timelineDao: TimelineDao
     private var rewardedAd: RewardedAd? = null
@@ -46,7 +46,7 @@ class MainActivity : BaseActivity() {
 
     override fun initUserInterface() {
 
-        viewModel = ViewModelProvider(this, timelineFactory).get(TimelineViewModel::class.java)
+//        viewModel = ViewModelProvider(this, timelineFactory).get(TimelineViewModel::class.java)
 
         tweetsRecyclerView.setup(timelineAdapter)
 

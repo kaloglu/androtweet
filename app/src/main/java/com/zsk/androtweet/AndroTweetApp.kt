@@ -1,8 +1,13 @@
 package com.zsk.androtweet
 
 import android.app.Application
+import android.util.Log
 import androidx.room.Room
+import com.twitter.sdk.android.core.DefaultLogger
+import com.twitter.sdk.android.core.Twitter
+import com.twitter.sdk.android.core.TwitterConfig
 import com.zsk.androtweet.database.TweetDatabase
+
 
 /**
  * Created by kaloglu on 24/04/16.
@@ -11,6 +16,12 @@ class AndroTweetApp : Application() {
     override fun onCreate() {
         instance = this
         super.onCreate()
+
+        val config = TwitterConfig.Builder(this)
+                .logger(DefaultLogger(Log.DEBUG))
+                .debug(true)
+                .build()
+        Twitter.initialize(config)
 
         database = Room
                 .databaseBuilder(this, TweetDatabase::class.java, "AndroTweet")
