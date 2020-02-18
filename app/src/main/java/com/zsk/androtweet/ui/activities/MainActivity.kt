@@ -3,13 +3,12 @@ package com.zsk.androtweet.ui.activities
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.kaloglu.library.BaseActivity
+import com.kaloglu.library.ui.BaseActivity
 import com.zsk.androtweet.R
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.main_activity.*
 
-class MainActivity : BaseActivity() {
-    override val contentResourceId = R.layout.main_activity
+class MainActivity : BaseActivity(R.layout.main_activity) {
 
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 

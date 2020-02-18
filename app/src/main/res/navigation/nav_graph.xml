@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/tweetListFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/tweetListFragment"
@@ -15,7 +15,7 @@
             app:destination="@id/loginFragment" />
     </fragment>
 
-    <dialog
+    <fragment
         android:id="@+id/loginFragment"
         android:name="com.zsk.androtweet.ui.fragments.LoginFragment"
         android:label="login_fragment"
