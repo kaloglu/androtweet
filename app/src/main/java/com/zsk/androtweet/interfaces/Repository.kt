@@ -1,6 +1,6 @@
 package com.zsk.androtweet.interfaces
 
-import com.kaloglu.library.BaseModel
+import com.kaloglu.library.ui.BaseModel
 import com.zsk.androtweet.models.Resource
 
 interface Repository<E : BaseModel> {

@@ -2,11 +2,10 @@ package com.zsk.androtweet.ui.activities
 
 import android.content.Intent
 import android.os.Handler
-import com.kaloglu.library.BaseActivity
+import com.kaloglu.library.ui.BaseActivity
 import com.zsk.androtweet.R
 
-class SplashScreenActivity : BaseActivity() {
-    override val contentResourceId = R.layout.activity_splash_screen
+class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
     private var splashHandler = Handler()
 
     override fun initUserInterface() {

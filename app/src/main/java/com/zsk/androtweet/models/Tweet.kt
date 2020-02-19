@@ -3,14 +3,14 @@ package com.zsk.androtweet.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kaloglu.library.BaseModel
+import com.kaloglu.library.ui.BaseModel
 import twitter4j.Status
 
 @Entity(tableName = "tweets")
 class Tweet : BaseModel {
     @PrimaryKey
     @ColumnInfo(name = "id")
-    override var id: Long = 0
+    var id: Long = 0
     @ColumnInfo(name = "reply_id")
     var replyId: Long = 0
     @ColumnInfo(name = "time")
@@ -39,5 +39,9 @@ class Tweet : BaseModel {
         favcount = status.favoriteCount
         username = status.user.name
     }
+
+    override fun <T : BaseModel> equals(obj2: T) = false
+
+    override fun <T : Any> getId() = id as T
 
 }

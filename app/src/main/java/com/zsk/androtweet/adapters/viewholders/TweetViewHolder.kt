@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.View
-import com.kaloglu.library.BaseViewHolder
-import com.kaloglu.library.show
+import com.kaloglu.library.ktx.show
+import com.kaloglu.library.ui.BaseViewHolder
 import com.zsk.androtweet.models.Tweet
 import kotlinx.android.synthetic.main.timeline_tweets.view.*
 
