@@ -2,13 +2,12 @@ package com.zsk.androtweet.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.kaloglu.library.ui.BaseModel
+import com.kaloglu.library.ui.RecyclerItem
 import twitter4j.Status
 
-@Entity(tableName = "tweets")
-class Tweet : BaseModel {
-    @PrimaryKey
+@Entity(tableName = "tweets", primaryKeys = ["id"])
+class Tweet : BaseModel, RecyclerItem {
     @ColumnInfo(name = "id")
     var id: Long = 0
     @ColumnInfo(name = "reply_id")
@@ -21,7 +20,7 @@ class Tweet : BaseModel {
     var favcount = 0
     @ColumnInfo(name = "rt_count")
     var rtCount = 0
-    @ColumnInfo(name = "isRemoved")
+    @ColumnInfo(name = "is_removed")
     var isRemoved = false
     @ColumnInfo(name = "username")
     var username = ""
@@ -40,8 +39,15 @@ class Tweet : BaseModel {
         username = status.user.name
     }
 
+    //region BaseModel
     override fun <T : BaseModel> equals(obj2: T) = false
 
     override fun <T : Any> getId() = id as T
+    //endregion
 
+    //region Recycler Item
+
+    override var layoutId: Int = -1
+
+    //endregion
 }

@@ -3,6 +3,7 @@ package com.zsk.androtweet.ui.fragments
 import android.os.Bundle
 import android.os.Handler
 import com.kaloglu.library.ui.viewmodel.databinding.BindingFragment
+import com.zsk.androtweet.BR
 import com.zsk.androtweet.R
 import com.zsk.androtweet.databinding.LoginFragmentBinding
 import com.zsk.androtweet.viewmodels.LoginViewModel
@@ -21,5 +22,7 @@ class LoginFragment : BindingFragment<LoginFragmentBinding, LoginViewModel>(R.la
             viewModel.testText = "Bunu da değiştir!"
         }, 10000)
     }
+
+    override fun getBindingVariable() = BR.dataModel
 
 }

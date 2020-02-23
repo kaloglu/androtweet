@@ -59,11 +59,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.2.3'
+    implementation 'androidx.room:room-runtime:2.2.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.2.3'
-    kapt 'androidx.room:room-compiler:2.2.3'
-    androidTestImplementation 'androidx.room:room-testing:2.2.3'
+    annotationProcessor 'androidx.room:room-compiler:2.2.4'
+    kapt 'androidx.room:room-compiler:2.2.4'
+    androidTestImplementation 'androidx.room:room-testing:2.2.4'
 
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
@@ -71,14 +71,14 @@ dependencies {
 
 //    kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
-    implementation "androidx.fragment:fragment:1.2.1"
+    implementation "androidx.fragment:fragment:1.2.2"
 
 
     // Navigation components
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0-alpha01"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.0-alpha01"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0-alpha02"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.0-alpha02"
 
-    androidTestImplementation "androidx.navigation:navigation-testing:2.3.0-alpha01"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.3.0-alpha02"
 
 
     implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
@@ -90,7 +90,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.github.kaloglu.libraries:ktx:1.0.0-Beta3'
-    implementation 'com.github.kaloglu.libraries:ui:1.0.0-Beta3'
+    implementation 'com.github.kaloglu.libraries:ktx:1.0.0-Beta4'
+    implementation 'com.github.kaloglu.libraries:ui:1.0.0-Beta4'
 
 }
