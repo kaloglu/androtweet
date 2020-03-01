@@ -6,8 +6,7 @@ import androidx.room.Room
 import com.twitter.sdk.android.core.DefaultLogger
 import com.twitter.sdk.android.core.Twitter
 import com.twitter.sdk.android.core.TwitterConfig
-import com.zsk.androtweet.database.TweetDatabase
-
+import com.zsk.androtweet.database.AndroTweetDatabase
 
 /**
  * Created by kaloglu on 24/04/16.
@@ -24,7 +23,7 @@ class AndroTweetApp : Application() {
         Twitter.initialize(config)
 
         database = Room
-                .databaseBuilder(this, TweetDatabase::class.java, "AndroTweet")
+                .databaseBuilder(this, AndroTweetDatabase::class.java, "AndroTweet")
                 .fallbackToDestructiveMigration()
                 .build()
     }
@@ -38,7 +37,7 @@ class AndroTweetApp : Application() {
         @JvmStatic
         var tweetId: String? = null
 
-        lateinit var database: TweetDatabase
+        lateinit var database: AndroTweetDatabase
 
     }
 }

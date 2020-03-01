@@ -1,21 +1,23 @@
 package com.zsk.androtweet.interfaces
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.kaloglu.library.ui.BaseModel
 import com.zsk.androtweet.models.Resource
 
 interface Repository<E : BaseModel> {
-    val remote: Database
-    val cache: Database
 
     fun insert(entity: E)
 
-    fun insertAll(entities: List<E>)
+    fun delete(entity: E)
 
-    fun delete(entities: List<E>)
+    fun update(entity: E)
 
-    fun deleteAll()
+    fun get(): LiveData<E>
 
-    fun setRemoved(entity: E)
+    val result: MutableLiveData<Resource<E>>
 
-    val getAll: Resource<List<E>>
+    fun asyncFinished(resource: Resource<E>?) {
+        result.value = resource
+    }
 }

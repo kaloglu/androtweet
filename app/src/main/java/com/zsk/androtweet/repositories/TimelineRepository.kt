@@ -1,15 +1,12 @@
 package com.zsk.androtweet.repositories
 
-import com.zsk.androtweet.database.TimeLineCacheDatabase
-import com.zsk.androtweet.database.TimeLineRemoteDatabase
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.zsk.androtweet.interfaces.TimelineRepository
 import com.zsk.androtweet.models.Resource
 import com.zsk.androtweet.models.Tweet
 
-class TimelineRepositoryImpl(
-        override val remote: TimeLineRemoteDatabase,
-        override val cache: TimeLineCacheDatabase
-) : TimelineRepository {
+class TimelineRepositoryImpl() : TimelineRepository {
 
     override val justTweets: Resource<List<Tweet>>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -22,22 +19,21 @@ class TimelineRepositoryImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun insertAll(entities: List<Tweet>) {
+    override fun delete(entity: Tweet) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun delete(entities: List<Tweet>) {
+    override fun update(entity: Tweet) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun deleteAll() {
+    override fun get(): LiveData<Tweet> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setRemoved(entity: Tweet) {
+    override val result: MutableLiveData<Resource<Tweet>> = MutableLiveData()
+
+    fun setRemoved(entity: Tweet) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    override val getAll: Resource<List<Tweet>>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 }

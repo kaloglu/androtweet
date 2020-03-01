@@ -17,7 +17,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.zsk.androtweet.adapters.Commons
 import com.zsk.androtweet.adapters.TweetAdapter
 import com.zsk.androtweet.models.Search
-import com.zsk.androtweet.models.TimelineDao
+import com.zsk.androtweet.database.dao.TimelineDao
 import kotlinx.android.synthetic.main.home_timeline.*
 
 class Main : Activity() {

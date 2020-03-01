@@ -19,6 +19,11 @@
         android:id="@+id/loginFragment"
         android:name="com.zsk.androtweet.ui.fragments.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" />
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_loginFragment_to_tweetListFragment"
+            app:destination="@id/tweetListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

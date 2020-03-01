@@ -4,31 +4,41 @@
     <data>
 
         <variable
-            name="dataModel"
+            name="loginViewModel"
             type="com.zsk.androtweet.viewmodels.LoginViewModel" />
+
+        <variable
+            name="loginCallBack"
+            type="com.zsk.androtweet.twittercallback.TwitterSessionCallback" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.LoginFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.LoginFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{dataModel.testText}"
-        tools:text="buraya test yazmalı"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{loginViewModel.user.name}"
+            app:layout_constraintEnd_toEndOf="@id/twitterLogin"
+            app:layout_constraintStart_toStartOf="@id/twitterLogin"
+            app:layout_constraintTop_toBottomOf="@id/twitterLogin"
+            tools:text="state" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:id="@+id/twitterLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:callback="@{loginCallBack}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

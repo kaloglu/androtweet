@@ -1,22 +1,21 @@
-package com.zsk.androtweet.models
+package com.zsk.androtweet.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.zsk.androtweet.database.dao.base.BaseDao
+import com.zsk.androtweet.models.Tweet
 
 @Dao
-interface TimelineDao {
+interface TimelineDao : BaseDao<Tweet> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(tweet: Tweet)
+    @Query("SELECT * FROM tweets ORDER BY time DESC LIMIT 1")
+    override fun get(): LiveData<Tweet>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg tweet: Tweet)
 
-    @Delete
-    fun delete(vararg tweet: Tweet)
-
     @Query("DELETE FROM tweets")
-    fun deleteAll()
+    override fun deleteAll()
 
     @Update
     fun setRemoved(tweet: Tweet)

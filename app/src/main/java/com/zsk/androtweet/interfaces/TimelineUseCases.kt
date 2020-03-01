@@ -2,10 +2,7 @@ package com.zsk.androtweet.interfaces
 
 import com.zsk.androtweet.models.Resource
 import com.zsk.androtweet.models.Tweet
-
-interface UseCase<T : Repository<*>> {
-    val repository: T
-}
+import com.zsk.androtweet.usecases.base.UseCase
 
 interface GetTweetsUseCases : UseCase<TimelineRepository> {
     operator fun invoke(): Resource<List<Tweet>>
