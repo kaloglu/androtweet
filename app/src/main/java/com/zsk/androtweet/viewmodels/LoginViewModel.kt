@@ -3,12 +3,15 @@ package com.zsk.androtweet.viewmodels
 import androidx.databinding.Bindable
 import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
 import com.kaloglu.library.ui.viewmodel.databinding.bindable
+import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.repositories.UserRepository
 import com.zsk.androtweet.states.LoginState
 import com.zsk.androtweet.usecases.GetUserUseCases
 
-class LoginViewModel(val repository: UserRepository = UserRepository()) : BindableViewModel<LoginState>() {
+class LoginViewModel(application: AndroTweetApp) : BindableViewModel<LoginState>(application) {
+
+    val repository: UserRepository = UserRepository()
 
     @get:Bindable
     var user by bindable(User())
@@ -19,7 +22,6 @@ class LoginViewModel(val repository: UserRepository = UserRepository()) : Bindab
 
     override fun onState(state: LoginState) {
         when (state) {
-            null -> return
             is LoginState.Init -> onInit()
             is LoginState.Authenticated -> onAuthenticated(state.data)
         }
@@ -30,9 +32,7 @@ class LoginViewModel(val repository: UserRepository = UserRepository()) : Bindab
     }
 
     private fun onInit() {
-        GetUserUseCases(repository)().observeForever {
-            if (it != null) postState(LoginState.Authenticated(it))
-        }
+        GetUserUseCases(repository, this::postState)
     }
 
 }

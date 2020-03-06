@@ -3,11 +3,11 @@ package com.zsk.androtweet.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zsk.androtweet.models.Resource
-import com.zsk.androtweet.models.Tweet
+import com.kaloglu.library.ui.utils.Resource
 import com.zsk.androtweet.interfaces.GetTweetsUseCases
 import com.zsk.androtweet.interfaces.InsertTweetsUseCases
 import com.zsk.androtweet.interfaces.RemoveTweetsUseCases
+import com.zsk.androtweet.models.Tweet
 
 class TimelineViewModel(
         private val getTweetsUseCases: GetTweetsUseCases,

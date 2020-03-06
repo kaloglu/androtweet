@@ -1,11 +1,21 @@
 package com.zsk.androtweet.usecases
 
+import androidx.lifecycle.Transformations
+import com.kaloglu.library.ui.utils.Resource
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.repositories.UserRepository
+import com.zsk.androtweet.states.LoginState
 import com.zsk.androtweet.usecases.base.UseCase
 
-class GetUserUseCases(override val repository: UserRepository) : UseCase<UserRepository> {
-    operator fun invoke() = repository.get()
+class GetUserUseCases(override val repository: UserRepository, private val postState: (LoginState) -> Unit) : UseCase<UserRepository> {
+    operator fun invoke() {
+        Transformations.map(repository.get()) {
+            when (it) {
+                is Resource.Success -> postState(LoginState.Authenticated(it.body))
+                else -> postState(LoginState.UnAuthenticated())
+            }
+        }
+    }
 }
 
 class InsertUserUseCases(override val repository: UserRepository) : UseCase<UserRepository> {

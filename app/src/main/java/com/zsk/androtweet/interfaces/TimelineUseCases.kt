@@ -1,6 +1,6 @@
 package com.zsk.androtweet.interfaces
 
-import com.zsk.androtweet.models.Resource
+import com.kaloglu.library.ui.utils.Resource
 import com.zsk.androtweet.models.Tweet
 import com.zsk.androtweet.usecases.base.UseCase
 

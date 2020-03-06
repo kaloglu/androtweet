@@ -2,8 +2,8 @@ package com.zsk.androtweet.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kaloglu.library.ui.utils.Resource
 import com.zsk.androtweet.interfaces.TimelineRepository
-import com.zsk.androtweet.models.Resource
 import com.zsk.androtweet.models.Tweet
 
 class TimelineRepositoryImpl() : TimelineRepository {
@@ -27,7 +27,7 @@ class TimelineRepositoryImpl() : TimelineRepository {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun get(): LiveData<Tweet> {
+    override fun get(): LiveData<Resource<Tweet>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

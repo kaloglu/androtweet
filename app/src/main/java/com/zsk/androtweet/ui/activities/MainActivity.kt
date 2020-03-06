@@ -4,16 +4,13 @@ import android.content.Intent
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.kaloglu.library.ui.BaseActivity
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.zsk.androtweet.R
+import com.zsk.androtweet.ui.activities.base.ATBaseActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.main_activity.*
 
-class MainActivity : BaseActivity(R.layout.main_activity) {
-
-    private val activeFragment by lazy { supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.primaryNavigationFragment }
-    private val navController by lazy { findNavController(R.id.nav_host_fragment) }
+class MainActivity : ATBaseActivity(R.layout.main_activity) {
 
     private val appBarConfiguration by lazy {
         AppBarConfiguration(
