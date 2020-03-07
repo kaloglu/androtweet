@@ -1,46 +1,25 @@
 package com.zsk.androtweet.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.liveData
 import com.kaloglu.library.ui.interfaces.Repository
 import com.kaloglu.library.ui.utils.Resource
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
-import com.zsk.androtweet.simpletasks.SimpleDelete
-import com.zsk.androtweet.simpletasks.SimpleDeleteAll
-import com.zsk.androtweet.simpletasks.SimpleInsert
-import com.zsk.androtweet.simpletasks.SimpleUpdate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class UserRepository private constructor() : Repository<User> {
 
     private val userDao by lazy { AndroTweetApp.database.userDao() }
 
-    override val result: MutableLiveData<Resource<User>> = MutableLiveData()
-
-    override fun insert(entity: User) {
-        SimpleInsert(this, userDao).execute(entity)
-    }
-
-    override fun delete(entity: User) {
-        SimpleDelete(this, userDao).execute(entity)
-    }
-
-    override fun update(entity: User) {
-        SimpleUpdate(this, userDao).execute(entity)
-    }
-
-    override fun get(): LiveData<Resource<User>> = Transformations.map(userDao.get()) {
-        Resource.Success(it)
-    }
-
-    fun get2(): LiveData<User> = userDao.get()
-//        SimpleGet(this, userDao).execute()
-//        return result
-
-    fun clean() {
-        SimpleDeleteAll(this, userDao).execute()
-    }
+    suspend fun clean() = userDao.deleteAll()
 
     companion object {
         @Volatile
@@ -54,6 +33,29 @@ class UserRepository private constructor() : Repository<User> {
             }
             return INSTANCE!!
         }
+    }
+
+    override val data: LiveData<List<User>> = liveData { }
+
+    fun get() = userDao.get()
+            .flowOn(Dispatchers.Default)
+            .conflate()
+            .map {
+                Resource.Success(it)
+            }
+
+    fun getAll() = userDao.getAll()
+
+    override suspend fun delete(entity: User) {
+        userDao.delete(entity)
+    }
+
+    override suspend fun insert(entity: User) {
+        userDao.insert(entity)
+    }
+
+    override suspend fun update(entity: User) {
+        userDao.update(entity)
     }
 
 }

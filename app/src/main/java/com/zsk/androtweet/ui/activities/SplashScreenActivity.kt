@@ -4,7 +4,11 @@ import android.content.Intent
 import android.os.Handler
 import com.kaloglu.library.ui.BaseActivity
 import com.zsk.androtweet.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
     private var splashHandler = Handler()
 
@@ -12,6 +16,7 @@ class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
         startActivityAfterDelay(3000)
     }
 
+    @Suppress("SameParameterValue")
     private fun startActivityAfterDelay(delay: Long) {
         splashHandler.postDelayed({
             startActivity(Intent(this, MainActivity::class.java))

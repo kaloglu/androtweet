@@ -42,7 +42,8 @@ class Tweet : BaseModel, RecyclerItem {
     //region BaseModel
     override fun <T : BaseModel> equals(obj2: T) = false
 
-    override fun <T : Any> getId() = id as T
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> getID() = id as T
     //endregion
 
     //region Recycler Item

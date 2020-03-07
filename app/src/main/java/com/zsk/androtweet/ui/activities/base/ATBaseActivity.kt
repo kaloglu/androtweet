@@ -4,7 +4,11 @@ import androidx.navigation.findNavController
 import com.kaloglu.library.ui.BaseActivity
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 abstract class ATBaseActivity(resourceLayoutId: Int) : BaseActivity(resourceLayoutId) {
     override val application by lazy { getApplication() as AndroTweetApp }
 

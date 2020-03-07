@@ -9,7 +9,11 @@ import com.zsk.androtweet.R
 import com.zsk.androtweet.ui.activities.base.ATBaseActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class MainActivity : ATBaseActivity(R.layout.main_activity) {
 
     private val appBarConfiguration by lazy {

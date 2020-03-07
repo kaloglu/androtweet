@@ -5,6 +5,7 @@ import androidx.room.Entity
 import com.kaloglu.library.ui.BaseModel
 import com.twitter.sdk.android.core.models.User
 
+@Suppress("CovariantEquals")
 @Entity(tableName = "user", primaryKeys = ["user_id"])
 class User : BaseModel {
     var secret: String? = ""
@@ -99,9 +100,10 @@ class User : BaseModel {
     }
 
     //region BaseModel
-    override fun <T : BaseModel> equals(obj2: T) = getId<Long>() == obj2.getId<Long>()
+    override fun <T : BaseModel> equals(obj2: T) = getID<Long>() == obj2.getID<Long>()
 
-    override fun <T : Any> getId() = id as T
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> getID() = id as T
     //endregion
 
 }
