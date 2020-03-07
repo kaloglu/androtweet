@@ -14,7 +14,7 @@ import com.zsk.androtweet.database.AndroTweetDatabase
  */
 class AndroTweetApp : BaseApplication() {
     override fun onCreate() {
-        instance = this
+        INSTANCE = this
         super.onCreate()
 
         val config = TwitterConfig.Builder(this)
@@ -31,8 +31,10 @@ class AndroTweetApp : BaseApplication() {
     }
 
     companion object {
-        var instance: Application? = null
-            private set
+        @Volatile
+        private var INSTANCE: Application? = null
+        fun getInstance() = INSTANCE!!
+
         @JvmStatic
         var daysAgo = 0
 

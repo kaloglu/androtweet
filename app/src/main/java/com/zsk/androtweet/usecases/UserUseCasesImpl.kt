@@ -19,7 +19,9 @@ class GetUserUseCases(override val repository: UserRepository, private val postS
 }
 
 class InsertUserUseCases(override val repository: UserRepository) : UseCase<UserRepository> {
-    operator fun invoke(entity: User) = repository.insert(entity)
+    operator fun invoke(entity: User) {
+        repository.insert(entity)
+    }
 }
 
 class RemoveUserUseCases(override val repository: UserRepository) : UseCase<UserRepository> {
@@ -31,5 +33,7 @@ class UpdateUserUseCases(override val repository: UserRepository) : UseCase<User
 }
 
 class CleanUserUseCases(override val repository: UserRepository) : UseCase<UserRepository> {
-    operator fun invoke() = repository.clean()
+    operator fun invoke() {
+        repository.clean()
+    }
 }

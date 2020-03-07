@@ -54,7 +54,7 @@ class User : BaseModel {
     var withheldScope: String? = null
 
     constructor()
-    constructor(data: User) {
+    constructor(data: User, token: String? = "", secret: String? = "") {
         id = data.id
         idStr = data.idStr
         name = data.name
@@ -94,6 +94,8 @@ class User : BaseModel {
         utcOffset = data.utcOffset
         verified = data.verified
         withheldScope = data.withheldScope
+        this.token = token
+        this.secret = secret
     }
 
     //region BaseModel

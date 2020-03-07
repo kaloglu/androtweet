@@ -39,7 +39,7 @@ class Main : Activity() {
         Commons.isLogon(this)
         initAds()
         super.onCreate(savedInstanceState)
-        search = Search.instance
+        search = Search.INSTANCE
         init()
         initListeners()
         Commons.refreshTweetList(this, tweetList_on_home)

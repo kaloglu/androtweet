@@ -9,7 +9,7 @@ class Search {
 
     companion object {
         @JvmStatic
-        var instance = Search()
+        var INSTANCE = Search()
 
     }
 }
