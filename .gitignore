@@ -35,3 +35,7 @@ app/.DS_Store
 app/schemas/
 
 .DS_Store
+
+settings.gradle
+/ktx
+/ui
