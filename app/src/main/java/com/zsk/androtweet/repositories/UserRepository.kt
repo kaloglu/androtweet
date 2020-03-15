@@ -3,7 +3,6 @@ package com.zsk.androtweet.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.kaloglu.library.ui.interfaces.Repository
-import com.kaloglu.library.ui.utils.Resource
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +10,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -40,9 +38,6 @@ class UserRepository private constructor() : Repository<User> {
     fun get() = userDao.get()
             .flowOn(Dispatchers.Default)
             .conflate()
-            .map {
-                Resource.Success(it)
-            }
 
     fun getAll() = userDao.getAll()
 

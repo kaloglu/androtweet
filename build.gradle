@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        librariesVersion = '8f99bba1'
+        librariesVersion = '30efca6f'
         kotlin_version = '1.3.70'
         constraintLayoutVersion = '1.1.3'
         recyclerViewVersion = '1.1.0'

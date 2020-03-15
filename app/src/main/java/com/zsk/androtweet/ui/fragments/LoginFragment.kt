@@ -16,7 +16,8 @@ import com.zsk.androtweet.models.User
 import com.zsk.androtweet.states.LoginState
 import com.zsk.androtweet.twittercallback.TwitterSessionCallback
 import com.zsk.androtweet.ui.fragments.base.ATBaseFragment
-import com.zsk.androtweet.usecases.GetUserUseCase
+import com.zsk.androtweet.usecases.AddUserUseCase
+import com.zsk.androtweet.usecases.GetUserFlowUseCase
 import com.zsk.androtweet.viewmodels.LoginViewModel
 import com.zsk.androtweet.viewmodels.LoginViewModelFactory
 import kotlinx.android.synthetic.main.login_fragment.*
@@ -28,7 +29,7 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
 class LoginFragment : ATBaseFragment<LoginFragmentBinding, LoginViewModel>(R.layout.login_fragment) {
-    override val viewModel: LoginViewModel by activityViewModels { LoginViewModelFactory(GetUserUseCase()) }
+    override val viewModel: LoginViewModel by activityViewModels { LoginViewModelFactory() }
 
     private val loginCallback = object : LoginCallback {
         override fun login(user: User) {
@@ -56,7 +57,7 @@ class LoginFragment : ATBaseFragment<LoginFragmentBinding, LoginViewModel>(R.lay
     }
 
     override fun LoginViewModel.observeViewModel() {
-        state.observe(viewLifecycleOwner, Observer {
+        state2.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is LoginState.Authenticated -> {
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTweetListFragment())
