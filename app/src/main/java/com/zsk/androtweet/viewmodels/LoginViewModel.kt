@@ -1,10 +1,9 @@
 package com.zsk.androtweet.viewmodels
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.viewModelScope
+import com.kaloglu.library.ui.models.ErrorModel
 import com.kaloglu.library.ui.utils.Resource
 import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
 import com.kaloglu.library.ui.viewmodel.databinding.bindable
@@ -12,58 +11,65 @@ import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.states.LoginState
 import com.zsk.androtweet.usecases.AddUserUseCase
-import com.zsk.androtweet.usecases.GetUserFlowUseCase
-import kotlinx.coroutines.launch
+import com.zsk.androtweet.usecases.ClearUserUseCase
+import com.zsk.androtweet.usecases.GetUserLiveDataUseCase
 
 
-class LoginViewModel constructor(private val getUser: GetUserFlowUseCase, private val addUser: AddUserUseCase)
-    : BindableViewModel<User, LoginState>(AndroTweetApp.getInstance()) {
+class LoginViewModel(
+        private val getUser: GetUserLiveDataUseCase,
+        private val addUser: AddUserUseCase,
+        private val clearUser: ClearUserUseCase
+) : BindableViewModel<User, LoginState>(AndroTweetApp.getInstance()) {
 
     @get:Bindable
     var user by bindable(User())
 
+    init {
+        onAttachViewModel()
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     override fun onAttachViewModel() {
+
         super.onAttachViewModel()
-        getUser()
+
         postState(LoginState.Init)
     }
 
-    override fun onDataLoading(loading: Resource.Loading<User>) {
-        TODO("Not yet implemented")
-    }
+    override fun onDataSuccess(success: Resource.Success<User>) = postState(LoginState.Authenticated(success.data))
+
+    override fun onDataFailure(failure: Resource.Failure<User>) = postState(LoginState.UnAuthenticated)
 
     override fun onInitState() {
-        Log.e("LoginViewModel", "INIT")
-    }
-
-    override fun onDataFailure(failure: Resource.Failure<User>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onDataSuccess(success: Resource.Success<User>) {
-        onState(LoginState.Authenticated(success.data))
+        stateMediatorLiveData
+                .addSource(getUser()) {
+                    handleResult(
+                            when (it) {
+                                null -> Resource.Failure(ErrorModel("401", "Login Needed!"))
+                                else -> Resource.Success(it)
+                            }
+                    )
+                }
     }
 
     override fun onUiState(state: LoginState) {
         super.onUiState(state)
         when (state) {
             is LoginState.Authenticated -> onAuthenticated(state.data)
+            is LoginState.UnAuthenticated -> onUnAuthenticated()
         }
     }
 
-    fun login(user: User) {
-        Log.d("LoginViewModel", user.name ?: " login : NULL")
-        viewModelScope.launch {
-            addUser.invoke(user)
-        }
-    }
+    fun login(user: User) = addUser(user)
 
-    fun logout() {
-        Log.d("LoginViewModel", "logout")
+    fun logout() = clearUser()
+
+    private fun onUnAuthenticated() {
+        user = User()
     }
 
     private fun onAuthenticated(data: User) {
         user = data
     }
+
 }

@@ -1,7 +1,6 @@
 package com.zsk.androtweet.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.room.*
 import com.zsk.androtweet.models.User
 
@@ -18,9 +17,6 @@ interface UserDao {
 
     @Query("SELECT * FROM user LIMIT 1")
     fun get(): LiveData<User>
-
-    fun getDistinctUntilChanged(name: String) =
-            get().distinctUntilChanged()
 
     @Query("SELECT * FROM user")
     fun getAll(): List<User>

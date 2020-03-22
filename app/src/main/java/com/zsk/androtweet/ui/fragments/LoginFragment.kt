@@ -49,7 +49,8 @@ class LoginFragment : ATBaseFragment<LoginModel, LoginFragmentBinding, LoginView
     }
 
     override fun LoginViewModel.observeViewModel() {
-        stateLiveData.observe(viewLifecycleOwner, Observer {
+
+        stateMediatorLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is LoginState.Authenticated -> {
                     Toast.makeText(context, "Authenticated : livedata ok", Toast.LENGTH_SHORT).show()
@@ -57,12 +58,5 @@ class LoginFragment : ATBaseFragment<LoginModel, LoginFragmentBinding, LoginView
                 } // navigate to tweetList
             }
         })
-/*stateChannel.asFlow().asLiveData().observe(viewLifecycleOwner,Observer<LoginState> {
-            when (it) {
-                is LoginState.Authenticated -> {
-                    Toast.makeText(context,"Authenticated: channel ok",Toast.LENGTH_SHORT).show()
-                } // navigate to tweetList
-            }
-        })*/
     }
 }

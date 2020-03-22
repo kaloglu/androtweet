@@ -1,13 +1,11 @@
 package com.zsk.androtweet.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.liveData
 import com.kaloglu.library.ui.interfaces.Repository
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.flowOn
 
 class UserRepository private constructor() : Repository<User> {
     private val userDao by lazy { AndroTweetApp.database.userDao() }
@@ -28,6 +26,7 @@ class UserRepository private constructor() : Repository<User> {
 
     override val data: LiveData<List<User>> = liveData { }
     fun get() = userDao.get()
+    fun getDUC() = get().distinctUntilChanged()
 
     fun getAll() = userDao.getAll()
 
