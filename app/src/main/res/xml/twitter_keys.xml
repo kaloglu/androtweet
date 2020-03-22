@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <string android:name="com.twitter.sdk.android.CONSUMER_KEY">d2XSeF6fXPtVClaG3DALLjMT4</string>
-    <string android:name="com.twitter.sdk.android.CONSUMER_SECRET">
-        e9UJ6mQuLK0pkFl4OTghjjHp1NR6PqkbdqwIiwgEIR9zEXTbQU
-    </string>
-</resources>

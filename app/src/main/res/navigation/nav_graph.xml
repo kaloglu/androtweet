@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
-
     <fragment
         android:id="@+id/tweetListFragment"
         android:name="com.zsk.androtweet.ui.fragments.TweetListFragment"
@@ -14,11 +13,14 @@
             android:id="@+id/action_tweetListFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.zsk.androtweet.ui.fragments.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" />
-
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_loginFragment_to_tweetListFragment"
+            app:destination="@id/tweetListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

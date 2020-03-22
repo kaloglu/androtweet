@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
@@ -8,7 +7,6 @@
     android:background="@drawable/rounded_corner_popup_white"
     android:orientation="vertical"
     android:padding="10dp">
-
 
     <TextView
         android:id="@+id/dialog_title"
@@ -18,15 +16,15 @@
         android:text="Title"
         android:textColor="@color/text_light_grey"
         android:textSize="22sp"
-        android:visibility="visible"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:visibility="visible" />
 
     <View
         android:id="@+id/CampaignSeperator"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#c0c0c0"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/dialog_description"
@@ -37,8 +35,7 @@
         android:text="Description"
         android:textColor="@color/text_light_grey"
         android:textSize="14sp"
-        android:textStyle="normal"/>
-
+        android:textStyle="normal" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,8 +54,8 @@
             android:gravity="center"
             android:text="@string/close"
             android:textColor="@color/white"
-            android:visibility="visible"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/dialog_actionButton"
@@ -70,9 +67,8 @@
             android:text="@string/accept"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:visibility="visible"
-            android:textStyle="bold"/>
-
+            android:textStyle="bold"
+            android:visibility="visible" />
     </LinearLayout>
 
     <TextView
@@ -83,7 +79,5 @@
         android:layout_marginTop="15dp"
         android:text="@string/campaign_terms_and_conditions"
         android:textSize="8sp"
-        android:visibility="visible"/>
-
-
+        android:visibility="visible" />
 </LinearLayout>

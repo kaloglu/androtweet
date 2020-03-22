@@ -7,11 +7,11 @@ import com.zsk.androtweet.R
 
 class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
     private var splashHandler = Handler()
-
     override fun initUserInterface() {
         startActivityAfterDelay(3000)
     }
 
+    @Suppress("SameParameterValue")
     private fun startActivityAfterDelay(delay: Long) {
         splashHandler.postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
@@ -22,5 +22,4 @@ class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
     companion object {
         private const val DURATION = 3000
     }
-
 }

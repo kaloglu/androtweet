@@ -1,9 +1,8 @@
 <resources>
-
     <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
+            Base application theme, dependent on API level. This theme is replaced
+            by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!--
             Theme customizations available in newer API levels can go in
@@ -11,7 +10,6 @@
             backward-compatibility can go here.
         -->
     </style>
-
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- Customize your theme here. -->
@@ -28,7 +26,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
     </style>
-
 </resources>

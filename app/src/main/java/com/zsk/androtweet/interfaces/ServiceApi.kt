@@ -1,5 +1,3 @@
 package com.zsk.androtweet.interfaces
 
-interface ServiceApi {
-
-}
+interface ServiceApi
