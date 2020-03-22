@@ -27,7 +27,6 @@ class TweetViewHolder(itemView: View) : BaseViewHolder<Tweet>(itemView) {
             }
         }
     }
-
 }
 
 fun Context.openBrowser(packageName: String?, url: String, onError: (() -> Unit)? = null) {

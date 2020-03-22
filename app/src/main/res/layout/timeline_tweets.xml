@@ -46,5 +46,4 @@
         app:layout_constraintStart_toEndOf="@+id/leftSign"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="tweet_text" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

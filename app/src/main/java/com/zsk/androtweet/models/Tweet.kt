@@ -10,25 +10,30 @@ import twitter4j.Status
 class Tweet : BaseModel, RecyclerItem {
     @ColumnInfo(name = "id")
     var id: Long = 0
+
     @ColumnInfo(name = "reply_id")
     var replyId: Long = 0
+
     @ColumnInfo(name = "time")
     var time: Long = 0
+
     @ColumnInfo(name = "text")
     var tweetText: String? = null
+
     @ColumnInfo(name = "fav_count")
     var favcount = 0
+
     @ColumnInfo(name = "rt_count")
     var rtCount = 0
+
     @ColumnInfo(name = "is_removed")
     var isRemoved = false
+
     @ColumnInfo(name = "username")
     var username = ""
-
     var isSelected = false
 
     constructor()
-
     constructor(status: Status) {
         id = status.id
         tweetText = status.text
@@ -44,11 +49,9 @@ class Tweet : BaseModel, RecyclerItem {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getID() = id as T
+
     //endregion
-
-    //region Recycler Item
-
+//region Recycler Item
     override var layoutId: Int = -1
-
-    //endregion
+//endregion
 }

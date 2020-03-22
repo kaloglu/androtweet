@@ -10,6 +10,5 @@ class Search {
     companion object {
         @JvmStatic
         var INSTANCE = Search()
-
     }
 }

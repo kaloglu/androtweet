@@ -1,6 +1,4 @@
 package com.zsk.androtweet.adapters
-
-
 //
 // Created by  on 2020-02-02.
 //

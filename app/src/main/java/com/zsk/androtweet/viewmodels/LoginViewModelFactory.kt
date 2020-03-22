@@ -1,39 +1,29 @@
 package com.zsk.androtweet.viewmodels
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import com.kaloglu.library.ui.viewmodel.BaseViewModel
-import com.kaloglu.library.ui.viewmodel.RepositoryViewModelFactory
+import com.kaloglu.library.ui.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.repositories.UserRepository
 import com.zsk.androtweet.usecases.AddUserUseCase
 import com.zsk.androtweet.usecases.GetUserFlowUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 
-@ExperimentalCoroutinesApi
-@ObsoleteCoroutinesApi
 class LoginViewModelFactory constructor(
+        lifecycle: Lifecycle,
         private val getUser: GetUserFlowUseCase = GetUserFlowUseCase(),
         private val addUser: AddUserUseCase = AddUserUseCase()
-) : RepositoryViewModelFactory<AndroTweetApp>(AndroTweetApp.getInstance(), UserRepository.getInstance()) {
+) : BaseViewModelFactory<AndroTweetApp>(AndroTweetApp.getInstance(), lifecycle) {
 
-    @FlowPreview
+
     override fun <VM : ViewModel?> create(modelClass: Class<VM>) = when {
-        BaseViewModel::class.java.isAssignableFrom(modelClass) -> {
-            modelClass
-                    .getConstructor(
-                            GetUserFlowUseCase::class.java,
-                            AddUserUseCase::class.java
-                    )
-                    .newInstance(getUser, addUser)
-                    .apply {
-                        this as BaseViewModel<*>
-                        this.onInit()
-                    }
+        LoginViewModel::class.java.isAssignableFrom(modelClass) -> {
+            registerLifecycle(lifecycle)
+            LoginViewModel(getUser, addUser) as VM
         }
-        else ->
-            super.create(modelClass)
+        else -> super.create(modelClass)
     }
 
+    private fun registerLifecycle(lifecycle: Lifecycle) {
+        getUser.registerLifecycle(lifecycle)
+        addUser.registerLifecycle(lifecycle)
+    }
 }

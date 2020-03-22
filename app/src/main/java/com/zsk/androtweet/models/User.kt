@@ -13,10 +13,8 @@ class User : BaseModel {
 
     @ColumnInfo(name = "user_id")
     var id: Long = 0
-
     var idStr: String? = null
     var name: String? = null
-
     var createdAt: String? = null
     var description: String? = null
     var email: String? = null
@@ -105,5 +103,4 @@ class User : BaseModel {
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getID() = id as T
     //endregion
-
 }

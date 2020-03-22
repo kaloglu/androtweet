@@ -5,7 +5,6 @@ import com.zsk.androtweet.interfaces.twittercallback.LoginCallback
 import com.zsk.androtweet.models.User
 
 class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callback<TwitterSession>() {
-
     override fun failure(exception: TwitterException) {
         loginCallback.failure(exception)
     }
@@ -18,7 +17,6 @@ class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callbac
                 .enqueue(object : Callback<com.twitter.sdk.android.core.models.User>() {
                     override fun success(result: Result<com.twitter.sdk.android.core.models.User>?) {
                         result?.data?.let {
-
                             loginCallback.login(User(it, authToken.token, authToken.secret))
                         }
                     }
@@ -26,9 +24,6 @@ class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callbac
                     override fun failure(exception: TwitterException?) {
                         loginCallback.failure(exception)
                     }
-
                 })
-
     }
 }
-

@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
-
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -12,7 +11,6 @@ android {
         targetSdkVersion 29
         versionCode 31
         versionName "3.1.0"
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation":
@@ -28,18 +26,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
-
         debug {
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
@@ -50,54 +45,41 @@ android {
 dependencies {
     implementation files('libs/twitter4j-core-4.0.3.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
     implementation 'com.google.android.gms:play-services-ads:19.0.0'
 
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-
-    // Room components
+// Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
-
+    implementation "androidx.room:room-ktx:$roomVersion"
 // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
-
 // Coroutines
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
-
+//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 // UI
     implementation "com.google.android.material:material:$rootProject.materialVersion"
-
-    implementation "androidx.fragment:fragment:1.2.2"
-
+    implementation "androidx.fragment:fragment:1.2.3"
+    implementation "androidx.fragment:fragment-ktx:1.2.3"
     androidTestImplementation "androidx.navigation:navigation-testing:$navigationVersion"
-
     implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
     implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
     implementation 'com.twitter.sdk.android:tweet-composer:3.1.1'
     implementation 'com.twitter.sdk.android:twitter-mopub:3.1.1'
-
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
     api "com.github.kaloglu.libraries:ktx:${librariesVersion}"
     api "com.github.kaloglu.libraries:ui:${librariesVersion}"
-
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-
-    // ktx
+// ktx
     implementation "androidx.collection:collection-ktx:1.1.0"
-    implementation "androidx.fragment:fragment-ktx:1.2.2"
 
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
@@ -107,7 +89,5 @@ dependencies {
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-
 
 }

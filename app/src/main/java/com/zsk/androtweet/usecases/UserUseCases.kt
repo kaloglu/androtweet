@@ -1,31 +1,35 @@
 package com.zsk.androtweet.usecases
 
+import androidx.lifecycle.Lifecycle
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.repositories.UserRepository
-import com.zsk.androtweet.usecases.base.BaseFlowUseCaseNoParams
+import com.zsk.androtweet.usecases.base.BaseLiveDataUseCaseNoParam
 import com.zsk.androtweet.usecases.base.BaseUseCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 
-@FlowPreview
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
 class GetUserFlowUseCase(
         private val repository: UserRepository = UserRepository.getInstance()
-) : BaseFlowUseCaseNoParams<User>() {
-
-    override suspend fun run(): Flow<User> = repository.get()
+) : BaseLiveDataUseCaseNoParam<User>() {
+    override fun execute() = repository.get()
+    override fun registerLifecycle(lifecycle: Lifecycle) {
+        super.registerLifecycle(lifecycle)
+        repository.registerLifecycle(lifecycle)
+    }
 }
 
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
 class AddUserUseCase(
         private val repository: UserRepository = UserRepository.getInstance()
-) : BaseUseCase<User, User>() {
+) : BaseUseCase<Boolean, User>() {
+    override fun execute(param: User): Boolean {
+        return try {
+            repository.insert(param)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 
-    override suspend fun run(params: User) {
-        repository.insert(params)
+    override fun registerLifecycle(lifecycle: Lifecycle) {
+        super.registerLifecycle(lifecycle)
+        repository.registerLifecycle(lifecycle)
     }
 }

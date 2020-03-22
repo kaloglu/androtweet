@@ -2,7 +2,9 @@ package com.zsk.androtweet.viewmodels
 
 import android.util.Log
 import androidx.databinding.Bindable
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.ui.utils.Resource
 import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
 import com.kaloglu.library.ui.viewmodel.databinding.bindable
@@ -11,67 +13,50 @@ import com.zsk.androtweet.models.User
 import com.zsk.androtweet.states.LoginState
 import com.zsk.androtweet.usecases.AddUserUseCase
 import com.zsk.androtweet.usecases.GetUserFlowUseCase
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.launch
 
-@FlowPreview
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
+
 class LoginViewModel constructor(private val getUser: GetUserFlowUseCase, private val addUser: AddUserUseCase)
-    : BindableViewModel<User,LoginState>(AndroTweetApp.getInstance()), CoroutineScope {
-
-    val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    val _state2 = MutableLiveData<LoginState>()
-
-    val state2: LiveData<LoginState> = _state2
+    : BindableViewModel<User, LoginState>(AndroTweetApp.getInstance()) {
 
     @get:Bindable
-    var user by bindable(User()) { old, new ->
-        if (!old.equals(new))
-            addUser(new)
-    }
+    var user by bindable(User())
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     override fun onAttachViewModel() {
         super.onAttachViewModel()
-
-        _state2.observeForever {
-            onState(it)
-        }
-
-        _state2.postValue(LoginState.Init)
+        getUser()
         postState(LoginState.Init)
+    }
 
+    override fun onDataLoading(loading: Resource.Loading<User>) {
+        TODO("Not yet implemented")
     }
 
     override fun onInitState() {
         Log.e("LoginViewModel", "INIT")
     }
 
-    override fun onDataFailure() {
+    override fun onDataFailure(failure: Resource.Failure<User>) {
         TODO("Not yet implemented")
     }
 
-    override fun onDataSuccess() {
-            onState(LoginState.Authenticated(data))
+    override fun onDataSuccess(success: Resource.Success<User>) {
+        onState(LoginState.Authenticated(success.data))
     }
 
-    override fun onState(state: LoginState) {
-        super.onState(state)
+    override fun onUiState(state: LoginState) {
+        super.onUiState(state)
         when (state) {
-            is LoginState.Init -> getUser(viewModelScope, resultChannel)
             is LoginState.Authenticated -> onAuthenticated(state.data)
         }
     }
 
     fun login(user: User) {
         Log.d("LoginViewModel", user.name ?: " login : NULL")
-        postState(LoginState.Authenticated(user))
-        _state2.postValue(LoginState.Authenticated(user))
+        viewModelScope.launch {
+            addUser.invoke(user)
+        }
     }
 
     fun logout() {
@@ -81,14 +66,4 @@ class LoginViewModel constructor(private val getUser: GetUserFlowUseCase, privat
     private fun onAuthenticated(data: User) {
         user = data
     }
-
-    override val eventChannel: ConflatedBroadcastChannel<LoginState>
-        get() = TODO("Not yet implemented")
-    override val resultChannel: ConflatedBroadcastChannel<Resource<User>>
-        get() = TODO("Not yet implemented")
-
-    override fun Resource.Loading.onDataLoading() {
-        TODO("Not yet implemented")
-    }
-
 }
