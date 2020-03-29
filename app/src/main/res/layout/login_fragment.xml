@@ -4,12 +4,13 @@
     <data>
 
         <variable
-            name="loginViewModel"
+            name="viewModel"
             type="com.zsk.androtweet.viewmodels.LoginViewModel" />
 
         <variable
-            name="loginCallBack"
+            name="callback"
             type="com.zsk.androtweet.twittercallback.TwitterSessionCallback" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,9 +24,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{_ ->loginViewModel.logout()}"
-            android:text="@{loginViewModel.user.name + ` -> click to logout`}"
-            android:visibility="@{(loginViewModel.user.name != null)}"
+            android:onClick="@{_->viewModel.logout()}"
+            android:text="@{viewModel.user.name + ` -> click to logout`}"
+            android:visibility="@{(viewModel.user.name != null)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,8 +36,8 @@
             android:id="@+id/twitterLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{(loginViewModel.user.name == null)}"
-            app:callback="@{loginCallBack}"
+            android:visibility="@{(viewModel.user.name == null)}"
+            app:callback="@{callback}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,15 +1,13 @@
 package com.zsk.androtweet.viewmodels
 
+import android.util.Log
 import androidx.databinding.Bindable
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
-import com.kaloglu.library.ui.models.ErrorModel
-import com.kaloglu.library.ui.utils.Resource
 import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
 import com.kaloglu.library.ui.viewmodel.databinding.bindable
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
-import com.zsk.androtweet.states.LoginState
+import com.zsk.androtweet.mvi.LoginEvent
+import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.usecases.AddUserUseCase
 import com.zsk.androtweet.usecases.ClearUserUseCase
 import com.zsk.androtweet.usecases.GetUserLiveDataUseCase
@@ -19,57 +17,41 @@ class LoginViewModel(
         private val getUser: GetUserLiveDataUseCase,
         private val addUser: AddUserUseCase,
         private val clearUser: ClearUserUseCase
-) : BindableViewModel<User, LoginState>(AndroTweetApp.getInstance()) {
+) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.getInstance()) {
+    private val dummyUser = User()
 
     @get:Bindable
     var user by bindable(User())
 
     init {
-        onAttachViewModel()
+        Log.i("LoginViewModel", "Init")
+        onInit()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    override fun onAttachViewModel() {
-
-        super.onAttachViewModel()
-
-        postState(LoginState.Init)
-    }
-
-    override fun onDataSuccess(success: Resource.Success<User>) = postState(LoginState.Authenticated(success.data))
-
-    override fun onDataFailure(failure: Resource.Failure<User>) = postState(LoginState.UnAuthenticated)
-
-    override fun onInitState() {
-        stateMediatorLiveData
-                .addSource(getUser()) {
-                    handleResult(
-                            when (it) {
-                                null -> Resource.Failure(ErrorModel("401", "Login Needed!"))
-                                else -> Resource.Success(it)
-                            }
-                    )
-                }
-    }
-
-    override fun onUiState(state: LoginState) {
-        super.onUiState(state)
-        when (state) {
-            is LoginState.Authenticated -> onAuthenticated(state.data)
-            is LoginState.UnAuthenticated -> onUnAuthenticated()
+    override fun onInit() {
+        Log.i("LoginViewModel", "onInit")
+        getUser().mapToEvent {
+            user = it ?: dummyUser
+            when (user) {
+                dummyUser -> LoginEvent.LoggedOut
+                else -> LoginEvent.LoggedIn
+            }
         }
     }
 
-    fun login(user: User) = addUser(user)
+    override fun onEvent(event: LoginEvent) {
+        super.onEvent(event)
+        when (event) {
+            is LoginEvent.LogIn -> login(event.data)
+            is LoginEvent.LogOut -> logout()
+            is LoginEvent.LoggedIn -> postState(LoginState.Authenticated)
+            is LoginEvent.LoggedOut -> postState(LoginState.UnAuthenticated)
+        }
+    }
+
+    private fun login(user: User) = addUser(user)
 
     fun logout() = clearUser()
 
-    private fun onUnAuthenticated() {
-        user = User()
-    }
-
-    private fun onAuthenticated(data: User) {
-        user = data
-    }
-
 }
+
