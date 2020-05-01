@@ -4,23 +4,24 @@ import android.os.AsyncTask
 import androidx.lifecycle.Lifecycle
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.repositories.UserRepository
-import com.zsk.androtweet.usecases.base.BaseLiveDataUseCaseNoParam
-import com.zsk.androtweet.usecases.base.BaseUseCase
-import com.zsk.androtweet.usecases.base.BaseUseCaseNoParams
+import com.zsk.androtweet.usecases.base.UseCaseAsLiveDataNoParam
+import com.zsk.androtweet.usecases.base.UseCaseLegacy
+import com.zsk.androtweet.usecases.base.UseCaseLegacyNoParams
 
-class GetUserLiveDataUseCase(
-        private val repository: UserRepository = UserRepository.getInstance()
-) : BaseLiveDataUseCaseNoParam<User>() {
+class GetUserUseCaseAsLiveData(private val repository: UserRepository = UserRepository.getInstance())
+    : UseCaseAsLiveDataNoParam<User>() {
+
     override fun execute() = repository.getDUC()
+
     override fun registerLifecycle(lifecycle: Lifecycle) {
         super.registerLifecycle(lifecycle)
         repository.registerLifecycle(lifecycle)
     }
+
 }
 
-class AddUserUseCase(
-        private val repository: UserRepository = UserRepository.getInstance()
-) : BaseUseCase<Unit, User>() {
+class AddUserUseCaseLegacy(private val repository: UserRepository = UserRepository.getInstance()) : UseCaseLegacy<Unit, User>() {
+
     override fun execute(param: User) {
         InsertAsyncTask(repository).execute(param)
     }
@@ -35,9 +36,8 @@ class AddUserUseCase(
     }
 }
 
-class ClearUserUseCase(
-        private val repository: UserRepository = UserRepository.getInstance()
-) : BaseUseCaseNoParams<Unit>() {
+class ClearUserUseCaseLegacy(private val repository: UserRepository = UserRepository.getInstance()) : UseCaseLegacyNoParams<Unit>() {
+
     override fun execute() {
         DeleteAsyncTask(repository).execute()
     }

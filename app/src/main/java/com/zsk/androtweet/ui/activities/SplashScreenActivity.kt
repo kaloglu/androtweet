@@ -1,13 +1,14 @@
 package com.zsk.androtweet.ui.activities
 
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
 import com.kaloglu.library.ui.BaseActivity
 import com.zsk.androtweet.R
 
 class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
     private var splashHandler = Handler()
-    override fun initUserInterface() {
+    override fun initUserInterface(savedInstanceState: Bundle?) {
         startActivityAfterDelay(3000)
     }
 

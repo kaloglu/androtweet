@@ -1,0 +1,51 @@
+package com.zsk.androtweet.usecases
+
+import androidx.lifecycle.Lifecycle
+import com.twitter.sdk.android.tweetui.TimelineResult
+import com.zsk.androtweet.models.Tweet
+import com.zsk.androtweet.repositories.TweetListRepository
+import com.zsk.androtweet.usecases.base.UseCase
+import com.zsk.androtweet.utils.Constants.isToday
+import com.zsk.androtweet.utils.asRoomModel
+import com.zsk.androtweet.utils.twitter.Resource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.properties.Delegates
+import com.twitter.sdk.android.core.models.Tweet as SdkTweet
+
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
+class GetTweetList(private val repository: TweetListRepository = TweetListRepository.getInstance())
+    : UseCase<List<Tweet>, TimelineResult<SdkTweet>, GetTweetList.Request>() {
+    override var request: Request = Request()
+
+    fun execute(userId: Long) {
+        request.userId = userId
+        return execute()
+    }
+
+    override fun registerLifecycle(lifecycle: Lifecycle) {
+        super.registerLifecycle(lifecycle)
+        repository.registerLifecycle(lifecycle)
+    }
+
+    override suspend fun saveCallResult(result: TimelineResult<SdkTweet>) =
+            repository.insertAll(result.items.asRoomModel(result.timelineCursor))
+
+    override fun createCall() =
+            repository.fetchData<TimelineResult<SdkTweet>>(request.userId, request.count)
+
+    override fun shouldFetch(data: List<Tweet>?) = data.isNullOrEmpty() || data.first().cachedAt?.isToday()?.not() ?: true
+
+    override fun loadFromDb() = repository.getDUC(request.userId, request.count)//.asLiveData()
+
+    fun onEach(action: suspend (Resource<List<Tweet>>) -> Unit) =
+            this.flow.onEach(action).launchIn(coroutineScope)
+
+    data class Request(var count: Int = 10) : UseCase.Request {
+        var userId by Delegates.notNull<Long>()
+    }
+
+}

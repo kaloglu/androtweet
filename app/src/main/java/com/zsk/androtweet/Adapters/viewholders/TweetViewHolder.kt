@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.timeline_tweets.view.*
 class TweetViewHolder(itemView: View) : BaseViewHolder<Tweet>(itemView) {
     @SuppressLint("SetJavaScriptEnabled")
     override fun bindItem(item: Tweet) {
-        with(itemView) {
+        /*with(itemView) {
             tweet.text = item.tweetText
             check_button.show(item.isRemoved)
             check_button.setOnClickListener {
@@ -25,7 +25,7 @@ class TweetViewHolder(itemView: View) : BaseViewHolder<Tweet>(itemView) {
             chkTweet.setOnClickListener {
                 item.isSelected = !item.isSelected
             }
-        }
+        }*/
     }
 }
 

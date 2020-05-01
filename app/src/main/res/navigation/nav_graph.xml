@@ -3,24 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/tweetListFragment">
+
+    <dialog
+        android:id="@+id/loginDialogFragment"
+        android:name="com.zsk.androtweet.ui.fragments.LoginDialogFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_dialog_fragment" />
+
     <fragment
         android:id="@+id/tweetListFragment"
         android:name="com.zsk.androtweet.ui.fragments.TweetListFragment"
         android:label="tweet_list_fragment"
-        tools:layout="@layout/tweet_list_fragment">
-        <action
-            android:id="@+id/action_tweetListFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.zsk.androtweet.ui.fragments.LoginFragment"
-        android:label="login_fragment"
-        tools:layout="@layout/login_fragment">
-        <action
-            android:id="@+id/action_loginFragment_to_tweetListFragment"
-            app:destination="@id/tweetListFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/tweet_list_fragment" />
+
 </navigation>
