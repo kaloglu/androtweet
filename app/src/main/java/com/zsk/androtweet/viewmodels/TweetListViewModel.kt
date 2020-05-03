@@ -30,17 +30,24 @@ class TweetListViewModel(private val getList: GetTweetList)
     override fun onInit() {
         Log.i("TweetsViewModel", "onInit")
         getList.coroutineScope = viewModelScope
-        getList.onEach(this::handleResource)
+        getList.onEach {
+            it.handleResource()
+        }
     }
 
     override fun onEvent(event: TweetListEvent) {
-        postState(TweetListState.Loading)
         super.onEvent(event)
         when (event) {
-            is TweetListEvent.ShowTweetList -> onShowTweetList(event.data)
-            is TweetListEvent.EmptyList -> postState(TweetListState.Empty)
-            is TweetListEvent.FetchRemoteData -> getList.execute(event.userId)
+            is TweetListEvent.GetTweetList -> getList.execute(event.userId)
         }
+    }
+
+    @Suppress("RedundantSuspendModifier", "UNCHECKED_CAST")
+    private suspend fun <T> Resource<T>.handleResource() = when (status) {
+        Status.EMPTY -> postState(TweetListState.Empty)
+        Status.ERROR -> postState(TweetListState.Error(message!!))
+        Status.LOADING -> postState(TweetListState.Loading)
+        Status.SUCCESS -> onShowTweetList(data!! as List<Tweet>)
     }
 
     private fun onShowTweetList(list: List<Tweet>) {
@@ -48,16 +55,5 @@ class TweetListViewModel(private val getList: GetTweetList)
         postState(TweetListState.Success)
     }
 
-    @Suppress("RedundantSuspendModifier")
-    private suspend fun handleResource(resource: Resource<List<Tweet>>) {
-        with(resource) {
-            when (status) {
-                Status.EMPTY -> postState(TweetListState.Empty)
-                Status.SUCCESS -> postEvent(TweetListEvent.ShowTweetList(data!!))
-                Status.ERROR -> postState(TweetListState.Error(message!!))
-                Status.LOADING -> postState(TweetListState.Loading)
-            }
-        }
-    }
 }
 

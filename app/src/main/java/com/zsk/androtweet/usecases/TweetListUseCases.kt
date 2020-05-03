@@ -1,17 +1,18 @@
 package com.zsk.androtweet.usecases
 
 import androidx.lifecycle.Lifecycle
+import com.kaloglu.library.ktx.isToday
 import com.twitter.sdk.android.tweetui.TimelineResult
 import com.zsk.androtweet.models.Tweet
 import com.zsk.androtweet.repositories.TweetListRepository
 import com.zsk.androtweet.usecases.base.UseCase
-import com.zsk.androtweet.utils.Constants.isToday
 import com.zsk.androtweet.utils.asRoomModel
 import com.zsk.androtweet.utils.twitter.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 import kotlin.properties.Delegates
 import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 
@@ -37,7 +38,7 @@ class GetTweetList(private val repository: TweetListRepository = TweetListReposi
     override fun createCall() =
             repository.fetchData<TimelineResult<SdkTweet>>(request.userId, request.count)
 
-    override fun shouldFetch(data: List<Tweet>?) = data.isNullOrEmpty() || data.first().cachedAt?.isToday()?.not() ?: true
+    override fun shouldFetch(data: List<Tweet>) = data.isEmpty() || Date(data.first().cachedAt ?: -1).isToday().not()
 
     override fun loadFromDb() = repository.getDUC(request.userId, request.count)//.asLiveData()
 

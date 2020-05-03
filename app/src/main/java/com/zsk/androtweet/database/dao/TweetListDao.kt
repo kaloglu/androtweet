@@ -2,6 +2,7 @@ package com.zsk.androtweet.database.dao
 
 import androidx.room.*
 import com.zsk.androtweet.models.Tweet
+import com.zsk.androtweet.models.TweetWithUser
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,7 +14,7 @@ interface TweetListDao {
     @Delete
     suspend fun delete(list: List<Tweet>): Int
 
-    @Query("SELECT * FROM tweets WHERE tweet_user_id=:userId LIMIT :count")
+    @Transaction
+    @Query("SELECT * FROM tweets WHERE tweet_user_id=:userId ORDER BY cachedAt desc LIMIT :count ")
     fun get(userId: Long, count: Int): Flow<List<Tweet>>
-
 }

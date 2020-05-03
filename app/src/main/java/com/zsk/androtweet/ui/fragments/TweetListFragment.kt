@@ -29,7 +29,7 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
         loginViewModel.stateLiveData.observe(viewLifecycleOwner, Observer { userState ->
             when (userState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
-                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.FetchRemoteData(userState.user.id))
+                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList(userState.user.id))
             }
         })
     }

@@ -1,8 +1,6 @@
 package com.zsk.androtweet.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.kaloglu.library.ui.BaseModel
 import com.kaloglu.library.ui.RecyclerItem
@@ -16,13 +14,12 @@ import com.twitter.sdk.android.core.models.Tweet as SdkTweet
         foreignKeys = [
             ForeignKey(
                     entity = User::class,
-                    parentColumns = ["user_id"],
-                    childColumns = ["tweet_user_id"],
+                    parentColumns = ["tweet_user_id"],
+                    childColumns = ["user_id"],
                     onDelete = CASCADE
             )
         ]
 )
-
 class Tweet(
         var cachedAt: Long? = null,
         @ColumnInfo(name = "tweet_id")
@@ -39,21 +36,21 @@ class Tweet(
         var createdAt: String? = null,
         var maxPosition: Long = 0,
         var minPosition: Long = 0,
-        var filterLevel: String? = null,
         var inReplyToScreenName: String? = null,
         var inReplyToStatusId: Long = 0,
         var inReplyToStatusIdStr: String? = null,
         var inReplyToUserId: Long = 0,
         var inReplyToUserIdStr: String? = null,
         var lang: String? = null,
-        var possiblySensitive: Boolean = false,
         var quotedStatusIdStr: String? = null,
         var source: String? = null,
-        var truncated: Boolean = false,
-        var withheldCopyright: Boolean = false,
-        var withheldScope: String? = null,
-        var isSelected: Boolean = false
+        @Ignore
+        var isSelected: Boolean = false,
+        @Relation(parentColumn = "tweet_user_id", entityColumn = "user_id")
+        var user: User? = null
 ) : BaseModel, RecyclerItem {
+
+
     constructor(data: SdkTweet, timelineCursor: TimelineCursor?) : this(
             id = data.id,
             idStr = data.idStr,
@@ -66,19 +63,14 @@ class Tweet(
             createdAt = data.createdAt,
             maxPosition = timelineCursor?.maxPosition ?: 0,
             minPosition = timelineCursor?.minPosition ?: 0,
-            filterLevel = data.filterLevel,
             inReplyToScreenName = data.inReplyToScreenName,
             inReplyToStatusId = data.inReplyToStatusId,
             inReplyToStatusIdStr = data.inReplyToStatusIdStr,
             inReplyToUserId = data.inReplyToUserId,
             inReplyToUserIdStr = data.inReplyToUserIdStr,
             lang = data.lang,
-            possiblySensitive = data.possiblySensitive,
             quotedStatusIdStr = data.quotedStatusIdStr,
             source = data.source,
-            truncated = data.truncated,
-            withheldCopyright = data.withheldCopyright,
-            withheldScope = data.withheldScope,
             cachedAt = System.currentTimeMillis()
     )
 

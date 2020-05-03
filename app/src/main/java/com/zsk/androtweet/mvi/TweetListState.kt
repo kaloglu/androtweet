@@ -18,10 +18,7 @@ sealed class TweetListState : State {
 }
 
 sealed class TweetListEvent : Event {
-    data class ShowTweetList(val data: List<Tweet>) : TweetListEvent(), Event.Done
-    object EmptyList : TweetListEvent(), Event.Done
-    object GetTweetList : TweetListEvent(), Event.Custom
-    data class FetchRemoteData(val userId: Long) : TweetListEvent(), Event.Custom
+    data class GetTweetList(val userId: Long) : TweetListEvent(), Event.Custom
     data class ShowError(val message: String) : TweetListEvent(), Event.Custom
     data class ShowLoading(val data: List<Tweet>?) : TweetListEvent(), Event.Custom
 }

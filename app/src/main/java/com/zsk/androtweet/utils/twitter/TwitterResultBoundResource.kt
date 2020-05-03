@@ -51,7 +51,7 @@ abstract class TwitterResultBoundResource<ResultType : Any, RequestType : Any>(p
         }
     }
 
-    protected abstract fun shouldFetch(data: ResultType?): Boolean
+    protected abstract fun shouldFetch(data: ResultType): Boolean
 
     protected abstract fun loadFromDb(): Flow<ResultType>
 

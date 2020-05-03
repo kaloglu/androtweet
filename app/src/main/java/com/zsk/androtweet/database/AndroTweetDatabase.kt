@@ -7,7 +7,7 @@ import com.zsk.androtweet.database.dao.UserDao
 import com.zsk.androtweet.models.Tweet
 import com.zsk.androtweet.models.User
 
-@Database(entities = [User::class, Tweet::class], version = 16)
+@Database(entities = [User::class, Tweet::class], version = 21)
 abstract class AndroTweetDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun tweetListDao(): TweetListDao
