@@ -10,15 +10,7 @@ import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 @Suppress("CovariantEquals")
 @Entity(
         tableName = "tweets",
-        primaryKeys = ["tweet_id"],
-        foreignKeys = [
-            ForeignKey(
-                    entity = User::class,
-                    parentColumns = ["tweet_user_id"],
-                    childColumns = ["user_id"],
-                    onDelete = CASCADE
-            )
-        ]
+        primaryKeys = ["tweet_id"]
 )
 class Tweet(
         var cachedAt: Long? = null,
@@ -45,9 +37,7 @@ class Tweet(
         var quotedStatusIdStr: String? = null,
         var source: String? = null,
         @Ignore
-        var isSelected: Boolean = false,
-        @Relation(parentColumn = "tweet_user_id", entityColumn = "user_id")
-        var user: User? = null
+        var isSelected: Boolean = false
 ) : BaseModel, RecyclerItem {
 
 

@@ -1,16 +1,14 @@
 package com.zsk.androtweet.models
 
 import androidx.room.Embedded
-import androidx.room.Entity
 import androidx.room.Relation
 
-@Entity
 data class TweetWithUser(
         @Embedded
         val tweet: Tweet,
         @Relation(
-                parentColumn = "userId",
-                entityColumn = "id"
+                parentColumn = "tweet_user_id",
+                entityColumn = "user_id"
         )
         val user: User
 )

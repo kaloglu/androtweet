@@ -16,5 +16,5 @@ interface TweetListDao {
 
     @Transaction
     @Query("SELECT * FROM tweets WHERE tweet_user_id=:userId ORDER BY cachedAt desc LIMIT :count ")
-    fun get(userId: Long, count: Int): Flow<List<Tweet>>
+    fun get(userId: Long, count: Int): Flow<List<TweetWithUser>>
 }

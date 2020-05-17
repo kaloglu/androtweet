@@ -3,7 +3,7 @@ package com.zsk.androtweet.usecases
 import androidx.lifecycle.Lifecycle
 import com.kaloglu.library.ktx.isToday
 import com.twitter.sdk.android.tweetui.TimelineResult
-import com.zsk.androtweet.models.Tweet
+import com.zsk.androtweet.models.TweetWithUser
 import com.zsk.androtweet.repositories.TweetListRepository
 import com.zsk.androtweet.usecases.base.UseCase
 import com.zsk.androtweet.utils.asRoomModel
@@ -19,7 +19,7 @@ import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class GetTweetList(private val repository: TweetListRepository = TweetListRepository.getInstance())
-    : UseCase<List<Tweet>, TimelineResult<SdkTweet>, GetTweetList.Request>() {
+    : UseCase<List<TweetWithUser>, TimelineResult<SdkTweet>, GetTweetList.Request>() {
     override var request: Request = Request()
 
     fun execute(userId: Long) {
@@ -38,11 +38,12 @@ class GetTweetList(private val repository: TweetListRepository = TweetListReposi
     override fun createCall() =
             repository.fetchData<TimelineResult<SdkTweet>>(request.userId, request.count)
 
-    override fun shouldFetch(data: List<Tweet>) = data.isEmpty() || Date(data.first().cachedAt ?: -1).isToday().not()
+    override fun shouldFetch(data: List<TweetWithUser>) =
+            data.isEmpty() || Date(data.first().tweet.cachedAt ?: -1).isToday().not()
 
     override fun loadFromDb() = repository.getDUC(request.userId, request.count)//.asLiveData()
 
-    fun onEach(action: suspend (Resource<List<Tweet>>) -> Unit) =
+    fun onEach(action: suspend (Resource<List<TweetWithUser>>) -> Unit) =
             this.flow.onEach(action).launchIn(coroutineScope)
 
     data class Request(var count: Int = 10) : UseCase.Request {

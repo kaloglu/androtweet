@@ -6,6 +6,9 @@ import androidx.room.Room
 import com.kaloglu.library.ui.BaseApplication
 import com.twitter.sdk.android.core.*
 import com.zsk.androtweet.database.AndroTweetDatabase
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+
 
 /**
  * Created by kaloglu on 24/04/16.
@@ -18,6 +21,7 @@ class AndroTweetApp : BaseApplication() {
         super.onCreate()
 
         Twitter.initialize(twitterConfig)
+
     }
 
     companion object {
@@ -86,9 +90,22 @@ class AndroTweetApp : BaseApplication() {
         val apiClient: TwitterApiClient
             get() {
                 synchronized(TwitterApiClient::class.java) {
-                    if (!::API_CLIENT.isInitialized) {
-                        API_CLIENT = twitterCore.apiClient
+                    val activeSession = twitterCore.sessionManager.activeSession
+
+                    val customClient = OkHttpClient.Builder()
+                            .addInterceptor(
+                                    HttpLoggingInterceptor().apply {
+                                        setLevel(HttpLoggingInterceptor.Level.BODY)
+                                    }
+                            ).build()
+
+                    if (activeSession != null) {
+                        twitterCore.addApiClient(activeSession, TwitterApiClient(activeSession, customClient))
+                    } else {
+                        twitterCore.addGuestApiClient(TwitterApiClient(customClient))
                     }
+
+                    API_CLIENT = twitterCore.apiClient
                 }
                 return API_CLIENT
             }
