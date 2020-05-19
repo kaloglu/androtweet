@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.kaloglu.library.ui.viewmodel.mvi.State
+import com.kaloglu.library.viewmodel.mvi.State
 import com.zsk.androtweet.R
+import com.zsk.androtweet.adapters.TimelineAdapter
 import com.zsk.androtweet.databinding.TweetListFragmentBinding
 import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.mvi.TweetListEvent
@@ -26,6 +27,7 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
     }
 
     override fun initUserInterface(savedInstanceState: Bundle?) {
+        viewDataBinding.adapter = TimelineAdapter()
         loginViewModel.stateLiveData.observe(viewLifecycleOwner, Observer { userState ->
             when (userState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)

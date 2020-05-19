@@ -6,7 +6,7 @@ import androidx.fragment.app.createViewModelLazy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.fragment.findNavController
-import com.kaloglu.library.ui.viewmodel.BaseViewModelFactory
+import com.kaloglu.library.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.R
 
 @MainThread

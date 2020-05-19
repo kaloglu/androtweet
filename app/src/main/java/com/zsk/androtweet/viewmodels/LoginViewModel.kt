@@ -2,8 +2,8 @@ package com.zsk.androtweet.viewmodels
 
 import android.util.Log
 import androidx.databinding.Bindable
-import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
-import com.kaloglu.library.ui.viewmodel.databinding.bindable
+import com.kaloglu.library.databinding4vm.BindableViewModel
+import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.mvi.LoginEvent

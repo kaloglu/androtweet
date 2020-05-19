@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.view.ViewGroup
 import android.view.Window
-import com.kaloglu.library.ui.viewmodel.mvi.State
+import com.kaloglu.library.viewmodel.mvi.State
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.twitter.sdk.android.core.TwitterException
 import com.zsk.androtweet.BR

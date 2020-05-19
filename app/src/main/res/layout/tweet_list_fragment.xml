@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="adapter"
+            type="com.zsk.androtweet.adapters.TimelineAdapter" />
 
         <variable
             name="viewModel"
@@ -9,15 +15,23 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragments.TweetListFragment">
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tweetsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            binding:adapter="@{adapter}"
+            binding:items="@{viewModel.tweetList}"
+            binding:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/tweets_layout" />
+
+        <!--<TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,6 +42,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="tweets" />
+            tools:text="tweets" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

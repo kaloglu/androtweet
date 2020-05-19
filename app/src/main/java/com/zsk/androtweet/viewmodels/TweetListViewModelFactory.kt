@@ -2,7 +2,7 @@ package com.zsk.androtweet.viewmodels
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import com.kaloglu.library.ui.viewmodel.BaseViewModelFactory
+import com.kaloglu.library.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.usecases.GetTweetList
 import kotlinx.coroutines.InternalCoroutinesApi

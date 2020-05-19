@@ -1,9 +1,9 @@
 package com.zsk.androtweet.models
 
-import androidx.room.*
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
 import com.kaloglu.library.ui.BaseModel
-import com.kaloglu.library.ui.RecyclerItem
 import com.twitter.sdk.android.tweetui.TimelineCursor
 import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 
@@ -20,7 +20,7 @@ class Tweet(
         var idStr: String? = null,
         @ColumnInfo(name = "tweet_user_id")
         var userId: Long? = null,
-        var text: String? = null,
+        var text: String? = "test",
         var favoriteCount: Int? = null,
         var favorited: Boolean = false,
         var retweetCount: Int = 0,
@@ -38,7 +38,7 @@ class Tweet(
         var source: String? = null,
         @Ignore
         var isSelected: Boolean = false
-) : BaseModel, RecyclerItem {
+) : BaseModel {
 
 
     constructor(data: SdkTweet, timelineCursor: TimelineCursor?) : this(
@@ -72,8 +72,4 @@ class Tweet(
 
     //endregion
 
-    //region Recycler Item
-    override var layoutId: Int = -1
-
-    //endregion
 }

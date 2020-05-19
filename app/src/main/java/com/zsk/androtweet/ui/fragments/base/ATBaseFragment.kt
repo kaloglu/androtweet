@@ -3,8 +3,8 @@ package com.zsk.androtweet.ui.fragments.base
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.activityViewModels
-import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
-import com.kaloglu.library.ui.viewmodel.databinding.BindingFragment
+import com.kaloglu.library.databinding4vm.BindableViewModel
+import com.kaloglu.library.databinding4vm.BindingFragment
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.zsk.androtweet.BR
 import com.zsk.androtweet.ui.activities.base.ATBaseActivity

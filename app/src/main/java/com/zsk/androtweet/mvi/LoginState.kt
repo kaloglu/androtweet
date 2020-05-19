@@ -1,7 +1,7 @@
 package com.zsk.androtweet.mvi
 
-import com.kaloglu.library.ui.viewmodel.mvi.Event
-import com.kaloglu.library.ui.viewmodel.mvi.State
+import com.kaloglu.library.viewmodel.mvi.Event
+import com.kaloglu.library.viewmodel.mvi.State
 import com.zsk.androtweet.models.User
 
 sealed class LoginState : State {

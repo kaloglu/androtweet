@@ -3,10 +3,10 @@ package com.zsk.androtweet.viewmodels
 import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
-import com.kaloglu.library.ui.viewmodel.databinding.bindable
+import com.kaloglu.library.databinding4vm.BindableViewModel
+import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.models.Tweet
+import com.zsk.androtweet.models.TweetWithUser
 import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.mvi.TweetListState
 import com.zsk.androtweet.usecases.GetTweetList
@@ -21,7 +21,7 @@ class TweetListViewModel(private val getList: GetTweetList)
     : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance) {
 
     @get:Bindable
-    var tweetList by bindable(mutableListOf<Tweet>())
+    var tweetList by bindable(listOf<TweetWithUser>())
 
     init {
         onInit()
@@ -43,15 +43,16 @@ class TweetListViewModel(private val getList: GetTweetList)
     }
 
     @Suppress("RedundantSuspendModifier", "UNCHECKED_CAST")
-    private suspend fun <T> Resource<T>.handleResource() = when (status) {
-        Status.EMPTY -> postState(TweetListState.Empty)
-        Status.ERROR -> postState(TweetListState.Error(message!!))
-        Status.LOADING -> postState(TweetListState.Loading)
-        Status.SUCCESS -> onShowTweetList(data!! as List<Tweet>)
-    }
+    private suspend fun <T> Resource<T>.handleResource() =
+            when (status) {
+                Status.EMPTY -> postState(TweetListState.Empty)
+                Status.ERROR -> postState(TweetListState.Error(message!!))
+                Status.LOADING -> postState(TweetListState.Loading)
+                Status.SUCCESS -> onShowTweetList(data!! as List<TweetWithUser>)
+            }
 
-    private fun onShowTweetList(list: List<Tweet>) {
-        tweetList.addAll(list)
+    private fun onShowTweetList(list: List<TweetWithUser>) {
+        tweetList = list.toMutableList()
         postState(TweetListState.Success)
     }
 

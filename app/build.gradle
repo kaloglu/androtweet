@@ -43,15 +43,20 @@ android {
     }
 }
 dependencies {
+    api "com.github.kaloglu.libraries:ktx:${librariesVersion}"
+    api "com.github.kaloglu.libraries:ui:${librariesVersion}"
+    api "com.github.kaloglu.libraries:viewmodel:${librariesVersion}"
+    api "com.github.kaloglu.libraries:databinding4vm:${librariesVersion}"
+
     implementation files('libs/twitter4j-core-4.0.3.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
-    implementation 'com.google.android.gms:play-services-ads:19.0.1'
+    implementation 'com.google.android.gms:play-services-ads:19.1.0'
 
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
@@ -78,8 +83,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    api "com.github.kaloglu.libraries:ktx:${librariesVersion}"
-    api "com.github.kaloglu.libraries:ui:${librariesVersion}"
+
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 // ktx
     implementation "androidx.collection:collection-ktx:1.1.0"
@@ -92,8 +96,8 @@ dependencies {
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.71"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.6.0"
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.72'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.1'
 
 
 }

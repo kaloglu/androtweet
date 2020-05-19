@@ -60,7 +60,7 @@ class TweetListRepository private constructor(
         val fetch: MutableLiveData<R> = MutableLiveData()
         val userTimeline = UserTimeline.Builder()
                 .userId(userId)
-                .includeReplies(true)
+                .includeReplies(false)
                 .includeRetweets(false)
                 .maxItemsPerRequest(count)
                 .build()
