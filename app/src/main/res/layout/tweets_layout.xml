@@ -45,7 +45,7 @@
                 android:layout_marginEnd="5.0dip"
                 android:layout_weight="1.0"
                 android:gravity="end"
-                android:text="@{tweetWithUser.tweet.createdAt.toString()}"
+                android:text="@{tweetWithUser.tweet.createdAt}"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textSize="12.0sp"
                 android:textStyle="bold|italic" />
@@ -59,11 +59,8 @@
                     android:id="@+id/tweet_on_tweets"
                     android:layout_width="240.0dip"
                     android:layout_height="wrap_content"
-                    android:layout_row="0"
-                    android:layout_column="1"
                     android:layout_marginTop="2.0dip"
-                    android:layout_marginRight="5.0dip"
-                    android:layout_toRightOf="@id/chkTweet"
+                    android:layout_marginEnd="5.0dip"
                     android:clickable="false"
                     android:linksClickable="false"
                     android:longClickable="false"
@@ -87,9 +84,9 @@
                         android:id="@+id/rtCount_on_tweets"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="9999"
-                        android:textSize="9.0dip"
+                        android:gravity="start"
+                        android:text="@{Integer.toString(tweetWithUser.tweet.favoriteCount)}"
+                        android:textSize="9.0sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -110,12 +107,9 @@
                         android:id="@+id/favCount_on_tweets"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_row="0"
-                        android:layout_column="3"
-                        android:layout_alignParentTop="true"
-                        android:gravity="left"
-                        android:text="9999"
-                        android:textSize="9.0dip"
+                        android:gravity="start"
+                        android:text="@{Integer.toString(tweetWithUser.tweet.retweetCount)}"
+                        android:textSize="9.0sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

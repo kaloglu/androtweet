@@ -15,6 +15,6 @@ interface TweetListDao {
     suspend fun delete(list: List<Tweet>): Int
 
     @Transaction
-    @Query("SELECT * FROM tweets WHERE tweet_user_id=:userId ORDER BY cachedAt desc LIMIT :count ")
-    fun get(userId: Long, count: Int): Flow<List<TweetWithUser>>
+    @Query("SELECT * FROM tweets WHERE tweet_user_id=:userId and Date(createdAt) >= Date(NULLIF(:sinceId, '')) IS NULL ORDER BY cachedAt desc LIMIT :count ")
+    fun get(userId: Long, count: Int, sinceId: Long? = null): Flow<List<TweetWithUser>>
 }

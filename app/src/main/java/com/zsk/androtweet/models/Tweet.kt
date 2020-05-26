@@ -3,8 +3,12 @@ package com.zsk.androtweet.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
+import com.kaloglu.library.ktx.currentTimestamp
+import com.kaloglu.library.ktx.toDate
 import com.kaloglu.library.ui.BaseModel
 import com.twitter.sdk.android.tweetui.TimelineCursor
+import com.zsk.androtweet.utils.Constants
+import java.util.*
 import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 
 @Suppress("CovariantEquals")
@@ -12,8 +16,9 @@ import com.twitter.sdk.android.core.models.Tweet as SdkTweet
         tableName = "tweets",
         primaryKeys = ["tweet_id"]
 )
-class Tweet(
-        var cachedAt: Long? = null,
+data class Tweet(
+        @Ignore
+        var isSelected: Boolean = false,
         @ColumnInfo(name = "tweet_id")
         var id: Long = 0,
         @ColumnInfo(name = "tweet_id_str")
@@ -25,21 +30,19 @@ class Tweet(
         var favorited: Boolean = false,
         var retweetCount: Int = 0,
         var retweeted: Boolean = false,
-        var createdAt: String? = null,
-        var maxPosition: Long = 0,
-        var minPosition: Long = 0,
         var inReplyToScreenName: String? = null,
         var inReplyToStatusId: Long = 0,
         var inReplyToStatusIdStr: String? = null,
         var inReplyToUserId: Long = 0,
         var inReplyToUserIdStr: String? = null,
-        var lang: String? = null,
         var quotedStatusIdStr: String? = null,
+        var lang: String? = null,
+        var maxPosition: Long? = -1,
+        var minPosition: Long? = -1,
         var source: String? = null,
-        @Ignore
-        var isSelected: Boolean = false
+        var createdAt: Date = currentTimestamp().toDate(),
+        var cachedAt: Date = currentTimestamp().toDate()
 ) : BaseModel {
-
 
     constructor(data: SdkTweet, timelineCursor: TimelineCursor?) : this(
             id = data.id,
@@ -50,9 +53,8 @@ class Tweet(
             favorited = data.favorited,
             retweetCount = data.retweetCount,
             retweeted = data.retweeted,
-            createdAt = data.createdAt,
-            maxPosition = timelineCursor?.maxPosition ?: 0,
-            minPosition = timelineCursor?.minPosition ?: 0,
+            maxPosition = timelineCursor?.maxPosition,
+            minPosition = timelineCursor?.minPosition,
             inReplyToScreenName = data.inReplyToScreenName,
             inReplyToStatusId = data.inReplyToStatusId,
             inReplyToStatusIdStr = data.inReplyToStatusIdStr,
@@ -61,7 +63,7 @@ class Tweet(
             lang = data.lang,
             quotedStatusIdStr = data.quotedStatusIdStr,
             source = data.source,
-            cachedAt = System.currentTimeMillis()
+            createdAt = data.createdAt.toDate(Constants.TWEET_DATE_PATTERN)
     )
 
     //region BaseModel

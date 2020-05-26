@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.kaloglu.libraries:viewmodel:1.1.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/81b4f34513d7534562983ccae5b62dc6/jetified-viewmodel-cc8a7a7a/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/81b4f34513d7534562983ccae5b62dc6/jetified-viewmodel-cc8a7a7a/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kaloglu.libraries/viewmodel/1.1.0/ff95ffc370793bbae364f17eb48e64b176a6dddb/viewmodel-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

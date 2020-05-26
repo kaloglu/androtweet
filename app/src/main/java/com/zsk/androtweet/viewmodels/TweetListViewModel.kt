@@ -21,7 +21,8 @@ class TweetListViewModel(private val getList: GetTweetList)
     : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance) {
 
     @get:Bindable
-    var tweetList by bindable(listOf<TweetWithUser>())
+    var list by bindable(listOf<TweetWithUser>())
+        internal set
 
     init {
         onInit()
@@ -42,19 +43,23 @@ class TweetListViewModel(private val getList: GetTweetList)
         }
     }
 
-    @Suppress("RedundantSuspendModifier", "UNCHECKED_CAST")
-    private suspend fun <T> Resource<T>.handleResource() =
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> Resource<T>.handleResource() =
             when (status) {
-                Status.EMPTY -> postState(TweetListState.Empty)
                 Status.ERROR -> postState(TweetListState.Error(message!!))
                 Status.LOADING -> postState(TweetListState.Loading)
-                Status.SUCCESS -> onShowTweetList(data!! as List<TweetWithUser>)
+                Status.SUCCESS -> setList(data!! as List<TweetWithUser>, TweetListState.Success)
+                Status.EMPTY -> setList(listOf(), TweetListState.Empty)
             }
 
-    private fun onShowTweetList(list: List<TweetWithUser>) {
-        tweetList = list.toMutableList()
-        postState(TweetListState.Success)
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
+    fun setList(list: List<TweetWithUser>, state: TweetListState? = null) {
+        this.list = list.toMutableList()
+        state?.let {
+            postState(state)
+        }
     }
-
 }
+
 
