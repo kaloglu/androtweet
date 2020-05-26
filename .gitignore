@@ -17,13 +17,13 @@ proguard/
 # Log Files
 *.log
 /build/
-/.idea/
+#/.idea/
 /projectFilesBackup/
 app/build/
-*.iml
+#*.iml
 app/.DS_Store
 app/schemas/
 .DS_Store
-settings.gradle
+#settings.gradle
 /ktx
 /ui

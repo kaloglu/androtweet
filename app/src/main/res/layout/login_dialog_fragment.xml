@@ -19,18 +19,18 @@
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.LoginFragment">
+        tools:context=".ui.fragments.LoginDialogFragment">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="@{_->viewModel.logout()}"
-            android:text="@{viewModel.user.name + ` -> click to logout`}"
-            android:visibility="@{(viewModel.user.name != null)}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@{viewModel.title}"
+            app:layout_constraintBottom_toTopOf="@id/twitterLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="` -> click to logout`" />
+            tools:text="title" />
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton
             android:id="@+id/twitterLogin"

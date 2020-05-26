@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.kaloglu.libraries:ui:1.1.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/105f0e5f66e5de476eb3aabf3318eb8a/jetified-ui-cc8a7a7a/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/105f0e5f66e5de476eb3aabf3318eb8a/jetified-ui-cc8a7a7a/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kaloglu.libraries/ui/1.1.0/11c2e2b5937f5295c07f9da4c9838f685ff88c88/ui-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,8 +1,13 @@
 package com.zsk.androtweet.adapters
-//
-// Created by  on 2020-02-02.
-//
-//class TimelineAdapter : BaseRecyclerAdapter<Tweet, TweetAdapter.TweetViewHolder>() {
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-//            TweetAdapter.TweetViewHolder(parent.inflate(R.layout.timeline_tweets, false))
-//}
+
+import androidx.databinding.ViewDataBinding
+import com.kaloglu.library.databinding4vm.adapter.DataBoundRecyclerAdapter
+import com.zsk.androtweet.BR
+import com.zsk.androtweet.models.TweetWithUser
+
+class TimelineAdapter : DataBoundRecyclerAdapter<TweetWithUser>() {
+
+    override fun setBindVariable(viewDataBinding: ViewDataBinding, recylerItem: TweetWithUser) {
+        viewDataBinding.setVariable(BR.tweetWithUser, recylerItem)
+    }
+}

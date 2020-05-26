@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.twitter.sdk.android:twitter-mopub:3.1.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b72b87fe740af384a60505ca64a63d5b/jetified-twitter-mopub-3.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b72b87fe740af384a60505ca64a63d5b/jetified-twitter-mopub-3.1.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.twitter.sdk.android/twitter-mopub/3.1.1/dbc565f016b65ba60334f6147a579ee7a04cd572/twitter-mopub-3.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.twitter.sdk.android/twitter-mopub/3.1.1/1992dd8306e1c87b5de84bfa186aeca259d4e1b5/twitter-mopub-3.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

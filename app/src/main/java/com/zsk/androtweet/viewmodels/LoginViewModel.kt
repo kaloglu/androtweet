@@ -2,26 +2,29 @@ package com.zsk.androtweet.viewmodels
 
 import android.util.Log
 import androidx.databinding.Bindable
-import com.kaloglu.library.ui.viewmodel.databinding.BindableViewModel
-import com.kaloglu.library.ui.viewmodel.databinding.bindable
+import com.kaloglu.library.databinding4vm.BindableViewModel
+import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
-import com.zsk.androtweet.usecases.AddUserUseCase
-import com.zsk.androtweet.usecases.ClearUserUseCase
-import com.zsk.androtweet.usecases.GetUserLiveDataUseCase
+import com.zsk.androtweet.usecases.AddUserUseCaseLegacy
+import com.zsk.androtweet.usecases.ClearUserUseCaseLegacy
+import com.zsk.androtweet.usecases.GetUserUseCaseAsLiveData
 
 
 class LoginViewModel(
-        private val getUser: GetUserLiveDataUseCase,
-        private val addUser: AddUserUseCase,
-        private val clearUser: ClearUserUseCase
-) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.getInstance()) {
+        private val getUser: GetUserUseCaseAsLiveData,
+        private val addUser: AddUserUseCaseLegacy,
+        private val clearUser: ClearUserUseCaseLegacy
+) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.instance) {
     private val dummyUser = User()
 
     @get:Bindable
     var user by bindable(User())
+
+    @get:Bindable
+    var title by bindable("")
 
     init {
         Log.i("LoginViewModel", "Init")
@@ -34,7 +37,7 @@ class LoginViewModel(
             user = it ?: dummyUser
             when (user) {
                 dummyUser -> LoginEvent.LoggedOut
-                else -> LoginEvent.LoggedIn
+                else -> LoginEvent.LoggedIn(user)
             }
         }
     }
@@ -42,16 +45,16 @@ class LoginViewModel(
     override fun onEvent(event: LoginEvent) {
         super.onEvent(event)
         when (event) {
-            is LoginEvent.LogIn -> login(event.data)
+            is LoginEvent.LogIn -> login(event.user)
             is LoginEvent.LogOut -> logout()
-            is LoginEvent.LoggedIn -> postState(LoginState.Authenticated)
+            is LoginEvent.LoggedIn -> postState(LoginState.Authenticated(event.user))
             is LoginEvent.LoggedOut -> postState(LoginState.UnAuthenticated)
         }
     }
 
     private fun login(user: User) = addUser(user)
 
-    fun logout() = clearUser()
+    private fun logout() = clearUser()
 
 }
 

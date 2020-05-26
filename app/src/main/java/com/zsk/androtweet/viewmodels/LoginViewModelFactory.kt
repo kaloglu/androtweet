@@ -2,18 +2,18 @@ package com.zsk.androtweet.viewmodels
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import com.kaloglu.library.ui.viewmodel.BaseViewModelFactory
+import com.kaloglu.library.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.usecases.AddUserUseCase
-import com.zsk.androtweet.usecases.ClearUserUseCase
-import com.zsk.androtweet.usecases.GetUserLiveDataUseCase
+import com.zsk.androtweet.usecases.AddUserUseCaseLegacy
+import com.zsk.androtweet.usecases.ClearUserUseCaseLegacy
+import com.zsk.androtweet.usecases.GetUserUseCaseAsLiveData
 
 class LoginViewModelFactory constructor(
         lifecycle: Lifecycle,
-        private val getUser: GetUserLiveDataUseCase = GetUserLiveDataUseCase(),
-        private val addUser: AddUserUseCase = AddUserUseCase(),
-        private val clearUser: ClearUserUseCase = ClearUserUseCase()
-) : BaseViewModelFactory<AndroTweetApp>(AndroTweetApp.getInstance(), lifecycle) {
+        private val getUser: GetUserUseCaseAsLiveData = GetUserUseCaseAsLiveData(),
+        private val addUser: AddUserUseCaseLegacy = AddUserUseCaseLegacy(),
+        private val clearUser: ClearUserUseCaseLegacy = ClearUserUseCaseLegacy()
+) : BaseViewModelFactory<AndroTweetApp>(AndroTweetApp.instance, lifecycle) {
 
     @Suppress("UNCHECKED_CAST")
     override fun <VM : ViewModel?> create(modelClass: Class<VM>) = when {

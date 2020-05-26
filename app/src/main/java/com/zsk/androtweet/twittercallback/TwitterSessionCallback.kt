@@ -2,7 +2,7 @@ package com.zsk.androtweet.twittercallback
 
 import com.twitter.sdk.android.core.*
 import com.zsk.androtweet.interfaces.twittercallback.LoginCallback
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.utils.RoomExtensions.asRoomModel
 
 class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callback<TwitterSession>() {
     override fun failure(exception: TwitterException) {
@@ -17,7 +17,7 @@ class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callbac
                 .enqueue(object : Callback<com.twitter.sdk.android.core.models.User>() {
                     override fun success(result: Result<com.twitter.sdk.android.core.models.User>?) {
                         result?.data?.let {
-                            loginCallback.login(User(it, authToken.token, authToken.secret))
+                            loginCallback.login(it.asRoomModel(authToken.token, authToken.secret))
                         }
                     }
 

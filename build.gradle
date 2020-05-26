@@ -1,26 +1,27 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        librariesVersion = '1.0.0'
-//        librariesVersion = '6ef3325b'
-        kotlin_version = '1.3.71'
+        librariesVersion = '1.1.0'
+//        librariesVersion = 'cc8a7a7a'
+        kotlin_version = '1.3.72'
         constraintLayoutVersion = '1.1.3'
         recyclerViewVersion = '1.1.0'
         appcompatVersion = '1.1.0'
         support_lib_version = '27.0.2'
         roomVersion = '2.2.5'
         archLifecycleVersion = '2.2.0'
-        navigationVersion = '2.3.0-alpha04'
-        materialVersion = '1.2.0-alpha05'
-        coroutines = '1.3.4'
+        navigationVersion = '2.3.0-alpha06'
+        materialVersion = '1.2.0-alpha06'
+        coroutines = '1.3.7'
         coreKtxVersion = '1.2.0'
+        fragmentVersion = '1.2.4'
     }
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
