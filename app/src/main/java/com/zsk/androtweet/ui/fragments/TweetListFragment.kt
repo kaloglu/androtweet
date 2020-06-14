@@ -22,32 +22,14 @@ import kotlinx.coroutines.InternalCoroutinesApi
 class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListViewModel>(R.layout.tweet_list_fragment) {
     override val viewModel: TweetListViewModel by navGraphViewModels { TweetListViewModelFactory(lifecycle) }
 
-    companion object {
-        fun newInstance() = TweetListFragment()
-    }
-
     override fun initUserInterface(savedInstanceState: Bundle?) {
         viewDataBinding.adapter = TimelineAdapter()
-        loginViewModel.stateLiveData.observe(viewLifecycleOwner, Observer { userState ->
-            when (userState) {
+        loginViewModel.stateLiveData.observe(viewLifecycleOwner, Observer { loginState ->
+            when (loginState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
-                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList(userState.user.id))
+                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
             }
         })
     }
 
-    override fun onStateLoading(state: State.Loading) {
-        showToast("Loading!!!!!")
-        Log.i(viewTag, state.javaClass.simpleName)
-    }
-
-    override fun onStateEmpty(state: State.Empty) {
-        showToast("Empty!!!!!")
-        Log.i(viewTag, state.javaClass.simpleName)
-    }
-
-    override fun onStateSuccess(state: State.Success) {
-        showToast("Success!!!!!")
-        Log.i(viewTag, state.javaClass.simpleName)
-    }
 }

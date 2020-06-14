@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.kaloglu.libraries:viewmodel:1.1.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/81b4f34513d7534562983ccae5b62dc6/jetified-viewmodel-cc8a7a7a/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/81b4f34513d7534562983ccae5b62dc6/jetified-viewmodel-cc8a7a7a/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4ead9036ebfd7f1a01810fe783561c91/jetified-viewmodel-1.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4ead9036ebfd7f1a01810fe783561c91/jetified-viewmodel-1.1.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

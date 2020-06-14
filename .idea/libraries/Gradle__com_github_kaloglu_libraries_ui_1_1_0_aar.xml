@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.kaloglu.libraries:ui:1.1.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/105f0e5f66e5de476eb3aabf3318eb8a/jetified-ui-cc8a7a7a/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/105f0e5f66e5de476eb3aabf3318eb8a/jetified-ui-cc8a7a7a/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ea95b67297ce07e4f64555de4e9f94de/jetified-ui-1.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ea95b67297ce07e4f64555de4e9f94de/jetified-ui-1.1.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

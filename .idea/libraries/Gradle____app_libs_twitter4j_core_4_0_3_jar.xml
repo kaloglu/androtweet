@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: __local_aars__:./app/libs/twitter4j-core-4.0.3.jar:unspecified@jar">
+  <library name="Gradle: ./app/libs/twitter4j-core-4.0.3.jar">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/app/libs/twitter4j-core-4.0.3.jar!/" />
     </CLASSES>

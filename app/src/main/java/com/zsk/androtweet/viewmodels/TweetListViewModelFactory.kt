@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.kaloglu.library.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.usecases.GetTweetList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class TweetListViewModelFactory constructor(lifecycle: Lifecycle, private val get: GetTweetList = GetTweetList())
     : BaseViewModelFactory<AndroTweetApp>(AndroTweetApp.instance, lifecycle) {
 
