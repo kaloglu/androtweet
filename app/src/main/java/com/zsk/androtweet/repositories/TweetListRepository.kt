@@ -1,8 +1,8 @@
 package com.zsk.androtweet.repositories
 
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.MutableLiveData
-import com.kaloglu.library.ui.interfaces.Repository
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
 import com.zsk.androtweet.database.dao.TweetListDao
@@ -11,23 +11,21 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @ExperimentalCoroutinesApi
-class TweetListRepository private constructor(private val tweetListDao: TweetListDao) : Repository<Tweet> {
-
-    override val data: MutableLiveData<List<Tweet>> = MutableLiveData()
+class TweetListRepository private constructor(private val tweetListDao: TweetListDao) : Repository<List<Tweet>> {
 
     @WorkerThread
-    internal suspend fun insertAll(list: List<Tweet>) {
-        tweetListDao.insert(list)
-    }
+    override suspend fun delete(entity: List<Tweet>) = Unit
 
     @WorkerThread
-    suspend fun deleteAll(list: List<Tweet>) {
-        tweetListDao.delete(list)
-    }
+    override suspend fun update(entity: List<Tweet>) = tweetListDao.update(entity)
+
+    @WorkerThread
+    override suspend fun insert(entity: List<Tweet>) = tweetListDao.insert(entity)
 
     fun get(userId: Long, count: Int, sinceId: Long? = null) = tweetListDao.get(userId, count, sinceId).distinctUntilChanged()
 
     companion object {
+
         @Volatile
         private lateinit var INSTANCE: TweetListRepository
 
@@ -44,13 +42,22 @@ class TweetListRepository private constructor(private val tweetListDao: TweetLis
 
     }
 
-    @Deprecated("You cannot use this method for the TweetListRepository", level = DeprecationLevel.HIDDEN)
-    override fun delete(entity: Tweet) = Unit
+}
 
-    @Deprecated("You cannot use this method for the TweetListRepository", level = DeprecationLevel.HIDDEN)
-    override fun insert(entity: Tweet) = Unit
+interface Repository<E> : LifecycleObserver {
 
-    @Deprecated("You cannot use this method for the TweetListRepository", level = DeprecationLevel.HIDDEN)
-    override fun update(entity: Tweet) = Unit
+    suspend fun insert(entity: E)
+
+    suspend fun delete(entity: E)
+
+    suspend fun update(entity: E)
+
+    fun addLifecycle(lifecycle: Lifecycle) = lifecycle.addObserver(this)
+    fun removeLifecycle(lifecycle: Lifecycle) = lifecycle.removeObserver(this)
+
+    fun registerLifecycle(lifecycle: Lifecycle) {
+        removeLifecycle(lifecycle)
+        addLifecycle(lifecycle)
+    }
 
 }

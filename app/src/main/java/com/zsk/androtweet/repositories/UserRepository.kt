@@ -1,6 +1,5 @@
 package com.zsk.androtweet.repositories
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import com.kaloglu.library.ui.interfaces.Repository
 import com.zsk.androtweet.AndroTweetApp
@@ -11,17 +10,15 @@ import com.zsk.androtweet.models.User
 class UserRepository private constructor(private val userDao: UserDao) : Repository<User> {
     fun clean() = userDao.deleteAll()
 
-    override val data: MutableLiveData<List<User>> = MutableLiveData()
-
-    override fun delete(entity: User) {
+    override suspend fun delete(entity: User) {
         userDao.delete(entity)
     }
 
-    override fun insert(entity: User) {
+    override suspend fun insert(entity: User) {
         userDao.insert(entity)
     }
 
-    override fun update(entity: User) {
+    override suspend fun update(entity: User) {
         userDao.update(entity)
     }
 

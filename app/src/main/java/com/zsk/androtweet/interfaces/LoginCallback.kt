@@ -1,4 +1,4 @@
-package com.zsk.androtweet.interfaces.twittercallback
+package com.zsk.androtweet.interfaces
 
 import com.twitter.sdk.android.core.TwitterException
 import com.zsk.androtweet.models.User

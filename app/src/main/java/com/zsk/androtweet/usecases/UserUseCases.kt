@@ -7,6 +7,7 @@ import com.zsk.androtweet.repositories.UserRepository
 import com.zsk.androtweet.usecases.base.UseCaseAsLiveDataNoParam
 import com.zsk.androtweet.usecases.base.UseCaseLegacy
 import com.zsk.androtweet.usecases.base.UseCaseLegacyNoParams
+import kotlinx.coroutines.runBlocking
 
 class GetUserUseCaseAsLiveData(private val repository: UserRepository = UserRepository.getInstance())
     : UseCaseAsLiveDataNoParam<User>() {
@@ -32,7 +33,11 @@ class AddUserUseCaseLegacy(private val repository: UserRepository = UserReposito
     }
 
     private class InsertAsyncTask internal constructor(val repository: UserRepository) : AsyncTask<User, Unit, Unit>() {
-        override fun doInBackground(vararg params: User) = repository.insert(params[0])
+        override fun doInBackground(vararg params: User) {
+            runBlocking {
+                repository.insert(params[0])
+            }
+        }
     }
 }
 

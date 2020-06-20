@@ -9,7 +9,7 @@
 
         <variable
             name="callback"
-            type="com.zsk.androtweet.twittercallback.TwitterSessionCallback" />
+            type="com.zsk.androtweet.interfaces.twittercallback.TwitterSessionCallback" />
 
     </data>
 
