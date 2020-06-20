@@ -1,12 +1,12 @@
 <component name="libraryTable">
-  <library name="Gradle: com.github.kaloglu.libraries:databinding4vm:1.1.0@aar">
+  <library name="Gradle: com.github.kaloglu.libraries:databinding4vm:1.1.1@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a3946128e951adfee536be7c6a1d0d4a/jetified-databinding4vm-1.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a3946128e951adfee536be7c6a1d0d4a/jetified-databinding4vm-1.1.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kaloglu.libraries/databinding4vm/1.1.0/b8e8f977309fb9f0c78c5d7d4c7a5323ca0778a9/databinding4vm-1.1.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kaloglu.libraries/databinding4vm/1.1.1/44cbb821ac6f715b4a361f95dcdab5e43d4f3aa8/databinding4vm-1.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

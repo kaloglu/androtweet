@@ -18,6 +18,7 @@ import com.zsk.androtweet.utils.twitter.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.*
@@ -39,13 +40,13 @@ class GetTweetList(
     }
 
     override suspend fun saveCallResult(result: TimelineResult<SdkTweet>) =
-            repository.insertAll(result.items.asRoomModel(result.timelineCursor))
+            repository.insert(result.items.asRoomModel(result.timelineCursor))
 
     override fun createCall() = fetchData<TimelineResult<SdkTweet>>(request.userId, request.count)
 
     override fun shouldFetch(data: List<TweetWithUser>) = data.isEmpty() || data.first().tweet.cachedAt.isToday().not()
 
-    override fun loadFromDb() = repository.get(request.userId, request.count)//.asLiveData()
+    override fun loadFromDb() = repository.get(request.userId, request.count).cancellable()//.asLiveData()
 
     fun execute(userId: Long) {
         request.userId = userId

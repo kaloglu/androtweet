@@ -7,10 +7,7 @@ import com.zsk.androtweet.utils.ContextProviders
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -24,8 +21,12 @@ abstract class TwitterResultBoundResource<ResultType : Any, RequestType : Any>(p
     protected fun execute() {
         setValue(Resource.loading(null))
         loadFromDb()
-                .flowOn(contextProviders.Main)
+                .flowOn(contextProviders.IO)
+                .cancellable()
                 .onEach {
+                    if (it == null)
+                        return@onEach
+
                     when (it) {
                         it is Collection<*> && it.isEmpty() -> setValue(Resource.empty())
                         else -> setValue(Resource.success(it))
@@ -53,7 +54,7 @@ abstract class TwitterResultBoundResource<ResultType : Any, RequestType : Any>(p
 
     protected abstract fun shouldFetch(data: ResultType): Boolean
 
-    protected abstract fun loadFromDb(): Flow<ResultType>
+    protected abstract fun loadFromDb(): Flow<ResultType?>
 
     abstract suspend fun saveCallResult(result: RequestType)
 

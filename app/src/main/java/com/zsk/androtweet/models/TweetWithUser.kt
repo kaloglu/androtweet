@@ -15,7 +15,7 @@ data class TweetWithUser constructor(
                 parentColumn = "tweet_user_id",
                 entityColumn = "user_id"
         )
-        val user: User
+        val user: User?
 ) : RecyclerItem {
 
     @set:Ignore
