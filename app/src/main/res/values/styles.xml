@@ -28,4 +28,31 @@
         <item name="windowNoTitle">true</item>
         <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
     </style>
+
+    <style name="TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:padding">@dimen/padding_textview</item>
+    </style>
+
+    <style name="ImageView" parent="Widget.MaterialComponents.TextView" />
+
+    <style name="TextView.SubInfo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ImageView.SubInfo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ImageView.SubInfo.Icon">
+        <item name="android:layout_width">@dimen/icon_size</item>
+        <item name="android:layout_height">@dimen/icon_size</item>
+    </style>
+
+    <style name="TextView.Main">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+    </style>
 </resources>
