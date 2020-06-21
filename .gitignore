@@ -27,3 +27,4 @@ app/schemas/
 #settings.gradle
 /ktx
 /ui
+.idea/
