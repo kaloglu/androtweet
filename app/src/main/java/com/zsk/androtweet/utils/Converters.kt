@@ -9,10 +9,10 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun stringToDate(value: String?) = value.toDate(Constants.ROOM_DATE_PATTERN)
+    fun stringToDate(value: String?) = value.toDate(Constants.UI_DATE_PATTERN)
 
     @TypeConverter
     @JvmStatic
-    fun dateToString(date: Date): String = date.toDateString(Constants.ROOM_DATE_PATTERN)
+    fun dateToString(date: Date): String = date.toDateString(Constants.UI_DATE_PATTERN)
 
 }

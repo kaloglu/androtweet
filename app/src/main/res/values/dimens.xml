@@ -3,4 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="tab_height">48dp</dimen>
+    <dimen name="main_text_size">12sp</dimen>
+    <dimen name="time_text_size">12sp</dimen>
+    <dimen name="subinfo_text_size">12sp</dimen>
+    <dimen name="start_margin">8dp</dimen>
+    <dimen name="top_margin">8dp</dimen>
+    <dimen name="end_margin">16dp</dimen>
+    <dimen name="bottom_margin">8dp</dimen>
+    <dimen name="sub_info_text_size">9sp</dimen>
+    <dimen name="padding_textview">4dp</dimen>
+    <dimen name="padding_layout">4dp</dimen>
+    <dimen name="icon_size">20dp</dimen>
 </resources>

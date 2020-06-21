@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SubInfo" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">@dimen/sub_info_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SubInfo.Count">
+        <item name="android:textSize">@dimen/sub_info_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Main" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">@dimen/main_text_size</item>
+    </style>
+
+    <style name="Time" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">@dimen/time_text_size</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+</resources>

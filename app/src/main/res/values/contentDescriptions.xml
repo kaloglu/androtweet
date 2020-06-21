@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_rt_image">Retweet Icon</string>
+    <string name="content_description_fav_image">Fav Icon</string>
+</resources>

@@ -2,7 +2,6 @@ package com.zsk.androtweet.utils
 
 import android.view.View
 import androidx.databinding.BindingConversion
-import com.kaloglu.library.ktx.GenericExtensions
 import com.kaloglu.library.ktx.toDate
 import com.kaloglu.library.ktx.toDateString
 import java.util.*
@@ -22,7 +21,7 @@ object BindingConversions {
 
     @BindingConversion
     @JvmStatic
-    fun stringToDate(value: String) = value.toDate(GenericExtensions.UIDateStringPattern)
+    fun stringToDate(value: String) = value.toDate(Constants.UI_DATE_PATTERN)
 
     @BindingConversion
     @JvmStatic
@@ -30,5 +29,5 @@ object BindingConversions {
 
     @BindingConversion
     @JvmStatic
-    fun dateToString(date: Date): String = date.toDateString(GenericExtensions.UIDateStringPattern)
+    fun dateToString(date: Date): String = date.toDateString(Constants.UI_DATE_PATTERN)
 }
