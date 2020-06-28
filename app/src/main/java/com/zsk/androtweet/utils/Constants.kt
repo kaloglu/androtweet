@@ -3,6 +3,7 @@ package com.zsk.androtweet.utils
 object Constants {
     const val TWEET_DATE_PATTERN: String = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
     const val UI_DATE_PATTERN: String = "dd MMM yyyy HH:mm"
+    const val HHMM: String = "HH:mm"
 
     const val UNKNOWN_ERROR_CODE = "-1"
     const val UNKNOWN_ERROR = "Unknown Error"

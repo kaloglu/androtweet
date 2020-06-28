@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.kaloglu.library.ktx.currentTimestamp
 import com.kaloglu.library.ktx.toDate
-import com.kaloglu.library.ktx.toDateString
 import com.kaloglu.library.ui.BaseModel
 import com.zsk.androtweet.utils.Constants
 import java.util.*
@@ -38,7 +37,7 @@ data class User(
         var location: String? = null,
         var geoEnabled: Boolean = false,
         var lang: String? = null,
-        var createdAt: Date = currentTimestamp().toDateString(Constants.TWEET_DATE_PATTERN).toDate(Constants.TWEET_DATE_PATTERN),
+        var createdAt: Date = currentTimestamp().toDate(),
         var profileBackgroundColor: String? = null,
         var profileBackgroundImageUrl: String? = null,
         var profileBackgroundImageUrlHttps: String? = null,

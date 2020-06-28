@@ -2,7 +2,7 @@ package com.zsk.androtweet.interfaces.twittercallback
 
 import com.twitter.sdk.android.core.*
 import com.zsk.androtweet.interfaces.LoginCallback
-import com.zsk.androtweet.utils.RoomExtensions.asRoomModel
+import com.zsk.androtweet.utils.extensions.RoomExtensions.asRoomModel
 
 class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callback<TwitterSession>() {
     override fun failure(exception: TwitterException) {
