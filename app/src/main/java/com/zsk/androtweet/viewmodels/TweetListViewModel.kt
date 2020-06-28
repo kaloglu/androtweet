@@ -60,6 +60,13 @@ class TweetListViewModel(private val getList: GetTweetList)
             postState(state)
         }
     }
+
+    fun selectAllItem() {
+        val setSelected = !(list.find { !it.isSelected }?.isSelected ?: true)
+        val tempList = list
+        tempList.map { it.isSelected = setSelected }
+        setList(tempList)
+    }
 }
 
 

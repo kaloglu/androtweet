@@ -9,7 +9,7 @@ object Converters {
 
     @TypeConverter
     @JvmStatic
-    fun stringToDate(value: String?) = value.toDate(Constants.UI_DATE_PATTERN)
+    fun stringToDate(value: String?): Date = value.toDate(Constants.UI_DATE_PATTERN)
 
     @TypeConverter
     @JvmStatic

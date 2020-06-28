@@ -13,7 +13,7 @@ import com.twitter.sdk.android.tweetui.UserTimeline
 import com.zsk.androtweet.models.TweetWithUser
 import com.zsk.androtweet.repositories.TweetListRepository
 import com.zsk.androtweet.usecases.base.UseCase
-import com.zsk.androtweet.utils.RoomExtensions.asRoomModel
+import com.zsk.androtweet.utils.extensions.RoomExtensions.asRoomModel
 import com.zsk.androtweet.utils.twitter.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.*
 import kotlin.properties.Delegates
 import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 

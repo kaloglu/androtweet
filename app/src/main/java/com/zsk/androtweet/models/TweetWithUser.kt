@@ -1,8 +1,12 @@
 package com.zsk.androtweet.models
 
+import androidx.databinding.Bindable
+import androidx.databinding.PropertyChangeRegistry
 import androidx.room.Embedded
 import androidx.room.Ignore
 import androidx.room.Relation
+import com.kaloglu.library.databinding4vm.bindable
+import com.kaloglu.library.databinding4vm.interfaces.BindableField
 import com.kaloglu.library.ui.BaseModel
 import com.kaloglu.library.ui.RecyclerItem
 import com.zsk.androtweet.R
@@ -16,7 +20,14 @@ data class TweetWithUser constructor(
                 entityColumn = "user_id"
         )
         val user: User?
-) : RecyclerItem {
+) : RecyclerItem, BindableField {
+
+    @Transient
+    override var mCallbacks: PropertyChangeRegistry? = null
+
+    @get:Bindable
+    @delegate:Ignore
+    var isSelected by bindable(false)
 
     @set:Ignore
     override var layoutId: Int

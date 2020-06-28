@@ -1,4 +1,4 @@
-package com.zsk.androtweet.utils
+package com.zsk.androtweet.utils.extensions
 
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment

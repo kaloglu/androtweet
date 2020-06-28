@@ -40,7 +40,7 @@
     <color name="bulletin_detail_passive">#DCDDD3</color>
     <color name="system_passive_button">#363636</color>
     <color name="system_active_button">#B1B2B1</color>
-    <color name="banko_bg">#B373C3E1</color>
+    <color name="selectedTweet">#9973C3E1</color>
     <color name="coupon_submit_header_color">#759800</color>
     <color name="follow_time_color_1">#C1C1C1</color>
     <color name="follow_time_color_2">#717171</color>

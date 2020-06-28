@@ -1,4 +1,4 @@
-package com.zsk.androtweet.utils
+package com.zsk.androtweet.utils.extensions
 
 import com.twitter.sdk.android.tweetui.TimelineCursor
 import com.zsk.androtweet.models.Tweet
