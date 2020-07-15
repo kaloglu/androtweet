@@ -3,6 +3,7 @@ package com.zsk.androtweet.utils.twitter
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
+import androidx.paging.PagedList
 import com.zsk.androtweet.utils.ContextProviders
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,12 +12,46 @@ import kotlinx.coroutines.flow.*
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-abstract class TwitterResultBoundResource<ResultType : Any, RequestType : Any>(private val contextProviders: ContextProviders) {
+abstract class TwitterResultBoundResource<ResultType : Any, RequestType : Any>(private val contextProviders: ContextProviders)
+    : PagedList.BoundaryCallback<ResultType>() {
+
     lateinit var coroutineScope: CoroutineScope
 
     val flow get() = result.asFlow()
 
     private val result = MutableLiveData<Resource<ResultType>>()
+
+    override fun onItemAtEndLoaded(itemAtEnd: ResultType) {
+        loadFromDb()
+                .flowOn(contextProviders.IO)
+                .cancellable()
+                .onEach {
+                    if (it == null)
+                        return@onEach
+
+                    when (it) {
+                        it is Collection<*> && it.isEmpty() -> setValue(Resource.empty())
+                        else -> setValue(Resource.success(it))
+                    }
+                    if (shouldFetch(it)) fetchFromNetwork()
+                }.launchIn(coroutineScope)
+    }
+
+    override fun onItemAtFrontLoaded(itemAtFront: ResultType) {
+        loadFromDb()
+                .flowOn(contextProviders.IO)
+                .cancellable()
+                .onEach {
+                    if (it == null)
+                        return@onEach
+
+                    when (it) {
+                        it is Collection<*> && it.isEmpty() -> setValue(Resource.empty())
+                        else -> setValue(Resource.success(it))
+                    }
+                    if (shouldFetch(it)) fetchFromNetwork()
+                }.launchIn(coroutineScope)
+    }
 
     protected fun execute() {
         setValue(Resource.loading(null))
