@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="tweetWithUser"
-            type="com.zsk.androtweet.models.TweetWithUser" />
+            name="selectableTweet"
+            type="com.zsk.androtweet.models.SelectableTweet" />
 
     </data>
 
@@ -20,13 +20,13 @@
         android:paddingTop="@dimen/top_margin"
         android:paddingEnd="@dimen/end_margin"
         android:paddingBottom="@dimen/bottom_margin"
-        binding:tweetSelection="@{tweetWithUser.isSelected}"
+        binding:tweetSelection="@{selectableTweet.isSelected}"
         tools:targetApi="m">
 
         <TextView
             android:id="@+id/tweet_on_tweets"
             style="@style/TextView.Main"
-            android:text="@{tweetWithUser.tweet.text}"
+            android:text="@{selectableTweet.tweet.text}"
             android:textAppearance="@style/Main"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{tweetWithUser.tweet.createdAt}"
+            android:text="@{selectableTweet.tweet.createdAt}"
             android:textAppearance="@style/Time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tweet_on_tweets"
@@ -75,7 +75,7 @@
                 <TextView
                     android:id="@+id/rt_count_on_tweets"
                     style="@style/TextView.SubInfo"
-                    android:text="@{Integer.toString(tweetWithUser.tweet.favoriteCount)}"
+                    android:text="@{Integer.toString(selectableTweet.tweet.favoriteCount)}"
                     android:textAppearance="@style/SubInfo.Count"
                     app:layout_constraintBottom_toBottomOf="@id/rt_icon_on_tweets"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +106,7 @@
                 <TextView
                     android:id="@+id/fav_count_on_tweets"
                     style="@style/TextView.SubInfo"
-                    android:text="@{Integer.toString(tweetWithUser.tweet.retweetCount)}"
+                    android:text="@{Integer.toString(selectableTweet.tweet.retweetCount)}"
                     android:textAppearance="@style/SubInfo.Count"
                     app:layout_constraintBottom_toBottomOf="@id/fav_icon_on_tweets"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -6,8 +6,7 @@ import androidx.room.Room
 import com.kaloglu.library.ui.BaseApplication
 import com.twitter.sdk.android.core.*
 import com.zsk.androtweet.database.AndroTweetDatabase
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import com.zsk.androtweet.models.User
 
 
 /**
@@ -77,7 +76,7 @@ class AndroTweetApp : BaseApplication() {
                 return DATABASE
             }
 
-        val twitterCore: TwitterCore
+        /*val twitterCore: TwitterCore
             get() {
                 synchronized(TwitterCore::class.java) {
                     if (!::TWITTER_CORE.isInitialized) {
@@ -85,9 +84,9 @@ class AndroTweetApp : BaseApplication() {
                     }
                 }
                 return TWITTER_CORE
-            }
+            }*/
 
-        val apiClient: TwitterApiClient
+        /*val apiClient: TwitterApiClient
             get() {
                 synchronized(TwitterApiClient::class.java) {
                     val activeSession = twitterCore.sessionManager.activeSession
@@ -108,6 +107,6 @@ class AndroTweetApp : BaseApplication() {
                     API_CLIENT = twitterCore.apiClient
                 }
                 return API_CLIENT
-            }
+            }*/
     }
 }
