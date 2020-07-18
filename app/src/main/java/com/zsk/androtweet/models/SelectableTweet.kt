@@ -22,6 +22,12 @@ data class SelectableTweet(
     @get:Bindable
     var isSelected by bindable(false)
 
+    @get:Bindable
+    var isDeleted by bindable(false)
+
+    @get:Bindable
+    var result by bindable("")
+
     override var layoutId: Int
         get() = LAYOUT_ID
         set(value) {

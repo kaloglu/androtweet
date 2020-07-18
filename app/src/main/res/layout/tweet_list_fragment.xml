@@ -32,7 +32,6 @@
             tools:itemCount="10"
             tools:listitem="@layout/tweets_layout" />
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/deleteFab"
             android:layout_width="wrap_content"
@@ -40,6 +39,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:elevation="6dp"
+            android:onClick="@{_ -> viewModel.deleteSelectedTweets() }"
             android:visibility="@{viewModel.hasSelected}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

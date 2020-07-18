@@ -116,8 +116,20 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/destroyResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Deletion is succeed!"
+            android:visibility="@{selectableTweet.isDeleted || !selectableTweet.result.empty}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/time_on_tweets"
+            app:layout_constraintTop_toBottomOf="@+id/time_on_tweets"
+            binding:isDeleted="@{selectableTweet.isDeleted}"
+            binding:result="@{selectableTweet.result}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

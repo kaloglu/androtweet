@@ -5,6 +5,7 @@ import androidx.paging.ItemKeyedDataSource
 import androidx.paging.PagedList
 import com.kaloglu.library.ui.interfaces.Repository
 import com.twitter.sdk.android.tweetui.UserTimeline
+import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.SelectableTweet
 import com.zsk.androtweet.utils.Constants
 import com.zsk.androtweet.viewmodels.SelectableTweetdataSource
@@ -28,6 +29,16 @@ class TweetListRepository : Repository<List<SelectableTweet>> {
 
     @WorkerThread
     override suspend fun delete(entity: List<SelectableTweet>) = Unit
+
+    fun destroyTweets(selectedTweetList: List<SelectableTweet>) {
+        selectedTweetList
+//                .filter { it.result.isEmpty() }
+                .forEach {
+                    AndroTweetApp.apiClient.statusesService
+                            .destroy(it.tweet.id, true)
+                            .enqueue(TweetDestroyCallback(it))
+                }
+    }
 
     @WorkerThread
     override suspend fun update(entity: List<SelectableTweet>) = Unit
