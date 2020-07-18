@@ -1,63 +1,100 @@
 package com.zsk.androtweet.repositories
 
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
+import androidx.paging.ItemKeyedDataSource
+import androidx.paging.PagedList
+import com.kaloglu.library.ui.interfaces.Repository
+import com.twitter.sdk.android.tweetui.UserTimeline
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.database.AndroTweetDatabase
-import com.zsk.androtweet.database.dao.TweetListDao
-import com.zsk.androtweet.models.Tweet
+import com.zsk.androtweet.models.SelectableTweet
+import com.zsk.androtweet.utils.Constants
+import com.zsk.androtweet.viewmodels.SelectableTweetdataSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.asExecutor
 
+@InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class TweetListRepository private constructor(private val tweetListDao: TweetListDao) : Repository<List<Tweet>> {
+class TweetListRepository : Repository<List<SelectableTweet>> {
+    private var userId: Long? = null
+
+    private val providePagingConfig
+        get() = PagedList.Config.Builder()
+                .setEnablePlaceholders(true)
+                .setPrefetchDistance(Constants.prefetchDistance)
+                .setInitialLoadSizeHint(Constants.initialLoadSizeHint)
+                .setPageSize(Constants.pageSize)
+                .build()
 
     @WorkerThread
-    override suspend fun delete(entity: List<Tweet>) = Unit
+    override suspend fun delete(entity: List<SelectableTweet>) = Unit
+
+    fun destroyTweets(selectedTweetList: List<SelectableTweet>) {
+        selectedTweetList
+//                .filter { it.result.isEmpty() }
+                .forEach {
+                    AndroTweetApp.apiClient.statusesService
+                            .destroy(it.tweet.id, true)
+                            .enqueue(TweetDestroyCallback(it))
+                }
+    }
 
     @WorkerThread
-    override suspend fun update(entity: List<Tweet>) = tweetListDao.update(entity)
+    override suspend fun update(entity: List<SelectableTweet>) = Unit
 
     @WorkerThread
-    override suspend fun insert(entity: List<Tweet>) = tweetListDao.insert(entity)
+    override suspend fun insert(entity: List<SelectableTweet>) = Unit
 
-    fun get(userId: Long, count: Int, sinceId: Long? = null) = tweetListDao.get(userId, count, sinceId).distinctUntilChanged()
+    fun getUserTimelinePrevious(pageSize: Int, maxposition: Long? = null, callback: ItemKeyedDataSource.LoadCallback<SelectableTweet>) {
+        if (userId == null) return
+
+        UserTimeline.Builder()
+                .userId(userId)
+                .includeReplies(false)
+                .includeRetweets(false)
+                .maxItemsPerRequest(pageSize)
+                .build()
+                .previous(maxposition, TweetTimelineResultCallback(callback))
+    }
+
+    fun getUserTimelineNext(pageSize: Int, minPosition: Long? = null, callback: ItemKeyedDataSource.LoadCallback<SelectableTweet>) {
+        if (userId == null) return
+
+        UserTimeline.Builder()
+                .userId(userId)
+                .includeReplies(false)
+                .includeRetweets(false)
+                .maxItemsPerRequest(pageSize)
+                .build()
+                .next(minPosition, TweetTimelineResultCallback(callback))
+    }
+
+    fun initUserTimeline(): PagedList<SelectableTweet> {
+        return PagedList.Builder(SelectableTweetdataSource(this), providePagingConfig)
+                .setNotifyExecutor(Dispatchers.Main.asExecutor())
+                .setFetchExecutor(Dispatchers.IO.asExecutor())
+                .build()
+    }
+
+    fun setUserId(id: Long) {
+        userId = id
+    }
 
     companion object {
 
         @Volatile
         private lateinit var INSTANCE: TweetListRepository
 
-        fun getInstance(database: AndroTweetDatabase = AndroTweetApp.database): TweetListRepository {
+        fun getInstance(): TweetListRepository {
             synchronized(this) {
                 if (!::INSTANCE.isInitialized) {
-                    INSTANCE = TweetListRepository(
-                            database.tweetListDao()
-                    )
+                    INSTANCE = TweetListRepository()
                 }
             }
             return INSTANCE
         }
 
-    }
-
-}
-
-interface Repository<E> : LifecycleObserver {
-
-    suspend fun insert(entity: E)
-
-    suspend fun delete(entity: E)
-
-    suspend fun update(entity: E)
-
-    fun addLifecycle(lifecycle: Lifecycle) = lifecycle.addObserver(this)
-    fun removeLifecycle(lifecycle: Lifecycle) = lifecycle.removeObserver(this)
-
-    fun registerLifecycle(lifecycle: Lifecycle) {
-        removeLifecycle(lifecycle)
-        addLifecycle(lifecycle)
     }
 
 }

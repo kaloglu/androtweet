@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.kaloglu.library.ktx.isNotNullOrEmpty
+import com.kaloglu.library.ui.setItemClickListener
 import com.kaloglu.library.ui.setItemLongClickListener
 import com.zsk.androtweet.R
 import com.zsk.androtweet.adapters.TimelineAdapter
@@ -12,7 +14,6 @@ import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.ui.fragments.base.ATBaseFragment
 import com.zsk.androtweet.utils.extensions.navGraphViewModels
-import com.zsk.androtweet.utils.extensions.setItemClickListener
 import com.zsk.androtweet.viewmodels.TweetListViewModel
 import com.zsk.androtweet.viewmodels.TweetListViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,23 +31,33 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
 
     private fun setDatabindingParams() {
         viewDataBinding.tweetsRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        viewDataBinding.adapter = TimelineAdapter()
-                .setItemClickListener { item, _ ->
+        viewDataBinding.adapter = createTimeLineAdapter()
+    }
+
+    private fun createTimeLineAdapter() =
+            TimelineAdapter().apply {
+                setItemClickListener { item, _ ->
+                    if (item.result.isNotNullOrEmpty())
+                        return@setItemClickListener
+
                     item.isSelected = !item.isSelected
+                    viewModel.postEvent(TweetListEvent.ToggleSelectItem(item))
                 }
-                .setItemLongClickListener { _, _ ->
-                    viewModel.selectAllItem()
+                setItemLongClickListener { _, _ ->
+                    viewModel.postEvent(TweetListEvent.ToggleSelectAllItem)
                     true
                 }
-    }
+            }
 
     private fun setLoginViewModelObserver() {
         loginViewModel.stateLiveData.observe(viewLifecycleOwner, Observer { loginState ->
             when (loginState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
-                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
+                is LoginState.Authenticated -> {
+                    viewModel.activeUserId(loginState.user.id)
+                }
             }
         })
     }
-
 }
+

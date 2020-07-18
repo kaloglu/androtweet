@@ -1,15 +1,14 @@
 package com.zsk.androtweet.viewmodels
 
-import android.util.Log
 import androidx.databinding.Bindable
-import androidx.lifecycle.viewModelScope
+import androidx.paging.PagedList
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.models.TweetWithUser
+import com.zsk.androtweet.models.SelectableTweet
 import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.mvi.TweetListState
-import com.zsk.androtweet.usecases.GetTweetList
+import com.zsk.androtweet.repositories.TweetListRepository
 import com.zsk.androtweet.utils.twitter.Resource
 import com.zsk.androtweet.utils.twitter.Status
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,30 +16,35 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class TweetListViewModel(private val getList: GetTweetList)
-    : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance) {
+class TweetListViewModel(
+        private val repository: TweetListRepository = TweetListRepository.getInstance()
+) : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance) {
 
     @get:Bindable
-    var list by bindable(listOf<TweetWithUser>())
-        internal set
+    var list by bindable(initUserTimeline()) { o, n ->
+        if (n.isNotEmpty())
+            n.last()
+    }
+
+    @get:Bindable
+    var hasSelected by bindable(false)
 
     init {
         onInit()
     }
 
-    override fun onInit() {
-        Log.i("TweetsViewModel", "onInit")
-        getList.coroutineScope = viewModelScope
-        getList.onEach {
-            it.handleResource()
-        }
-    }
+    override fun onInit() = Unit
 
     override fun onEvent(event: TweetListEvent) {
         super.onEvent(event)
         when (event) {
-            is TweetListEvent.GetTweetList -> getList.execute(event.userId)
+            is TweetListEvent.ToggleSelectItem -> checkHasSelected()
+            is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem()
         }
+    }
+
+    fun deleteSelectedTweets() {
+        repository.destroyTweets(list.filter { it.isSelected })
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -48,25 +52,41 @@ class TweetListViewModel(private val getList: GetTweetList)
             when (status) {
                 Status.ERROR -> postState(TweetListState.Error(message!!))
                 Status.LOADING -> postState(TweetListState.Loading)
-                Status.SUCCESS -> setList(data!! as List<TweetWithUser>, TweetListState.Success)
-                Status.EMPTY -> setList(listOf(), TweetListState.Empty)
+                Status.SUCCESS -> setList(data!! as PagedList<SelectableTweet>, TweetListState.Success)
+                Status.EMPTY -> {
+                    postState(TweetListState.Empty)
+                }
             }
 
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
-    fun setList(list: List<TweetWithUser>, state: TweetListState? = null) {
-        this.list = list.toMutableList()
+    fun setList(list: PagedList<SelectableTweet>, state: TweetListState? = null) {
+        this.list = list
         state?.let {
             postState(state)
         }
     }
 
-    fun selectAllItem() {
-        val setSelected = !(list.find { !it.isSelected }?.isSelected ?: true)
+    private fun toggleSelectAllItem() {
+        val setSelected = !hasSelected
         val tempList = list
         tempList.map { it.isSelected = setSelected }
         setList(tempList)
+        checkHasSelected()
     }
-}
 
+    fun activeUserId(id: Long) {
+        repository.setUserId(id)
+        list = initUserTimeline()
+    }
+
+    private fun checkHasSelected(default: Boolean = false) {
+        hasSelected = list.filter { it.result.isEmpty() }.find { it.isSelected }?.isSelected
+                ?: default
+    }
+
+    private fun initUserTimeline() = repository.initUserTimeline()
+
+
+}
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:binding="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -26,10 +27,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             binding:adapter="@{adapter}"
-            binding:items="@{viewModel.list}"
             binding:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            binding:pagedItems="@{viewModel.list}"
             tools:itemCount="10"
             tools:listitem="@layout/tweets_layout" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/deleteFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="6dp"
+            android:onClick="@{_ -> viewModel.deleteSelectedTweets() }"
+            android:visibility="@{viewModel.hasSelected}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:pressedTranslationZ="12dp"
+            binding:srcCompat="@drawable/ic_baseline_delete_forever_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>
