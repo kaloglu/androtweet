@@ -38,10 +38,13 @@ class TweetListViewModel(
     override fun onEvent(event: TweetListEvent) {
         super.onEvent(event)
         when (event) {
-            is TweetListEvent.ToggleSelectItem -> hasSelected = list.find { it.isSelected }?.isSelected
-                    ?: false
+            is TweetListEvent.ToggleSelectItem -> checkHasSelected()
             is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem()
         }
+    }
+
+    fun deleteSelectedTweets() {
+        repository.destroyTweets(list.filter { it.isSelected })
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -65,16 +68,21 @@ class TweetListViewModel(
     }
 
     private fun toggleSelectAllItem() {
-        val setSelected = !(list.find { !it.isSelected }?.isSelected ?: true)
+        val setSelected = !hasSelected
         val tempList = list
         tempList.map { it.isSelected = setSelected }
         setList(tempList)
-        hasSelected = list.find { it.isSelected }?.isSelected ?: false
+        checkHasSelected()
     }
 
     fun activeUserId(id: Long) {
         repository.setUserId(id)
         list = initUserTimeline()
+    }
+
+    private fun checkHasSelected(default: Boolean = false) {
+        hasSelected = list.filter { it.result.isEmpty() }.find { it.isSelected }?.isSelected
+                ?: default
     }
 
     private fun initUserTimeline() = repository.initUserTimeline()

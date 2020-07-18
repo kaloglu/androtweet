@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.kaloglu.library.ktx.isNotNullOrEmpty
 import com.kaloglu.library.ui.setItemClickListener
 import com.kaloglu.library.ui.setItemLongClickListener
 import com.zsk.androtweet.R
@@ -36,6 +37,9 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
     private fun createTimeLineAdapter() =
             TimelineAdapter().apply {
                 setItemClickListener { item, _ ->
+                    if (item.result.isNotNullOrEmpty())
+                        return@setItemClickListener
+
                     item.isSelected = !item.isSelected
                     viewModel.postEvent(TweetListEvent.ToggleSelectItem(item))
                 }
