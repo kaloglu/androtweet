@@ -1,6 +1,7 @@
 package com.zsk.androtweet.database.dao
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import com.zsk.androtweet.models.User
 
@@ -20,6 +21,9 @@ interface UserDao {
 
     @Query("SELECT * FROM user")
     fun getAll(): List<User>
+
+    @Query("SELECT * FROM user")
+    fun getAll2(): DataSource.Factory<Int, User>
 
     @Query("DELETE FROM user")
     fun deleteAll()

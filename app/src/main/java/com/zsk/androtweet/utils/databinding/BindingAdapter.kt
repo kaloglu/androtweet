@@ -3,14 +3,15 @@ package com.zsk.androtweet.utils.databinding
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
+import com.kaloglu.library.databinding4vm.adapter.DataBoundListAdapter
 import com.kaloglu.library.databinding4vm.adapter.DataBoundPagedListAdapter
 import com.kaloglu.library.ktx.isNotNullOrEmpty
 import com.kaloglu.library.ktx.withAnimation
 import com.kaloglu.library.ui.RecyclerItem
 import com.zsk.androtweet.R
+import com.zsk.androtweet.viewmodels.PagingManager
 
 @BindingAdapter("tweetSelection")
 fun setBackground(
@@ -42,15 +43,28 @@ fun setErrorLineBackground(
 
 }
 
+@BindingAdapter("adapter", "items", requireAll = true)
+fun <RI : RecyclerItem> setItems(
+        recyclerView: RecyclerView,
+        adapter: DataBoundListAdapter<RI>,
+        items: List<RI>
+) {
+    recyclerView.adapter = adapter.apply {
+        submitList(items)
+    }
+
+}
+
 @Suppress("UNCHECKED_CAST")
-@BindingAdapter("pagedItems")
+@BindingAdapter("adapter", "items", "pagingManager", requireAll = true)
 fun <RI : RecyclerItem> setPagedItems(
         recyclerView: RecyclerView,
-        items: PagedList<RI>
+        adapter: DataBoundPagedListAdapter<RI>,
+        items: List<RI>,
+        pagingManager: PagingManager<*, RI>
 ) {
-    recyclerView.adapter?.apply {
-        (this as DataBoundPagedListAdapter<RI>)
-        submitList(items)
+    recyclerView.adapter = adapter.apply {
+        submitList(pagingManager.getPagedList(items))
     }
 
 }

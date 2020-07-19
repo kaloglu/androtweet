@@ -13,7 +13,7 @@ import com.zsk.androtweet.R
 @Suppress("CovariantEquals")
 data class SelectableTweet(
         val tweet: Tweet,
-        val timelineCursor: TimelineCursor?
+        val timelineCursor: TimelineCursor
 ) : RecyclerItem, BindableField {
 
     @Transient

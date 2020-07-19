@@ -20,10 +20,11 @@ sealed class TweetListState : State {
 }
 
 sealed class TweetListEvent : Event {
-    object GetTweetList : TweetListEvent(), Event.Custom
     object ToggleSelectAllItem : TweetListEvent(), Event.Custom
 
+    data class GetTweetList(val userId: Long? = null) : TweetListEvent(), Event.Custom
     data class ShowError(val message: String) : TweetListEvent(), Event.Custom
     data class ShowLoading(val data: List<SelectableTweet>? = listOf()) : TweetListEvent(), Event.Custom
     data class ToggleSelectItem(val item: SelectableTweet) : TweetListEvent(), Event.Custom
+    data class UpdateList(val tweetList: List<SelectableTweet> = emptyList()) : TweetListEvent(), Event.Custom
 }

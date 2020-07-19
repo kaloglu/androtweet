@@ -14,8 +14,8 @@ import com.zsk.androtweet.viewmodels.LoginViewModel
 import com.zsk.androtweet.viewmodels.LoginViewModelFactory
 import kotlinx.android.synthetic.main.login_dialog_fragment.*
 
-abstract class ATBaseDialogFragment<VDB, VM>(resourceLayoutId: Int) : BindingDialogFragment<VDB, VM>(resourceLayoutId)
-        where  VDB : ViewDataBinding, VM : BindableViewModel<*, *> {
+abstract class ATBaseDialogFragment<VDB, VM, S>(resourceLayoutId: Int) : BindingDialogFragment<VDB, VM, S>(resourceLayoutId)
+        where  VDB : ViewDataBinding, VM : BindableViewModel<*, S>, S : com.kaloglu.library.viewmodel.mvi.State {
     override val activity by lazy { getActivity() as ATBaseActivity }
     override val application by lazy { activity.application }
 

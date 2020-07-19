@@ -12,6 +12,7 @@ import com.zsk.androtweet.adapters.TimelineAdapter
 import com.zsk.androtweet.databinding.TweetListFragmentBinding
 import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.mvi.TweetListEvent
+import com.zsk.androtweet.mvi.TweetListState
 import com.zsk.androtweet.ui.fragments.base.ATBaseFragment
 import com.zsk.androtweet.utils.extensions.navGraphViewModels
 import com.zsk.androtweet.viewmodels.TweetListViewModel
@@ -21,7 +22,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListViewModel>(R.layout.tweet_list_fragment) {
+class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListViewModel, TweetListState>(R.layout.tweet_list_fragment) {
     override val viewModel: TweetListViewModel by navGraphViewModels { TweetListViewModelFactory(lifecycle) }
 
     override fun initUserInterface(savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
             when (loginState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
                 is LoginState.Authenticated -> {
-                    viewModel.activeUserId(loginState.user.id)
+                    viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
                 }
             }
         })

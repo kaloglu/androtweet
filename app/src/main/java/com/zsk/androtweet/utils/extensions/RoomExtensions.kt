@@ -7,7 +7,7 @@ import com.twitter.sdk.android.core.models.Tweet as SdkTweet
 import com.twitter.sdk.android.core.models.User as SdkUser
 
 object RoomExtensions {
-    fun SdkTweet.asRoomModel(timelineCursor: TimelineCursor? = null) = SelectableTweet(this, timelineCursor)
+    fun SdkTweet.asRoomModel(timelineCursor: TimelineCursor? = null) = SelectableTweet(this, TimelineCursor(null, null))
 
     fun List<SdkTweet>?.asRoomModel(timelineCursor: TimelineCursor?) = this?.map {
         it.asRoomModel(timelineCursor)

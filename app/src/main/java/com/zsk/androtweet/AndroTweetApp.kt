@@ -1,7 +1,6 @@
 package com.zsk.androtweet
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import com.kaloglu.library.ui.BaseApplication
 import com.twitter.sdk.android.core.*
@@ -38,6 +37,9 @@ class AndroTweetApp : BaseApplication() {
         private lateinit var TWITTER_CORE: TwitterCore
 
         @Volatile
+        private lateinit var ACTIVE_SESSION: TwitterSession
+
+        @Volatile
         private lateinit var API_CLIENT: TwitterApiClient
 
         private val context: Context
@@ -57,7 +59,7 @@ class AndroTweetApp : BaseApplication() {
                 synchronized(TwitterConfig::class.java) {
                     if (!::TWITTER_CONFIG.isInitialized)
                         TWITTER_CONFIG = TwitterConfig.Builder(context)
-                                .logger(DefaultLogger(Log.DEBUG))
+                                .logger(DefaultLogger(1))
                                 .debug(true)
                                 .build()
                 }
@@ -87,25 +89,36 @@ class AndroTweetApp : BaseApplication() {
                 return TWITTER_CORE
             }
 
+        val activeSession: TwitterSession?
+            get() {
+                synchronized(TwitterSession::class.java) {
+                    if (activeSession != twitterCore.sessionManager.activeSession) {
+                        ACTIVE_SESSION = twitterCore.sessionManager.activeSession
+                    }
+                }
+                return ACTIVE_SESSION
+            }
+
         val apiClient: TwitterApiClient
             get() {
                 synchronized(TwitterApiClient::class.java) {
-                    val activeSession = twitterCore.sessionManager.activeSession
+                    if (!::API_CLIENT.isInitialized || activeSession != twitterCore.sessionManager.activeSession) {
 
-                    val customClient = OkHttpClient.Builder()
-                            .addInterceptor(
-                                    HttpLoggingInterceptor().apply {
-                                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                                    }
-                            ).build()
+                        val customClient = OkHttpClient.Builder()
+                                .addInterceptor(
+                                        HttpLoggingInterceptor().apply {
+                                            setLevel(HttpLoggingInterceptor.Level.BODY)
+                                        }
+                                ).build()
 
-                    if (activeSession != null) {
-                        twitterCore.addApiClient(activeSession, TwitterApiClient(activeSession, customClient))
-                    } else {
-                        twitterCore.addGuestApiClient(TwitterApiClient(customClient))
+                        if (activeSession != null) {
+                            twitterCore.addApiClient(activeSession, TwitterApiClient(activeSession, customClient))
+                        } else {
+                            twitterCore.addGuestApiClient(TwitterApiClient(customClient))
+                        }
+
+                        API_CLIENT = twitterCore.apiClient
                     }
-
-                    API_CLIENT = twitterCore.apiClient
                 }
                 return API_CLIENT
             }
