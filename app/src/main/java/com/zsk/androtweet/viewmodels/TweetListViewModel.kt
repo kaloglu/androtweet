@@ -1,6 +1,8 @@
 package com.zsk.androtweet.viewmodels
 
+import android.util.Log
 import androidx.databinding.Bindable
+import androidx.lifecycle.LifecycleObserver
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
@@ -10,14 +12,15 @@ import com.zsk.androtweet.mvi.TweetListState
 import com.zsk.androtweet.repositories.TweetListRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class TweetListViewModel(
         private val repository: TweetListRepository = TweetListRepository.getInstance()
-) : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance) {
-
-    val pagingManager: TweetListRepository = repository
+) : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance), LifecycleObserver {
+    override val eventFlow = MutableStateFlow<TweetListEvent>(TweetListEvent.Init)
+    override val stateFlow = MutableStateFlow<TweetListState>(TweetListState.Init)
 
     @get:Bindable
     var list by bindable(emptyList<SelectableTweet>()) { o, n ->
@@ -27,16 +30,12 @@ class TweetListViewModel(
     @get:Bindable
     var hasSelected: Boolean by bindable(false)
 
-    init {
-        onInit()
-    }
-
     override fun onInit() {
-
+        Log.i("LoginViewModel", "Init")
+        super.onInit()
     }
 
-    override fun onEvent(event: TweetListEvent) {
-        super.onEvent(event)
+    override suspend fun onEvent(event: TweetListEvent) {
         when (event) {
             is TweetListEvent.GetTweetList -> {
                 repository.initialList(event.userId)
@@ -49,7 +48,7 @@ class TweetListViewModel(
     }
 
     fun deleteSelectedTweets() {
-        repository.destroyTweets(list.filter { it.isSelected })
+//        repository.destroyTweets(list.filter { it.isSelected })
     }
 
     private fun toggleSelectAllItem() {
@@ -62,6 +61,7 @@ class TweetListViewModel(
         hasSelected = list.filter { it.result.isEmpty() }.find { it.isSelected }?.isSelected
                 ?: default
     }
+
 
 }
 

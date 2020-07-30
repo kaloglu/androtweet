@@ -5,13 +5,15 @@ import com.kaloglu.library.viewmodel.mvi.State
 import com.zsk.androtweet.models.User
 
 sealed class LoginState : State {
-    object UnAuthenticated : LoginState(), State.Success
-    data class Authenticated(val user: User) : LoginState(), State.Success
+    object Init : LoginState(), State.Init
+    object UnAuthenticated : LoginState(), State.Custom
+    data class Authenticated(val user: User) : LoginState(), State.Custom
 }
 
 sealed class LoginEvent : Event {
-    data class LogIn(val user: User) : LoginEvent(), Event.Custom
-    data class LoggedIn(val user: User) : LoginEvent(), Event.Custom
-    object LogOut : LoginEvent(), Event.Custom
-    object LoggedOut : LoginEvent(), Event.Custom
+    object Init : LoginEvent()
+    data class LogIn(val user: User) : LoginEvent()
+    data class LoggedIn(val user: User) : LoginEvent()
+    object LogOut : LoginEvent()
+    object LoggedOut : LoginEvent()
 }

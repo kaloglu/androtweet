@@ -12,7 +12,9 @@ import com.zsk.androtweet.ui.activities.base.ATBaseActivity
 import com.zsk.androtweet.viewmodels.LoginViewModel
 import com.zsk.androtweet.viewmodels.LoginViewModelFactory
 import kotlinx.android.synthetic.main.login_dialog_fragment.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 abstract class ATBaseFragment<VDB, VM, S>(resourceLayoutId: Int) : BindingFragment<VDB, VM, S>(resourceLayoutId)
         where  VDB : ViewDataBinding, VM : BindableViewModel<*, S>, S : State {
 

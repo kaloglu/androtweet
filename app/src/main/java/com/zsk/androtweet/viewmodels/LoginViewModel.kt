@@ -2,22 +2,31 @@ package com.zsk.androtweet.viewmodels
 
 import android.util.Log
 import androidx.databinding.Bindable
+import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.User
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
-import com.zsk.androtweet.usecases.AddUserUseCaseLegacy
-import com.zsk.androtweet.usecases.ClearUserUseCaseLegacy
-import com.zsk.androtweet.usecases.GetUserUseCaseAsLiveData
+import com.zsk.androtweet.repositories.UserRepository
+import com.zsk.androtweet.utils.ContextProviders
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 
+@ExperimentalCoroutinesApi
 class LoginViewModel(
-        private val getUser: GetUserUseCaseAsLiveData,
-        private val addUser: AddUserUseCaseLegacy,
-        private val clearUser: ClearUserUseCaseLegacy
+        private val contextProviders: ContextProviders = ContextProviders.instance,
+        private val repository: UserRepository = UserRepository.getInstance()
 ) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.instance) {
+
+    override val eventFlow = MutableStateFlow<LoginEvent>(LoginEvent.LoggedOut)
+    override val stateFlow = MutableStateFlow<LoginState>(LoginState.Init)
+
     private val dummyUser = User()
 
     @get:Bindable
@@ -26,24 +35,26 @@ class LoginViewModel(
     @get:Bindable
     var title by bindable("")
 
-    init {
-        Log.i("LoginViewModel", "Init")
-        onInit()
-    }
-
     override fun onInit() {
-        Log.i("LoginViewModel", "onInit")
-        getUser().mapToEvent {
-            user = it ?: dummyUser
-            when (user) {
-                dummyUser -> LoginEvent.LoggedOut
-                else -> LoginEvent.LoggedIn(user)
-            }
+        Log.i("LoginViewModel", "Init")
+        super.onInit()
+        viewModelScope.launch {
+            repository.getUser()
+
+            repository.userFlow
+                    .onEach {
+                        if (it != null)
+                            postEvent(LoginEvent.LoggedIn(it))
+                        else
+                            postEvent(LoginEvent.LoggedOut)
+                    }
+                    .launchIn(this)
+
         }
+
     }
 
-    override fun onEvent(event: LoginEvent) {
-        super.onEvent(event)
+    override suspend fun onEvent(event: LoginEvent) {
         when (event) {
             is LoginEvent.LogIn -> login(event.user)
             is LoginEvent.LogOut -> logout()
@@ -52,9 +63,14 @@ class LoginViewModel(
         }
     }
 
-    private fun login(user: User) = addUser(user)
+    private suspend fun login(user: User) = repository.insert(user)
 
-    private fun logout() = clearUser()
+    private fun logout() {
+        viewModelScope.launch {
+            repository.clean()
+        }
+    }
+
 
 }
 

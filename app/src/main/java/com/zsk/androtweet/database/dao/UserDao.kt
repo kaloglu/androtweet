@@ -1,30 +1,27 @@
 package com.zsk.androtweet.database.dao
 
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import androidx.room.*
 import com.zsk.androtweet.models.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(model: User): Long
+    suspend fun insert(model: User): Long
 
     @Delete
-    fun delete(vararg models: User): Int
+    suspend fun delete(vararg models: User): Int
 
     @Update
-    fun update(model: User): Int
+    suspend fun update(model: User): Int
 
     @Query("SELECT * FROM user LIMIT 1")
-    fun get(): LiveData<User>
+    fun getUser(): Flow<User?>
 
-    @Query("SELECT * FROM user")
-    fun getAll(): List<User>
-
-    @Query("SELECT * FROM user")
-    fun getAll2(): DataSource.Factory<Int, User>
+    fun getUserDistinctUntilChanged() =
+            getUser().distinctUntilChanged()
 
     @Query("DELETE FROM user")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

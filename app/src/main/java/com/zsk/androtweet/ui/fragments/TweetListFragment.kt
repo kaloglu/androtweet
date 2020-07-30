@@ -1,7 +1,7 @@
 package com.zsk.androtweet.ui.fragments
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.kaloglu.library.ktx.isNotNullOrEmpty
@@ -19,6 +19,8 @@ import com.zsk.androtweet.viewmodels.TweetListViewModel
 import com.zsk.androtweet.viewmodels.TweetListViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
@@ -51,14 +53,15 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
             }
 
     private fun setLoginViewModelObserver() {
-        loginViewModel.stateLiveData.observe(viewLifecycleOwner, Observer { loginState ->
+        loginViewModel.stateFlow.onEach { loginState ->
             when (loginState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
                 is LoginState.Authenticated -> {
                     viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
                 }
             }
-        })
+        }.launchIn(lifecycleScope)
     }
+
 }
 

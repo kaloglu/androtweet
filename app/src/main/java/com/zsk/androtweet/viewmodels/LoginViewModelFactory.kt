@@ -4,29 +4,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import com.kaloglu.library.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.usecases.AddUserUseCaseLegacy
-import com.zsk.androtweet.usecases.ClearUserUseCaseLegacy
-import com.zsk.androtweet.usecases.GetUserUseCaseAsLiveData
+import com.zsk.androtweet.repositories.UserRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-class LoginViewModelFactory constructor(
-        lifecycle: Lifecycle,
-        private val getUser: GetUserUseCaseAsLiveData = GetUserUseCaseAsLiveData(),
-        private val addUser: AddUserUseCaseLegacy = AddUserUseCaseLegacy(),
-        private val clearUser: ClearUserUseCaseLegacy = ClearUserUseCaseLegacy()
-) : BaseViewModelFactory<AndroTweetApp>(AndroTweetApp.instance, lifecycle) {
+@ExperimentalCoroutinesApi
+class LoginViewModelFactory constructor(lifecycle: Lifecycle)
+    : BaseViewModelFactory<AndroTweetApp>(AndroTweetApp.instance, lifecycle) {
 
     @Suppress("UNCHECKED_CAST")
     override fun <VM : ViewModel?> create(modelClass: Class<VM>) = when {
         LoginViewModel::class.java.isAssignableFrom(modelClass) -> {
-            registerLifecycle(lifecycle)
-            LoginViewModel(getUser, addUser, clearUser) as VM
+            val repository = UserRepository.getInstance()
+            val viewModel = LoginViewModel(repository = repository)
+            lifecycle.addObserver(viewModel)
+            viewModel as VM
         }
         else -> super.create(modelClass)
     }
 
-    private fun registerLifecycle(lifecycle: Lifecycle) {
-        getUser.registerLifecycle(lifecycle)
-        addUser.registerLifecycle(lifecycle)
-        clearUser.registerLifecycle(lifecycle)
-    }
 }
