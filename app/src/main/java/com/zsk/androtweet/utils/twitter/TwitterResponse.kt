@@ -55,10 +55,12 @@ sealed class TwitterResponse<T> {
                 if (!matcher.find() || matcher.groupCount() != 1) {
                     null
                 } else {
-                    try {
-                        Integer.parseInt(matcher.group(1))
-                    } catch (ex: NumberFormatException) {
-                        null
+                    matcher.group(1)?.let {
+                        try {
+                            Integer.parseInt(it)
+                        } catch (ex: NumberFormatException) {
+                            null
+                        }
                     }
                 }
             }
@@ -76,7 +78,9 @@ sealed class TwitterResponse<T> {
                 while (matcher.find()) {
                     val count = matcher.groupCount()
                     if (count == 2) {
-                        links[matcher.group(2)] = matcher.group(1)
+                        matcher.group(2)?.let { second ->
+                            matcher.group(1)?.let { first -> links[second] = first }
+                        }
                     }
                 }
                 return links

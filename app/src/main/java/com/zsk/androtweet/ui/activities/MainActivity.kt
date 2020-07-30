@@ -9,13 +9,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import com.google.android.material.navigation.NavigationView
-import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.zsk.androtweet.R
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.ui.activities.base.ATBaseActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class MainActivity : ATBaseActivity(R.layout.main_activity), NavigationView.OnNavigationItemSelectedListener {
 
     private val appBarConfiguration by lazy {
@@ -44,9 +45,7 @@ class MainActivity : ATBaseActivity(R.layout.main_activity), NavigationView.OnNa
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE) {
-            activeFragment?.onActivityResult(requestCode, resultCode, data)
-        }
+        activeFragment?.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()

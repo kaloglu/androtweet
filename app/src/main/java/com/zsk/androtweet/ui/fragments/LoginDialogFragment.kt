@@ -1,9 +1,6 @@
 package com.zsk.androtweet.ui.fragments
 
 import android.app.Dialog
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewModelScope
-import com.kaloglu.library.viewmodel.mvi.State
 import com.twitter.sdk.android.core.TwitterException
 import com.zsk.androtweet.BR
 import com.zsk.androtweet.R
@@ -15,13 +12,12 @@ import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.ui.fragments.base.ATBaseDialogFragment
 import com.zsk.androtweet.viewmodels.LoginViewModel
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @ExperimentalCoroutinesApi
 class LoginDialogFragment
-    : ATBaseDialogFragment<LoginDialogFragmentBinding, LoginViewModel, LoginState>(R.layout.login_dialog_fragment) {
+    : ATBaseDialogFragment<LoginDialogFragmentBinding, LoginViewModel, LoginState>(R.layout.login_dialog_fragment), LayoutContainer {
     override val viewModel by lazy { loginViewModel }
 
     private val loginCallback = object : LoginCallback {
@@ -37,7 +33,6 @@ class LoginDialogFragment
     override fun onState(state: LoginState) {
         when (state) {
             is LoginState.Authenticated -> dismiss()
-            is LoginState.Init -> viewModel.postEvent(LoginEvent.Init)
         }
     }
 

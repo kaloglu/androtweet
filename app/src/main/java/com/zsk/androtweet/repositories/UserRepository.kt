@@ -1,8 +1,6 @@
 package com.zsk.androtweet.repositories
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import com.kaloglu.library.ui.interfaces.Repository
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
@@ -10,7 +8,6 @@ import com.zsk.androtweet.database.dao.UserDao
 import com.zsk.androtweet.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 class UserRepository private constructor(private val userDao: UserDao) : Repository<User>, LifecycleObserver {
@@ -30,12 +27,7 @@ class UserRepository private constructor(private val userDao: UserDao) : Reposit
         userDao.update(entity)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    suspend fun getUser() {
-        userDao.getUserDistinctUntilChanged().collect {
-            userFlow.value = it
-        }
-    }
+    fun getUser() = userDao.getUserDistinctUntilChanged()
 
     companion object {
         @Volatile

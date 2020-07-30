@@ -12,8 +12,10 @@ import com.zsk.androtweet.BR
 import com.zsk.androtweet.ui.activities.base.ATBaseActivity
 import com.zsk.androtweet.viewmodels.LoginViewModel
 import com.zsk.androtweet.viewmodels.LoginViewModelFactory
-import kotlinx.android.synthetic.main.login_dialog_fragment.*
+import kotlinx.android.synthetic.main.login_dialog_fragment.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 abstract class ATBaseDialogFragment<VDB, VM, S>(resourceLayoutId: Int) : BindingDialogFragment<VDB, VM, S>(resourceLayoutId)
         where  VDB : ViewDataBinding, VM : BindableViewModel<*, S>, S : com.kaloglu.library.viewmodel.mvi.State {
     override val activity by lazy { getActivity() as ATBaseActivity }
@@ -36,7 +38,7 @@ abstract class ATBaseDialogFragment<VDB, VM, S>(resourceLayoutId: Int) : Binding
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE)
-            twitterLogin?.onActivityResult(requestCode, resultCode, data)
+            containerView.twitterLogin?.onActivityResult(requestCode, resultCode, data)
     }
 
 }

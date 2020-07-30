@@ -1,5 +1,6 @@
 package com.zsk.androtweet.mvi
 
+import com.kaloglu.library.ui.models.ErrorModel
 import com.kaloglu.library.viewmodel.mvi.Event
 import com.kaloglu.library.viewmodel.mvi.State
 import com.zsk.androtweet.models.SelectableTweet
@@ -8,6 +9,9 @@ sealed class TweetListState : State {
     object Init : TweetListState(), State.Init
 
     class SelectedItem(val isSelected: Boolean) : TweetListState(), State.Custom
+    class Failure(override val error: ErrorModel) : TweetListState(), State.Failure {
+        constructor(errorMessage: String) : this(ErrorModel(errorMessage))
+    }
 }
 
 sealed class TweetListEvent : Event {

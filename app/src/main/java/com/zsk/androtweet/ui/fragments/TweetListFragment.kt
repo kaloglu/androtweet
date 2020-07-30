@@ -56,12 +56,9 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
         loginViewModel.stateFlow.onEach { loginState ->
             when (loginState) {
                 is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
-                is LoginState.Authenticated -> {
-                    viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
-                }
+                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
             }
         }.launchIn(lifecycleScope)
     }
-
 }
 

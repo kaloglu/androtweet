@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.fragment.findNavController
 import com.kaloglu.library.viewmodel.BaseViewModelFactory
 import com.zsk.androtweet.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @MainThread
 inline fun <reified VM : ViewModel> Fragment.navGraphViewModels(
         noinline factoryProducer: (() -> BaseViewModelFactory<*>)? = null

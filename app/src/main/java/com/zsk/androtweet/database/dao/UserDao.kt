@@ -19,8 +19,7 @@ interface UserDao {
     @Query("SELECT * FROM user LIMIT 1")
     fun getUser(): Flow<User?>
 
-    fun getUserDistinctUntilChanged() =
-            getUser().distinctUntilChanged()
+    fun getUserDistinctUntilChanged() = getUser().distinctUntilChanged()
 
     @Query("DELETE FROM user")
     suspend fun deleteAll()

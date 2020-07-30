@@ -7,7 +7,9 @@ import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.R
 import com.zsk.androtweet.viewmodels.LoginViewModel
 import com.zsk.androtweet.viewmodels.LoginViewModelFactory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 abstract class ATBaseActivity(resourceLayoutId: Int) : BaseActivity(resourceLayoutId) {
     override val application by lazy { getApplication() as AndroTweetApp }
 
