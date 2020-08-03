@@ -17,8 +17,8 @@ sealed class TweetListState : State {
 sealed class TweetListEvent : Event {
     object Init : TweetListEvent()
     object ToggleSelectAllItem : TweetListEvent()
+    object GetTweetList : TweetListEvent()
 
-    data class GetTweetList(val userId: Long? = null) : TweetListEvent()
     data class ShowError(val message: String) : TweetListEvent()
     data class ShowLoading(val data: List<SelectableTweet>? = listOf()) : TweetListEvent()
     data class ToggleSelectItem(val item: SelectableTweet) : TweetListEvent()

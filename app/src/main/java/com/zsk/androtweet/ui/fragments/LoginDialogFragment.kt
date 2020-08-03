@@ -17,7 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class LoginDialogFragment
-    : ATBaseDialogFragment<LoginDialogFragmentBinding, LoginViewModel, LoginState>(R.layout.login_dialog_fragment), LayoutContainer {
+    : ATBaseDialogFragment<LoginDialogFragmentBinding, LoginViewModel, LoginState>(R.layout.login_dialog_fragment) {
     override val viewModel by lazy { loginViewModel }
 
     private val loginCallback = object : LoginCallback {

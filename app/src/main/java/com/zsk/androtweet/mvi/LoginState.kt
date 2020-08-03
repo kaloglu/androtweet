@@ -7,7 +7,7 @@ import com.zsk.androtweet.models.User
 sealed class LoginState : State {
     object Init : LoginState(), State.Init
     object UnAuthenticated : LoginState(), State.Custom
-    data class Authenticated(val user: User) : LoginState(), State.Custom
+    object Authenticated : LoginState(), State.Custom
 }
 
 sealed class LoginEvent : Event {

@@ -12,18 +12,14 @@ import com.zsk.androtweet.repositories.UserRepository
 import com.zsk.androtweet.utils.ContextProviders
 import com.zsk.androtweet.utils.extensions.RoomExtensions.onUndispatchedIO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class LoginViewModel(
-        private val contextProviders: ContextProviders = ContextProviders.instance,
-        private val repository: UserRepository = UserRepository.getInstance()
+        private val repository: UserRepository = UserRepository.getInstance(),
+        private val contextProviders: ContextProviders = ContextProviders.instance
 ) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.instance) {
-
-    override val eventFlow = MutableStateFlow<LoginEvent>(LoginEvent.Init)
-    override val stateFlow = MutableStateFlow<LoginState>(LoginState.Init)
 
     @get:Bindable
     var user by bindable(User())
@@ -31,9 +27,7 @@ class LoginViewModel(
     @get:Bindable
     var title by bindable("")
 
-    override fun onInit() {
-        super.onInit()
-
+    init {
         getUser()
     }
 
@@ -41,7 +35,7 @@ class LoginViewModel(
         when (event) {
             is LoginEvent.LogIn -> addUser(event.user)
             is LoginEvent.LogOut -> logoutUser()
-            is LoginEvent.LoggedOut -> logout()
+            is LoginEvent.LoggedOut -> postState(LoginState.UnAuthenticated)
         }
     }
 
@@ -49,9 +43,10 @@ class LoginViewModel(
         viewModelScope.onUndispatchedIO(contextProviders) {
             repository.getUser()
                     .collect {
+                        user = it ?: User()
                         when {
-                            it != null -> login(it)
-                            else -> logout()
+                            it != null -> postState(LoginState.Authenticated)
+                            else -> postEvent(LoginEvent.LoggedOut)
                         }
                     }
         }
@@ -65,14 +60,6 @@ class LoginViewModel(
 
     private suspend fun addUser(user: User) = viewModelScope.launch(contextProviders.IO) {
         repository.insert(user)
-    }
-
-    private fun logout() {
-        postState(LoginState.UnAuthenticated)
-    }
-
-    private fun login(user: User) {
-        postState(LoginState.Authenticated(user))
     }
 
 }

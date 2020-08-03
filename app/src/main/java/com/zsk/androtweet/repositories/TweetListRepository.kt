@@ -13,12 +13,10 @@ import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.SelectableTweet
 import com.zsk.androtweet.utils.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 typealias resultType = Pair<List<SelectableTweet>?, String?>
 
-@InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 class TweetListRepository : PagedList.BoundaryCallback<SelectableTweet>(), Repository<List<SelectableTweet>> {
 

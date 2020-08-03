@@ -25,16 +25,28 @@ import kotlinx.coroutines.flow.onEach
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListViewModel, TweetListState>(R.layout.tweet_list_fragment) {
-    override val viewModel: TweetListViewModel by navGraphViewModels { TweetListViewModelFactory(lifecycle) }
+
+    override val viewModel: TweetListViewModel by navGraphViewModels {
+        TweetListViewModelFactory(lifecycle, loginViewModel)
+    }
 
     override fun initUserInterface(savedInstanceState: Bundle?) {
         setDatabindingParams()
-        setLoginViewModelObserver()
+        setLoginStateObserver()
     }
 
     private fun setDatabindingParams() {
         viewDataBinding.tweetsRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         viewDataBinding.adapter = createTimeLineAdapter()
+    }
+
+    private fun setLoginStateObserver() {
+        viewModel.loginStateFlow?.onEach { loginState ->
+            when (loginState) {
+                is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
+                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList)
+            }
+        }?.launchIn(lifecycleScope)
     }
 
     private fun createTimeLineAdapter() =
@@ -51,14 +63,5 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
                     true
                 }
             }
-
-    private fun setLoginViewModelObserver() {
-        loginViewModel.stateFlow.onEach { loginState ->
-            when (loginState) {
-                is LoginState.UnAuthenticated -> findNavController().navigate(R.id.loginDialogFragment)
-                is LoginState.Authenticated -> viewModel.postEvent(TweetListEvent.GetTweetList(loginState.user.id))
-            }
-        }.launchIn(lifecycleScope)
-    }
 }
 

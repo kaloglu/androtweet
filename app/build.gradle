@@ -96,7 +96,7 @@ dependencies {
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.72'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
 
 }
