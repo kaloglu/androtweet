@@ -42,4 +42,5 @@ object BindingConversions {
             else -> date.toDateString(Constants.UI_DATE_PATTERN)
         }
     }
+
 }

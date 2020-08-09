@@ -5,25 +5,25 @@ import com.kaloglu.library.ui.interfaces.Repository
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
 import com.zsk.androtweet.database.dao.UserDao
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.models.UserFromDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @ExperimentalCoroutinesApi
-class UserRepository private constructor(private val userDao: UserDao) : Repository<User>, LifecycleObserver {
-    var userFlow = MutableStateFlow<User?>(null)
+class UserRepository private constructor(private val userDao: UserDao) : Repository<UserFromDao>, LifecycleObserver {
+    var userFlow = MutableStateFlow<UserFromDao?>(null)
 
     suspend fun clean() = userDao.deleteAll()
 
-    override suspend fun delete(entity: User) {
+    override suspend fun delete(entity: UserFromDao) {
         userDao.delete(entity)
     }
 
-    override suspend fun insert(entity: User) {
+    override suspend fun insert(entity: UserFromDao) {
         userDao.insert(entity)
     }
 
-    override suspend fun update(entity: User) {
+    override suspend fun update(entity: UserFromDao) {
         userDao.update(entity)
     }
 

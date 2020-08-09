@@ -6,13 +6,12 @@ import com.zsk.androtweet.BR
 import com.zsk.androtweet.R
 import com.zsk.androtweet.databinding.LoginDialogFragmentBinding
 import com.zsk.androtweet.interfaces.LoginCallback
-import com.zsk.androtweet.interfaces.twittercallback.TwitterSessionCallback
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.twittercallback.TwitterSessionCallback
+import com.zsk.androtweet.models.UserFromDao
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.ui.fragments.base.ATBaseDialogFragment
 import com.zsk.androtweet.viewmodels.LoginViewModel
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -21,7 +20,7 @@ class LoginDialogFragment
     override val viewModel by lazy { loginViewModel }
 
     private val loginCallback = object : LoginCallback {
-        override fun login(user: User) = viewModel.postEvent(LoginEvent.LogIn(user))
+        override fun login(user: UserFromDao) = viewModel.postEvent(LoginEvent.LogIn(user))
         override fun failure(exception: TwitterException?) = viewModel.postEvent(LoginEvent.LogOut)
     }
 

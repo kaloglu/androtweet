@@ -1,26 +1,20 @@
 package com.zsk.androtweet.viewmodels
 
-import androidx.paging.ItemKeyedDataSource
-import com.kaloglu.library.ui.RecyclerItem
-import com.zsk.androtweet.models.SelectableTweet
-import com.zsk.androtweet.repositories.TweetListRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 /*
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-class SelectableTweetDataSource(private val repository: TweetListRepository) : ItemKeyedDataSource<Long, SelectableTweet>() {
-    override fun loadInitial(initialParams: LoadInitialParams<Long>, loadInitialCallback: LoadInitialCallback<SelectableTweet>) =
+class TweetFromDaoDataSource(private val repository: TweetListRepository) : ItemKeyedDataSource<Long, TweetFromDao>() {
+    override fun loadInitial(initialParams: LoadInitialParams<Long>, loadInitialCallback: LoadInitialCallback<TweetFromDao>) =
             repository.getUserTimelineNext(initialParams.requestedLoadSize, initialParams.requestedInitialKey, loadInitialCallback)
 
-    override fun loadAfter(params: LoadParams<Long>, loadCallback: LoadCallback<SelectableTweet>) =
+    override fun loadAfter(params: LoadParams<Long>, loadCallback: LoadCallback<TweetFromDao>) =
             repository.getUserTimelinePrevious(params.requestedLoadSize, params.key, loadCallback)
 
-    override fun loadBefore(params: LoadParams<Long>, loadCallback: LoadCallback<SelectableTweet>) =
+    override fun loadBefore(params: LoadParams<Long>, loadCallback: LoadCallback<TweetFromDao>) =
             repository.getUserTimelineNext(params.requestedLoadSize, params.key, loadCallback)
 
-    override fun getKey(p0: SelectableTweet): Long = p0.tweet.id
+    override fun getKey(p0: TweetFromDao): Long = p0.tweet.id
 }
 */
 

@@ -5,24 +5,22 @@ import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.models.UserFromDao
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.repositories.UserRepository
-import com.zsk.androtweet.utils.ContextProviders
+import com.zsk.androtweet.utils.extensions.RoomExtensions.onIO
 import com.zsk.androtweet.utils.extensions.RoomExtensions.onUndispatchedIO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class LoginViewModel(
-        private val repository: UserRepository = UserRepository.getInstance(),
-        private val contextProviders: ContextProviders = ContextProviders.instance
+        private val repository: UserRepository = UserRepository.getInstance()
 ) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.instance) {
 
     @get:Bindable
-    var user by bindable(User())
+    var user by bindable(UserFromDao())
 
     @get:Bindable
     var title by bindable("")
@@ -40,12 +38,12 @@ class LoginViewModel(
     }
 
     private fun getUser() {
-        viewModelScope.onUndispatchedIO(contextProviders) {
+        viewModelScope.onUndispatchedIO {
             repository.getUser()
                     .collect {
-                        user = it ?: User()
+                        user = it ?: UserFromDao()
                         when {
-                            it != null -> postState(LoginState.Authenticated)
+                            it != null -> postState(LoginState.Authenticated(user))
                             else -> postEvent(LoginEvent.LoggedOut)
                         }
                     }
@@ -53,12 +51,12 @@ class LoginViewModel(
     }
 
     private suspend fun logoutUser() {
-        viewModelScope.launch(contextProviders.IO) {
+        viewModelScope.onIO {
             repository.clean()
         }
     }
 
-    private suspend fun addUser(user: User) = viewModelScope.launch(contextProviders.IO) {
+    private suspend fun addUser(user: UserFromDao) = viewModelScope.onIO {
         repository.insert(user)
     }
 

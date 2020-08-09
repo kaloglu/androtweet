@@ -3,15 +3,17 @@ package com.zsk.androtweet.utils.databinding
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
-import com.kaloglu.library.databinding4vm.adapter.DataBoundListAdapter
-import com.kaloglu.library.databinding4vm.adapter.DataBoundPagedListAdapter
+import com.kaloglu.library.databinding4vm.adapter.DataBoundPagingDataAdapter
 import com.kaloglu.library.ktx.isNotNullOrEmpty
 import com.kaloglu.library.ktx.withAnimation
 import com.kaloglu.library.ui.RecyclerItem
 import com.zsk.androtweet.R
-import com.zsk.androtweet.viewmodels.PagingManager
+import com.zsk.androtweet.utils.extensions.RoomExtensions.onIO
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 
 @BindingAdapter("tweetSelection")
 fun setBackground(
@@ -43,28 +45,21 @@ fun setErrorLineBackground(
 
 }
 
-@BindingAdapter("adapter", "items", requireAll = true)
-fun <RI : RecyclerItem> setItems(
-        recyclerView: RecyclerView,
-        adapter: DataBoundListAdapter<RI>,
-        items: List<RI>
-) {
-    recyclerView.adapter = adapter.apply {
-        submitList(items)
-    }
-
-}
-
+@ExperimentalCoroutinesApi
 @Suppress("UNCHECKED_CAST")
-@BindingAdapter("adapter", "items", "pagingManager", requireAll = true)
-fun <RI : RecyclerItem> setPagedItems(
+@BindingAdapter("datas")
+fun <RI : RecyclerItem> setDatas(
         recyclerView: RecyclerView,
-        adapter: DataBoundPagedListAdapter<RI>,
-        items: List<RI>,
-        pagingManager: PagingManager<*, RI>
+        datas: PagingData<RI>
 ) {
-    recyclerView.adapter = adapter.apply {
-        submitList(pagingManager.getPagedList(items))
+    recyclerView.adapter?.apply {
+        if (this is DataBoundPagingDataAdapter<*>) {
+            (this as DataBoundPagingDataAdapter<RI>)
+            GlobalScope.onIO {
+                submitData(datas)
+
+            }
+        }
     }
 
 }

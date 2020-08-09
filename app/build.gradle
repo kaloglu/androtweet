@@ -48,8 +48,8 @@ dependencies {
     implementation "com.github.kaloglu.libraries:viewmodel:${librariesVersion}"
     implementation "com.github.kaloglu.libraries:databinding4vm:${librariesVersion}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
-    implementation 'com.google.android.gms:play-services-ads:19.2.0'
+//    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+//    implementation 'com.google.android.gms:play-services-ads:19.3.0'
 
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
@@ -73,7 +73,8 @@ dependencies {
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
-    implementation "android.arch.paging:runtime:$pagingVersion"
+    implementation "androidx.paging:paging-runtime:$pagingVersion"
+
     androidTestImplementation "androidx.navigation:navigation-testing:$navigationVersion"
     implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
     implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'

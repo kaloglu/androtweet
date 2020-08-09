@@ -1,112 +1,89 @@
 package com.zsk.androtweet.repositories
 
 import androidx.annotation.WorkerThread
-import androidx.paging.PagedList
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.kaloglu.library.ui.interfaces.Repository
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterApiException
 import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.sdk.android.tweetui.TimelineCursor
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.models.SelectableTweet
+import com.zsk.androtweet.database.AndroTweetDatabase
+import com.zsk.androtweet.models.TweetFromDao
+import com.zsk.androtweet.remote.TweetListRemoteMediator
 import com.zsk.androtweet.utils.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-
-typealias resultType = Pair<List<SelectableTweet>?, String?>
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlin.coroutines.suspendCoroutine
 
 @ExperimentalCoroutinesApi
-class TweetListRepository : PagedList.BoundaryCallback<SelectableTweet>(), Repository<List<SelectableTweet>> {
+@ExperimentalPagingApi
+class TweetListRepository private constructor(private val db: AndroTweetDatabase) : Repository<List<TweetFromDao>> {
 
-    val tweetFlow = MutableStateFlow(resultType(emptyList(), null))
-    private var userId: Long? = null
-
-    @WorkerThread
-    override suspend fun delete(entity: List<SelectableTweet>) = Unit
-
-    @WorkerThread
-    override suspend fun update(entity: List<SelectableTweet>) = Unit
-
-    @WorkerThread
-    override suspend fun insert(entity: List<SelectableTweet>) = Unit
-
-    override fun onItemAtEndLoaded(itemAtEnd: SelectableTweet) =
-            getUserTimeline(minPosition = itemAtEnd.timelineCursor.minPosition)
-
-    override fun onItemAtFrontLoaded(itemAtFront: SelectableTweet) =
-            getUserTimeline(maxPosition = itemAtFront.timelineCursor.maxPosition)
-
-    fun destroyTweets(selectedTweetList: List<SelectableTweet>) {
-        selectedTweetList
-//                .filter { it.result.isEmpty() }
-                .forEach {
-                    AndroTweetApp.apiClient.statusesService
-                            .destroy(it.tweet.id, true)
-                            .enqueue(TweetDestroyCallback(it))
-                }
+    private val tweetListDao by lazy {
+        db.tweetListDao()
     }
 
-    fun getUserTimeline(minPosition: Long? = null,
-                        maxPosition: Long? = null,
-                        pageSize: Int = Constants.initialLoadSizeHint) {
-        if (userId == null) return
+    @WorkerThread
+    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
+    override suspend fun delete(deleteList: List<TweetFromDao>) {
+        tweetListDao.delete(
+                deleteList
+                        .map { tweet ->
 
-        AndroTweetApp.apiClient.statusesService
-                .userTimeline(
-                        userId,
-                        null,
-                        pageSize,
-                        minPosition,
-                        maxPosition,
-                        true,
-                        false,
-                        false,
-                        false
-                ).enqueue(object : Callback<List<Tweet>>() {
+                            suspendCoroutine<TweetFromDao> { continuation ->
 
-                    override fun success(result: Result<List<Tweet>>) {
-                        val items = result.data
-                        var minPos: Long? = null
-                        var maxPos: Long? = null
+                                AndroTweetApp.apiClient.statusesService
+                                        .destroy(tweet.id, true)
+                                        .enqueue(object : Callback<Tweet>() {
+                                            override fun success(result: Result<Tweet>?) {
+//                                        tweet.isDeleted = true
+                                                continuation.resumeWith(kotlin.Result.success(tweet))
 
-                        if (items.isNotEmpty()) {
-                            minPos = (items[items.size - 1]).id
-                            maxPos = (items[0]).id
+                                            }
+
+                                            override fun failure(exception: TwitterException?) {
+                                                continuation.resumeWith(kotlin.Result.failure((exception as TwitterApiException)))
+                                            }
+
+                                        })
+                            }
                         }
-                        val timelineCursor = TimelineCursor(minPos, maxPos)
-
-                        val selectableTweets = items.map {
-                            SelectableTweet(it, timelineCursor)
-                        }
-                        tweetFlow.value = resultType(selectableTweets, null)
-                    }
-
-                    override fun failure(exception: TwitterException) {
-                        exception.printStackTrace()
-                        tweetFlow.value = resultType(null, (exception as TwitterApiException).errorMessage)
-                    }
-                })
+        )
     }
 
-    fun initialList(userId: Long?) {
-        userId?.let {
-            this.userId = it
-        }
-        getUserTimeline()
-    }
+    @WorkerThread
+    override suspend fun update(entity: List<TweetFromDao>) = tweetListDao.update(entity)
 
+    @WorkerThread
+    @Deprecated(level = DeprecationLevel.HIDDEN, message = "Do not use that!")
+    override suspend fun insert(entity: List<TweetFromDao>) = tweetListDao.insert(entity)
+
+    fun get(userId: Long) = Pager(
+            config = PagingConfig(
+                    Constants.pageSize,
+                    prefetchDistance = Constants.prefetchDistance,
+                    initialLoadSize = Constants.pageSize
+            ),
+            remoteMediator = TweetListRemoteMediator(db, userId)
+    ) {
+        tweetListDao.get(userId)
+    }.flow.distinctUntilChanged()
 
     companion object {
 
         @Volatile
         private lateinit var INSTANCE: TweetListRepository
 
-        fun getInstance(): TweetListRepository {
+        fun getInstance(database: AndroTweetDatabase = AndroTweetApp.database): TweetListRepository {
             synchronized(this) {
                 if (!::INSTANCE.isInitialized) {
-                    INSTANCE = TweetListRepository()
+                    INSTANCE = TweetListRepository(
+                            database
+                    )
                 }
             }
             return INSTANCE

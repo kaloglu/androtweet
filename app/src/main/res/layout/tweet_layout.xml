@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="selectableTweet"
-            type="com.zsk.androtweet.models.SelectableTweet" />
+            name="tweet"
+            type="com.zsk.androtweet.models.TweetFromDao" />
 
     </data>
 
@@ -20,13 +20,13 @@
         android:paddingTop="@dimen/top_margin"
         android:paddingEnd="@dimen/end_margin"
         android:paddingBottom="@dimen/bottom_margin"
-        binding:tweetSelection="@{selectableTweet.isSelected}"
+        binding:tweetSelection="@{tweet.isSelected}"
         tools:targetApi="m">
 
         <TextView
             android:id="@+id/tweet_on_tweets"
             style="@style/TextView.Main"
-            android:text="@{selectableTweet.tweet.text}"
+            android:text="@{tweet.text}"
             android:textAppearance="@style/Main"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@{selectableTweet.tweet.createdAt}"
+            android:text="@{tweet.createdAt}"
             android:textAppearance="@style/Time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tweet_on_tweets"
@@ -75,7 +75,7 @@
                 <TextView
                     android:id="@+id/rt_count_on_tweets"
                     style="@style/TextView.SubInfo"
-                    android:text="@{Integer.toString(selectableTweet.tweet.favoriteCount)}"
+                    android:text="@{Integer.toString(tweet.favoriteCount)}"
                     android:textAppearance="@style/SubInfo.Count"
                     app:layout_constraintBottom_toBottomOf="@id/rt_icon_on_tweets"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +106,7 @@
                 <TextView
                     android:id="@+id/fav_count_on_tweets"
                     style="@style/TextView.SubInfo"
-                    android:text="@{Integer.toString(selectableTweet.tweet.retweetCount)}"
+                    android:text="@{Integer.toString(tweet.retweetCount)}"
                     android:textAppearance="@style/SubInfo.Count"
                     app:layout_constraintBottom_toBottomOf="@id/fav_icon_on_tweets"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -123,13 +123,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Deletion is succeed!"
-            android:visibility="@{selectableTweet.isDeleted || !selectableTweet.result.empty}"
+            android:visibility="@{false}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/time_on_tweets"
-            app:layout_constraintTop_toBottomOf="@+id/time_on_tweets"
-            binding:isDeleted="@{selectableTweet.isDeleted}"
-            binding:result="@{selectableTweet.result}" />
+            app:layout_constraintTop_toBottomOf="@+id/time_on_tweets" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
