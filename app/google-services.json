@@ -1,0 +1,78 @@
+{
+  "project_info": {
+    "project_number": "590814567507",
+    "firebase_url": "https://admob-app-id-3131203340.firebaseio.com",
+    "project_id": "admob-app-id-3131203340",
+    "storage_bucket": "admob-app-id-3131203340.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590814567507:android:95bb5503dd36dd32",
+        "android_client_info": {
+          "package_name": "com.zsk.androtweet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590814567507-i5sq06kf2kv146mf5arull0fv44de6rc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBruYyYrkMjYskjQ9gR2GiTZwRCfg_WjK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590814567507-i5sq06kf2kv146mf5arull0fv44de6rc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-0165663276066705~3131203340"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590814567507:android:cf3f09af0dce087716baa6",
+        "android_client_info": {
+          "package_name": "com.zsk.androtweet.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590814567507-33j5ch22opj4hi55qlahqvdk4j8jbavm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zsk.androtweet.debug",
+            "certificate_hash": "6825ed1e0e9bd9d40bf096bdab9832e7f30a0b24"
+          }
+        },
+        {
+          "client_id": "590814567507-i5sq06kf2kv146mf5arull0fv44de6rc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBruYyYrkMjYskjQ9gR2GiTZwRCfg_WjK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590814567507-i5sq06kf2kv146mf5arull0fv44de6rc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,10 +6,10 @@ import com.zsk.androtweet.BR
 import com.zsk.androtweet.R
 import com.zsk.androtweet.databinding.LoginDialogFragmentBinding
 import com.zsk.androtweet.interfaces.LoginCallback
-import com.zsk.androtweet.twittercallback.TwitterSessionCallback
 import com.zsk.androtweet.models.UserFromDao
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
+import com.zsk.androtweet.twittercallback.TwitterSessionCallback
 import com.zsk.androtweet.ui.fragments.base.ATBaseDialogFragment
 import com.zsk.androtweet.viewmodels.LoginViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,6 +27,7 @@ class LoginDialogFragment
     override fun initUserInterface(dialog: Dialog) {
         viewDataBinding.setVariable(BR.callback, TwitterSessionCallback(loginCallback))
         viewModel.title = "You should Login with your twitter Accounts!"
+
     }
 
     override fun onState(state: LoginState) {
