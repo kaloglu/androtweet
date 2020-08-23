@@ -36,6 +36,7 @@ data class TweetFromDao(
         var source: String? = null,
         var createdAt: Date = Converters.longToDate(),
         var cachedAt: Date = Converters.longToDate(),
+        var isDeleted: Boolean = false,
         override var layoutId: Int = LAYOUT_ID
 
 ) : RecyclerBindableItem(), BaseModel {

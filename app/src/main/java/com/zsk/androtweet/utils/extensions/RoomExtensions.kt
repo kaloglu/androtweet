@@ -37,7 +37,7 @@ object RoomExtensions {
     @JvmStatic
     fun List<Tweet>.asPersistList() = mapTo(mutableListOf()) {
         it.asPersistModel()
-    }
+    }.toList()
 
     @JvmStatic
     fun Tweet.asPersistModel() = TweetFromDao(

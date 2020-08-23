@@ -4,7 +4,6 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.filter
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.kaloglu.library.viewmodel.BaseViewModel
@@ -15,7 +14,6 @@ import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.mvi.TweetListState
 import com.zsk.androtweet.repositories.TweetListRepository
 import com.zsk.androtweet.utils.extensions.RoomExtensions.onIO
-import com.zsk.androtweet.utils.extensions.RoomExtensions.onUndispatchedIO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -57,7 +55,7 @@ class TweetListViewModel(
     private suspend fun getTweetList(event: TweetListEvent.GetTweetList) {
         viewModelScope.onIO {
             repository
-                    .get(event.user.id)
+                    .getTweets(event.user.id)
                     .collectLatest {
                         postState(TweetListState.UpdateUI(it))
                     }

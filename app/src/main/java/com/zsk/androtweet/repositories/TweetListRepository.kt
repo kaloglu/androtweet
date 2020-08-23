@@ -12,6 +12,7 @@ import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.models.Tweet
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
+import com.zsk.androtweet.models.ListType
 import com.zsk.androtweet.models.TweetFromDao
 import com.zsk.androtweet.remote.TweetListRemoteMediator
 import com.zsk.androtweet.utils.Constants
@@ -60,18 +61,17 @@ class TweetListRepository private constructor(private val db: AndroTweetDatabase
 
     @WorkerThread
     @Deprecated(level = DeprecationLevel.HIDDEN, message = "Do not use that!")
-    override suspend fun insert(entity: List<TweetFromDao>) = tweetListDao.insert(entity)
+    override suspend fun insert(entity: List<TweetFromDao>) = tweetListDao.insertAll(entity)
 
-    fun get(userId: Long) = Pager(
+    fun getTweets(userId: Long, listType: ListType = ListType.TWEETS) = Pager(
             config = PagingConfig(
                     Constants.pageSize,
                     prefetchDistance = Constants.prefetchDistance,
                     initialLoadSize = Constants.pageSize
             ),
-            remoteMediator = TweetListRemoteMediator(db, userId)
-    ) {
-        tweetListDao.get(userId)
-    }.flow.distinctUntilChanged()
+            remoteMediator = TweetListRemoteMediator(db, userId, listType),
+            pagingSourceFactory = { tweetListDao.getTweets(userId = userId) }
+    ).flow.distinctUntilChanged()
 
     companion object {
 
