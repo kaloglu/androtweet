@@ -1,6 +1,5 @@
 package com.zsk.androtweet.database.dao
 
-import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.paging.PagingSource
 import androidx.room.*

@@ -14,7 +14,7 @@ import com.zsk.androtweet.models.UserFromDao
 import com.zsk.androtweet.utils.Converters
 
 @TypeConverters(Converters::class)
-@Database(entities = [UserFromDao::class, TweetFromDao::class, TweetCursor::class], version = 28)
+@Database(entities = [UserFromDao::class, TweetFromDao::class, TweetCursor::class], version = 31)
 abstract class AndroTweetDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun tweetListDao(): TweetListDao

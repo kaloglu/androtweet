@@ -4,10 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import com.kaloglu.library.databinding4vm.model.RecyclerBindableItem
+import com.kaloglu.library.ktx.currentTimestamp
 import com.kaloglu.library.ui.BaseModel
 import com.zsk.androtweet.R
-import com.zsk.androtweet.utils.Converters
-import java.util.*
 
 @Suppress("CovariantEquals")
 @Entity(
@@ -34,8 +33,8 @@ data class TweetFromDao(
         var quotedStatusIdStr: String? = null,
         var lang: String? = null,
         var source: String? = null,
-        var createdAt: Date = Converters.longToDate(),
-        var cachedAt: Date = Converters.longToDate(),
+        var createdAt: Long = currentTimestamp(),
+        var cachedAt: Long = currentTimestamp(),
         var isDeleted: Boolean = false,
         override var layoutId: Int = LAYOUT_ID
 
@@ -50,7 +49,6 @@ data class TweetFromDao(
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getID() = id as T
     //endregion
-
 
     companion object {
         const val LAYOUT_ID = R.layout.tweet_layout

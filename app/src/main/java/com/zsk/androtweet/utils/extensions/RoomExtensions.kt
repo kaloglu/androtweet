@@ -1,11 +1,9 @@
 package com.zsk.androtweet.utils.extensions
 
-import com.kaloglu.library.ktx.toDate
 import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.models.User
 import com.zsk.androtweet.models.TweetFromDao
 import com.zsk.androtweet.models.UserFromDao
-import com.zsk.androtweet.utils.Constants
 import com.zsk.androtweet.utils.ContextProviders
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -57,6 +55,6 @@ object RoomExtensions {
             lang = lang,
             quotedStatusIdStr = quotedStatusIdStr,
             source = source,
-            createdAt = createdAt.toDate(Constants.TWEET_DATE_PATTERN)
+            createdAt = createdAt.toTimeStamp()
     )
 }

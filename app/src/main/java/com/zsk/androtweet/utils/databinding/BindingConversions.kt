@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.BindingConversion
 import com.kaloglu.library.ktx.*
 import com.zsk.androtweet.utils.Constants
+import com.zsk.androtweet.utils.Converters
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -42,5 +43,9 @@ object BindingConversions {
             else -> date.toDateString(Constants.UI_DATE_PATTERN)
         }
     }
+
+    @BindingConversion
+    @JvmStatic
+    fun longToString(long: Long) = dateToString(Converters.longToDate(long))
 
 }
