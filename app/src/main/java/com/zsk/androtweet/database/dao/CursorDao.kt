@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface CursorDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertAll(cursors: List<TweetCursor>)
+    suspend fun insertAll(cursors: TweetCursor)
 
     @Query("SELECT * FROM tweet_cursor WHERE type = :listType")
     fun cursor(listType: ListType): Flow<TweetCursor?>

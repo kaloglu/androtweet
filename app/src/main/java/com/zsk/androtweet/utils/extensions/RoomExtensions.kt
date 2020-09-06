@@ -10,14 +10,16 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 object RoomExtensions {
+
+    @ExperimentalCoroutinesApi
     fun CoroutineScope.onUndispatchedIO(contextProviders: ContextProviders = ContextProviders.instance, function: suspend CoroutineScope.() -> Unit) {
         launch(contextProviders.IO, CoroutineStart.UNDISPATCHED) {
             function()
         }
     }
 
+    @ExperimentalCoroutinesApi
     fun CoroutineScope.onIO(contextProviders: ContextProviders = ContextProviders.instance, function: suspend CoroutineScope.() -> Unit) {
         launch(contextProviders.IO) {
             function()

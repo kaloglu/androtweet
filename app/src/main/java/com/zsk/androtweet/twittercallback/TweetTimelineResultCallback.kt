@@ -5,25 +5,41 @@ import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterApiException
 import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.sdk.android.tweetui.TimelineResult
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.ProducerScope
-import kotlinx.coroutines.channels.sendBlocking
+import com.zsk.androtweet.models.ListType
+import com.zsk.androtweet.models.TweetCursor
+import com.zsk.androtweet.models.TweetFromDao
+import com.zsk.androtweet.utils.extensions.RoomExtensions.asPersistList
+import retrofit2.Response
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resumeWithException
 
-@ExperimentalCoroutinesApi
-class TweetTimelineResultCallback(
-        private val callbackScope: ProducerScope<TimelineResult<Tweet>>
-) : Callback<TimelineResult<Tweet>>() {
+data class TimelineResult(
+        val cursor: TweetCursor,
+        val items: List<TweetFromDao>,
+        val response: Response<*>
+)
 
-    override fun success(result: Result<TimelineResult<Tweet>>) =
-            callbackScope.sendBlocking(result.data)
-
-    override fun failure(exception: TwitterException) {
-        exception as TwitterApiException
-        exception.printStackTrace()
-        callbackScope.cancel(exception.errorMessage, cause = exception)
+internal class TweetsCallback(private val continuation: Continuation<TimelineResult>, private val listType: ListType) : Callback<List<Tweet>>() {
+    override fun success(result: Result<List<Tweet>>) {
+        continuation.resumeWith(
+                kotlin.Result.success(result.mapTo(listType))
+        )
     }
 
+    override fun failure(exception: TwitterException) {
+        exception as TwitterApiException // why cancelled???
+        exception.printStackTrace()
+        continuation.resumeWithException(exception)
+    }
 
 }
+
+private fun Result<List<Tweet>>.mapTo(listType: ListType) = TimelineResult(
+        TweetCursor(
+                type = listType,
+                maxPosition = data.lastOrNull()?.id,
+                minPosition = data.firstOrNull()?.id
+        ),
+        data.asPersistList(),
+        response
+)

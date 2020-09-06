@@ -89,10 +89,10 @@ class AndroTweetApp : BaseApplication() {
                 return TWITTER_CORE
             }
 
-        val activeSession: TwitterSession?
+        val activeSession: TwitterSession
             get() {
                 synchronized(TwitterSession::class.java) {
-                    if (activeSession != twitterCore.sessionManager.activeSession) {
+                    if (!::ACTIVE_SESSION.isInitialized) {
                         ACTIVE_SESSION = twitterCore.sessionManager.activeSession
                     }
                 }
@@ -103,13 +103,10 @@ class AndroTweetApp : BaseApplication() {
             get() {
                 synchronized(TwitterApiClient::class.java) {
                     if (!::API_CLIENT.isInitialized || activeSession != twitterCore.sessionManager.activeSession) {
-
+                        val loggingInterceptor = HttpLoggingInterceptor()
+                        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                         val customClient = OkHttpClient.Builder()
-                                .addInterceptor(
-                                        HttpLoggingInterceptor().apply {
-                                            setLevel(HttpLoggingInterceptor.Level.BODY)
-                                        }
-                                ).build()
+                                .addInterceptor(loggingInterceptor).build()
 
                         if (activeSession != null) {
                             twitterCore.addApiClient(activeSession, TwitterApiClient(activeSession, customClient))
