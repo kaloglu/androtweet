@@ -8,8 +8,8 @@ import com.zsk.androtweet.utils.Converters
 data class TweetCursor(
         @PrimaryKey
         val type: ListType = Converters.stringToListType(),
-        val maxPosition: Long?,
-        val minPosition: Long?
+        val maxPosition: String?,
+        val minPosition: String?
 )
 
 enum class ListType {

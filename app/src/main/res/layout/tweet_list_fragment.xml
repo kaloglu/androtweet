@@ -18,13 +18,20 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.TweetListFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tweetsRecyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            binding:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="10"
-            tools:listitem="@layout/tweet_layout" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tweetsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                binding:items="@{viewModel.tweetList}"
+                binding:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/tweet_layout" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/deleteFab"

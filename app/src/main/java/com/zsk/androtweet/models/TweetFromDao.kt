@@ -1,8 +1,10 @@
 package com.zsk.androtweet.models
 
+import androidx.databinding.Bindable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
+import com.kaloglu.library.databinding4vm.bindable
 import com.kaloglu.library.databinding4vm.model.RecyclerBindableItem
 import com.kaloglu.library.ktx.currentTimestamp
 import com.kaloglu.library.ui.BaseModel
@@ -15,9 +17,7 @@ import com.zsk.androtweet.R
 )
 data class TweetFromDao(
         @ColumnInfo(name = "tweet_id")
-        var id: Long = 0,
-        @ColumnInfo(name = "tweet_id_str")
-        var idStr: String? = null,
+        var id: String,
         @ColumnInfo(name = "tweet_user_id")
         var userId: Long? = null,
         var text: String? = "test",
@@ -40,8 +40,9 @@ data class TweetFromDao(
 
 ) : RecyclerBindableItem(), BaseModel {
 
-    @Ignore
-    var isSelected: Boolean = false
+    @get:Bindable
+    @delegate:Ignore
+    var isSelected by bindable(false)
 
     //region BaseModel
     override fun <T : BaseModel> equals(obj2: T) = false

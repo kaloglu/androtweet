@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 @ExperimentalCoroutinesApi
 class UserRepository private constructor(private val userDao: UserDao) : Repository<UserFromDao>, LifecycleObserver {
-    var userFlow = MutableStateFlow<UserFromDao?>(null)
 
     suspend fun clean() = userDao.deleteAll()
 

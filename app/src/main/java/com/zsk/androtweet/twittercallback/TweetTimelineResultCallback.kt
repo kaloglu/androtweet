@@ -37,8 +37,8 @@ internal class TweetsCallback(private val continuation: Continuation<TimelineRes
 private fun Result<List<Tweet>>.mapTo(listType: ListType) = TimelineResult(
         TweetCursor(
                 type = listType,
-                maxPosition = data.lastOrNull()?.id,
-                minPosition = data.firstOrNull()?.id
+                maxPosition = data.lastOrNull()?.idStr,
+                minPosition = data.firstOrNull()?.idStr
         ),
         data.asPersistList(),
         response

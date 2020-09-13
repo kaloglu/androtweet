@@ -41,8 +41,7 @@ object RoomExtensions {
 
     @JvmStatic
     fun Tweet.asPersistModel() = TweetFromDao(
-            id = id,
-            idStr = idStr,
+            id = idStr,
             userId = user.id,
             text = text,
             favoriteCount = favoriteCount,

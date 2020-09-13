@@ -1,29 +1,26 @@
 package com.zsk.androtweet.repositories
 
 import androidx.annotation.WorkerThread
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import com.kaloglu.library.ui.interfaces.Repository
-import com.twitter.sdk.android.core.Callback
-import com.twitter.sdk.android.core.Result
-import com.twitter.sdk.android.core.TwitterApiException
-import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Tweet
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
-import com.zsk.androtweet.models.ListType
 import com.zsk.androtweet.models.TweetFromDao
-import com.zsk.androtweet.remote.TweetListRemoteMediator
+import com.zsk.androtweet.remote.RemoteTweetRepository
 import com.zsk.androtweet.utils.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlin.coroutines.suspendCoroutine
 
 @ExperimentalCoroutinesApi
-@ExperimentalPagingApi
-class TweetListRepository private constructor(private val db: AndroTweetDatabase) : Repository<List<TweetFromDao>> {
+class TweetListRepository private constructor(
+        private val db: AndroTweetDatabase
+) : Repository<List<TweetFromDao>> {
 
+    private val currentUser: TwitterSession
+        get() = AndroTweetApp.activeSession
+
+    var remote: RemoteTweetRepository = RemoteTweetRepository(db)
     private val tweetListDao by lazy {
         db.tweetListDao()
     }
@@ -38,7 +35,7 @@ class TweetListRepository private constructor(private val db: AndroTweetDatabase
                             suspendCoroutine<TweetFromDao> { continuation ->
 
                                 AndroTweetApp.apiClient.statusesService
-                                        .destroy(tweet.id, true)
+                                        .destroy(tweet.id.toLong(), true)
                                         .enqueue(object : Callback<Tweet>() {
                                             override fun success(result: Result<Tweet>?) {
 //                                        tweet.isDeleted = true
@@ -63,15 +60,9 @@ class TweetListRepository private constructor(private val db: AndroTweetDatabase
     @Deprecated(level = DeprecationLevel.HIDDEN, message = "Do not use that!")
     override suspend fun insert(entity: List<TweetFromDao>) = tweetListDao.insertAll(entity)
 
-    fun getTweets(userId: Long, listType: ListType = ListType.TWEETS) = Pager(
-            config = PagingConfig(
-                    Constants.pageSize,
-                    prefetchDistance = Constants.prefetchDistance,
-                    initialLoadSize = Constants.pageSize
-            ),
-            remoteMediator = TweetListRemoteMediator(db, userId, listType),
-            pagingSourceFactory = { tweetListDao.getTweets(userId = userId) }
-    ).flow.distinctUntilChanged()
+    suspend fun getTweetsRemote(size: Int = Constants.pageSize) = remote.getTweets(size)
+
+    fun getTweets() = tweetListDao.getTweets(currentUser.id)
 
     companion object {
 

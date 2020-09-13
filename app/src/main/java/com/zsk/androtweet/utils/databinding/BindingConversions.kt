@@ -39,7 +39,7 @@ object BindingConversions {
             date.isToday() -> "Bugün ${date.toDateString(Constants.HHMM)}"
             date.addDay(1).isToday() -> "Dün ${date.toDateString(Constants.HHMM)}"
             date.addDay(2).isToday() -> "Önceki Gün ${date.toDateString(Constants.HHMM)}"
-            difdays <= 7 -> "Bu Hafta"
+//            difdays <= 7 -> "Bu Hafta"
             else -> date.toDateString(Constants.UI_DATE_PATTERN)
         }
     }

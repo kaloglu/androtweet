@@ -56,6 +56,7 @@ abstract class ATBaseFragment<VDB, VM, S>(resourceLayoutId: Int) : BindingFragme
                                 else -> onState(it)
                             }
                         }
+
             }
         }
     }

@@ -5,9 +5,9 @@ import androidx.room.Room
 import com.kaloglu.library.ui.BaseApplication
 import com.twitter.sdk.android.core.*
 import com.zsk.androtweet.database.AndroTweetDatabase
+import com.zsk.androtweet.remote.CustomApiClient
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-
 
 /**
  * Created by kaloglu on 24/04/16.
@@ -40,7 +40,7 @@ class AndroTweetApp : BaseApplication() {
         private lateinit var ACTIVE_SESSION: TwitterSession
 
         @Volatile
-        private lateinit var API_CLIENT: TwitterApiClient
+        private lateinit var API_CLIENT: CustomApiClient
 
         private val context: Context
             get() = INSTANCE.applicationContext
@@ -99,22 +99,17 @@ class AndroTweetApp : BaseApplication() {
                 return ACTIVE_SESSION
             }
 
-        val apiClient: TwitterApiClient
+        val apiClient: CustomApiClient
             get() {
-                synchronized(TwitterApiClient::class.java) {
+                synchronized(CustomApiClient::class.java) {
                     if (!::API_CLIENT.isInitialized || activeSession != twitterCore.sessionManager.activeSession) {
                         val loggingInterceptor = HttpLoggingInterceptor()
                         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                         val customClient = OkHttpClient.Builder()
                                 .addInterceptor(loggingInterceptor).build()
 
-                        if (activeSession != null) {
-                            twitterCore.addApiClient(activeSession, TwitterApiClient(activeSession, customClient))
-                        } else {
-                            twitterCore.addGuestApiClient(TwitterApiClient(customClient))
-                        }
-
-                        API_CLIENT = twitterCore.apiClient
+                        twitterCore.addApiClient(activeSession, CustomApiClient(activeSession, customClient))
+                        API_CLIENT = twitterCore.apiClient as CustomApiClient
                     }
                 }
                 return API_CLIENT
