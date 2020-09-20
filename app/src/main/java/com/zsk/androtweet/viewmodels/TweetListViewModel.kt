@@ -1,92 +1,111 @@
 package com.zsk.androtweet.viewmodels
 
 import androidx.databinding.Bindable
-import androidx.paging.PagedList
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
+import com.kaloglu.library.viewmodel.BaseViewModel
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.models.SelectableTweet
+import com.zsk.androtweet.models.TweetFromDao
+import com.zsk.androtweet.mvi.LoginState
 import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.mvi.TweetListState
 import com.zsk.androtweet.repositories.TweetListRepository
-import com.zsk.androtweet.utils.twitter.Resource
-import com.zsk.androtweet.utils.twitter.Status
+import com.zsk.androtweet.utils.extensions.RoomExtensions.onIO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalCoroutinesApi
-@InternalCoroutinesApi
 class TweetListViewModel(
         private val repository: TweetListRepository = TweetListRepository.getInstance()
-) : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance) {
+) : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance), LifecycleObserver {
 
     @get:Bindable
-    var list by bindable(initUserTimeline()) { o, n ->
-        if (n.isNotEmpty())
-            n.last()
-    }
+    var tweetList by bindable(listOf<TweetFromDao>())
 
     @get:Bindable
-    var hasSelected by bindable(false)
+    var selectedList by bindable(listOf<TweetFromDao>())
 
-    init {
-        onInit()
-    }
+    @get:Bindable
+    var failedList by bindable(listOf<TweetFromDao>())
 
-    override fun onInit() = Unit
+    @get:Bindable
+    var deletedList by bindable(listOf<TweetFromDao>())
 
-    override fun onEvent(event: TweetListEvent) {
-        super.onEvent(event)
+    override suspend fun onEvent(event: TweetListEvent) {
+        postEvent(TweetListEvent.Idle)
         when (event) {
-            is TweetListEvent.ToggleSelectItem -> checkHasSelected()
-            is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem()
+            is TweetListEvent.Idle -> postState(TweetListState.Idle)
+            is TweetListEvent.GetTweetList -> getTweetList()
+            is TweetListEvent.RefreshTweetList -> getTweetListFromRemote()
+            is TweetListEvent.ToggleSelectItem -> toggleSelectItem(event.item)
+            is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem(event.selectAll)
+        }
+    }
+
+    private suspend fun getTweetList() {
+        viewModelScope.onIO {
+            repository.getTweets()
+                    .collectLatest {
+                        if (it != null)
+                            tweetList = it
+                    }
+        }
+    }
+
+    private suspend fun getTweetListFromRemote() {
+        val tweetsRemote = repository.getTweetsRemote()
+        if (tweetsRemote)
+            postState(TweetListState.UpdateUI)
+
+    }
+
+    override fun <VM : BaseViewModel<*, *>> attachViewModel(vararg viewModels: VM) {
+        viewModels.forEach { viewModel ->
+            when (viewModel) {
+                is LoginViewModel -> onAttachLoginViewModel(viewModel)
+            }
+        }
+    }
+
+    private fun onAttachLoginViewModel(viewModel: LoginViewModel) {
+        viewModelScope.onIO {
+            viewModel.stateFlow
+                    .collect { loginState ->
+                        when (loginState) {
+                            is LoginState.UnAuthenticated -> postState(TweetListState.NeedLogin)
+                            is LoginState.Authenticated -> {
+                                postEvent(TweetListEvent.GetTweetList)
+                            }
+                        }
+                    }
         }
     }
 
     fun deleteSelectedTweets() {
-        repository.destroyTweets(list.filter { it.isSelected })
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun <T> Resource<T>.handleResource() =
-            when (status) {
-                Status.ERROR -> postState(TweetListState.Error(message!!))
-                Status.LOADING -> postState(TweetListState.Loading)
-                Status.SUCCESS -> setList(data!! as PagedList<SelectableTweet>, TweetListState.Success)
-                Status.EMPTY -> {
-                    postState(TweetListState.Empty)
-                }
-            }
-
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
-    fun setList(list: PagedList<SelectableTweet>, state: TweetListState? = null) {
-        this.list = list
-        state?.let {
-            postState(state)
+        viewModelScope.onIO {
+//            repository.delete(list.filter { it.isSelected })
         }
     }
 
-    private fun toggleSelectAllItem() {
-        val setSelected = !hasSelected
-        val tempList = list
-        tempList.map { it.isSelected = setSelected }
-        setList(tempList)
+    private fun toggleSelectItem(item: TweetFromDao) {
+        item.isSelected = !item.isSelected
         checkHasSelected()
     }
 
-    fun activeUserId(id: Long) {
-        repository.setUserId(id)
-        list = initUserTimeline()
+    private fun toggleSelectAllItem(selectAll: Boolean) {
+
+        val tempList = tweetList
+        val hasNotSelected = selectedList.size != tweetList.size && selectAll
+        tempList.map { temp -> temp.isSelected = hasNotSelected }
+        tweetList = tempList
+        checkHasSelected()
     }
 
-    private fun checkHasSelected(default: Boolean = false) {
-        hasSelected = list.filter { it.result.isEmpty() }.find { it.isSelected }?.isSelected
-                ?: default
+    private fun checkHasSelected() {
+        selectedList = tweetList.filter { it.isSelected }
     }
-
-    private fun initUserTimeline() = repository.initUserTimeline()
-
 
 }
-

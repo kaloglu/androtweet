@@ -2,16 +2,18 @@ package com.zsk.androtweet.mvi
 
 import com.kaloglu.library.viewmodel.mvi.Event
 import com.kaloglu.library.viewmodel.mvi.State
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.models.UserFromDao
 
 sealed class LoginState : State {
-    object UnAuthenticated : LoginState(), State.Success
-    data class Authenticated(val user: User) : LoginState(), State.Success
+    object Init : LoginState(), State.Init
+    object UnAuthenticated : LoginState(), State.Custom
+    data class Authenticated(val user: UserFromDao) : LoginState(), State.Custom
 }
 
 sealed class LoginEvent : Event {
-    data class LogIn(val user: User) : LoginEvent(), Event.Custom
-    data class LoggedIn(val user: User) : LoginEvent(), Event.Custom
-    object LogOut : LoginEvent(), Event.Custom
-    object LoggedOut : LoginEvent(), Event.Custom
+    object Init : LoginEvent()
+    data class LogIn(val user: UserFromDao) : LoginEvent()
+    data class LoggedIn(val user: UserFromDao) : LoginEvent()
+    object LogOut : LoginEvent()
+    object LoggedOut : LoginEvent()
 }

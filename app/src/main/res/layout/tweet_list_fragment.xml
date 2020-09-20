@@ -7,10 +7,6 @@
     <data>
 
         <variable
-            name="adapter"
-            type="com.zsk.androtweet.adapters.TimelineAdapter" />
-
-        <variable
             name="viewModel"
             type="com.zsk.androtweet.viewmodels.TweetListViewModel" />
 
@@ -22,15 +18,20 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.TweetListFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tweetsRecyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            binding:adapter="@{adapter}"
-            binding:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            binding:pagedItems="@{viewModel.list}"
-            tools:itemCount="10"
-            tools:listitem="@layout/tweets_layout" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tweetsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                binding:items="@{viewModel.tweetList}"
+                binding:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/tweet_layout" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/deleteFab"
@@ -40,7 +41,7 @@
             android:layout_marginBottom="16dp"
             android:elevation="6dp"
             android:onClick="@{_ -> viewModel.deleteSelectedTweets() }"
-            android:visibility="@{viewModel.hasSelected}"
+            android:visibility="@{!viewModel.selectedList.empty}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:pressedTranslationZ="12dp"

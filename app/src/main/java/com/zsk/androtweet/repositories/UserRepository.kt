@@ -1,30 +1,32 @@
 package com.zsk.androtweet.repositories
 
-import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.LifecycleObserver
 import com.kaloglu.library.ui.interfaces.Repository
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
 import com.zsk.androtweet.database.dao.UserDao
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.models.UserFromDao
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 
-class UserRepository private constructor(private val userDao: UserDao) : Repository<User> {
-    fun clean() = userDao.deleteAll()
+@ExperimentalCoroutinesApi
+class UserRepository private constructor(private val userDao: UserDao) : Repository<UserFromDao>, LifecycleObserver {
 
-    override suspend fun delete(entity: User) {
+    suspend fun clean() = userDao.deleteAll()
+
+    override suspend fun delete(entity: UserFromDao) {
         userDao.delete(entity)
     }
 
-    override suspend fun insert(entity: User) {
+    override suspend fun insert(entity: UserFromDao) {
         userDao.insert(entity)
     }
 
-    override suspend fun update(entity: User) {
+    override suspend fun update(entity: UserFromDao) {
         userDao.update(entity)
     }
 
-    fun get() = userDao.get()
-    fun getDUC() = get().distinctUntilChanged()
-    fun getAll() = userDao.getAll()
+    fun getUser() = userDao.getUserDistinctUntilChanged()
 
     companion object {
         @Volatile
@@ -38,4 +40,5 @@ class UserRepository private constructor(private val userDao: UserDao) : Reposit
             return INSTANCE
         }
     }
+
 }

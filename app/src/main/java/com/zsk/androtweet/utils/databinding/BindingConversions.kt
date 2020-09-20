@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.BindingConversion
 import com.kaloglu.library.ktx.*
 import com.zsk.androtweet.utils.Constants
+import com.zsk.androtweet.utils.Converters
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -38,8 +39,13 @@ object BindingConversions {
             date.isToday() -> "Bugün ${date.toDateString(Constants.HHMM)}"
             date.addDay(1).isToday() -> "Dün ${date.toDateString(Constants.HHMM)}"
             date.addDay(2).isToday() -> "Önceki Gün ${date.toDateString(Constants.HHMM)}"
-            difdays <= 7 -> "Bu Hafta"
+//            difdays <= 7 -> "Bu Hafta"
             else -> date.toDateString(Constants.UI_DATE_PATTERN)
         }
     }
+
+    @BindingConversion
+    @JvmStatic
+    fun longToString(long: Long) = dateToString(Converters.longToDate(long))
+
 }

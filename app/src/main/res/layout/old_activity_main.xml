@@ -212,7 +212,7 @@
             android:orientation="vertical" />
     </LinearLayout>
 
-    <com.google.android.gms.ads.AdView
+   <!-- <com.google.android.gms.ads.AdView
         android:id="@+id/adViewBanner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -220,7 +220,7 @@
         app:adSize="SMART_BANNER"
         app:adUnitId="@string/banner_ad_unit_id"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top2" />
+        app:layout_constraintTop_toBottomOf="@+id/top2" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tweetsRecyclerView"

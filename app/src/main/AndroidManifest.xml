@@ -40,13 +40,13 @@
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data
+        <!--<meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" /> <!-- Include the AdActivity configChanges and theme. -->
+            android:value="@integer/google_play_services_version" /> &lt;!&ndash; Include the AdActivity configChanges and theme. &ndash;&gt;
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent" />-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-0165663276066705~3131203340" />

@@ -1,9 +1,11 @@
-package com.zsk.androtweet.interfaces.twittercallback
+package com.zsk.androtweet.twittercallback
 
 import com.twitter.sdk.android.core.*
 import com.zsk.androtweet.interfaces.LoginCallback
-import com.zsk.androtweet.utils.extensions.RoomExtensions.asRoomModel
+import com.zsk.androtweet.utils.extensions.RoomExtensions.asPersistModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callback<TwitterSession>() {
     override fun failure(exception: TwitterException) {
         loginCallback.failure(exception)
@@ -17,7 +19,7 @@ class TwitterSessionCallback(private val loginCallback: LoginCallback) : Callbac
                 .enqueue(object : Callback<com.twitter.sdk.android.core.models.User>() {
                     override fun success(result: Result<com.twitter.sdk.android.core.models.User>?) {
                         result?.data?.let {
-                            loginCallback.login(it.asRoomModel(authToken.token, authToken.secret))
+                            loginCallback.login(it.asPersistModel(authToken.token, authToken.secret))
                         }
                     }
 

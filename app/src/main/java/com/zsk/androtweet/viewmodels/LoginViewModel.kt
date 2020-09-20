@@ -1,60 +1,63 @@
 package com.zsk.androtweet.viewmodels
 
-import android.util.Log
 import androidx.databinding.Bindable
+import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.zsk.androtweet.AndroTweetApp
-import com.zsk.androtweet.models.User
+import com.zsk.androtweet.models.UserFromDao
 import com.zsk.androtweet.mvi.LoginEvent
 import com.zsk.androtweet.mvi.LoginState
-import com.zsk.androtweet.usecases.AddUserUseCaseLegacy
-import com.zsk.androtweet.usecases.ClearUserUseCaseLegacy
-import com.zsk.androtweet.usecases.GetUserUseCaseAsLiveData
+import com.zsk.androtweet.repositories.UserRepository
+import com.zsk.androtweet.utils.extensions.RoomExtensions.onIO
+import com.zsk.androtweet.utils.extensions.RoomExtensions.onUndispatchedIO
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
-
+@ExperimentalCoroutinesApi
 class LoginViewModel(
-        private val getUser: GetUserUseCaseAsLiveData,
-        private val addUser: AddUserUseCaseLegacy,
-        private val clearUser: ClearUserUseCaseLegacy
+        private val repository: UserRepository = UserRepository.getInstance()
 ) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.instance) {
-    private val dummyUser = User()
 
     @get:Bindable
-    var user by bindable(User())
+    var user by bindable(UserFromDao())
 
     @get:Bindable
     var title by bindable("")
 
     init {
-        Log.i("LoginViewModel", "Init")
-        onInit()
+        getUser()
     }
 
-    override fun onInit() {
-        Log.i("LoginViewModel", "onInit")
-        getUser().mapToEvent {
-            user = it ?: dummyUser
-            when (user) {
-                dummyUser -> LoginEvent.LoggedOut
-                else -> LoginEvent.LoggedIn(user)
-            }
-        }
-    }
-
-    override fun onEvent(event: LoginEvent) {
-        super.onEvent(event)
+    override suspend fun onEvent(event: LoginEvent) {
         when (event) {
-            is LoginEvent.LogIn -> login(event.user)
-            is LoginEvent.LogOut -> logout()
-            is LoginEvent.LoggedIn -> postState(LoginState.Authenticated(event.user))
+            is LoginEvent.LogIn -> addUser(event.user)
+            is LoginEvent.LogOut -> logoutUser()
             is LoginEvent.LoggedOut -> postState(LoginState.UnAuthenticated)
         }
     }
 
-    private fun login(user: User) = addUser(user)
+    private fun getUser() {
+        viewModelScope.onUndispatchedIO {
+            repository.getUser()
+                    .collect {
+                        user = it ?: UserFromDao()
+                        when {
+                            it != null -> postState(LoginState.Authenticated(user))
+                            else -> postEvent(LoginEvent.LoggedOut)
+                        }
+                    }
+        }
+    }
 
-    private fun logout() = clearUser()
+    private suspend fun logoutUser() {
+        viewModelScope.onIO {
+            repository.clean()
+        }
+    }
+
+    private suspend fun addUser(user: UserFromDao) = viewModelScope.onIO {
+        repository.insert(user)
+    }
 
 }
-

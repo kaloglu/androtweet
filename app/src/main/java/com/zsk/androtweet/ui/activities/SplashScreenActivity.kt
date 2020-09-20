@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import com.kaloglu.library.ui.BaseActivity
 import com.zsk.androtweet.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class SplashScreenActivity : BaseActivity(R.layout.activity_splash_screen) {
     private var splashHandler = Handler()
     override fun initUserInterface(savedInstanceState: Bundle?) {
