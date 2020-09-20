@@ -8,6 +8,7 @@ import com.kaloglu.library.databinding4vm.BindingFragment
 import com.kaloglu.library.viewmodel.mvi.State
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.zsk.androtweet.BR
+import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.ui.activities.base.ATBaseActivity
 import com.zsk.androtweet.utils.ContextProviders
 import com.zsk.androtweet.utils.extensions.navGraphViewModels

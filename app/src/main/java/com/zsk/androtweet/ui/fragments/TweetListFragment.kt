@@ -48,21 +48,19 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
     private fun createTimeLineAdapter() =
             TimelineAdapter().apply {
                 setItemClickListener { item, _ ->
-                    item.isSelected = !item.isSelected
                     viewModel.postEvent(TweetListEvent.ToggleSelectItem(item))
                 }
                 setItemLongClickListener { _, _ ->
-                    viewModel.postEvent(TweetListEvent.ToggleSelectAllItem)
+                    viewModel.postEvent(TweetListEvent.ToggleSelectAllItem())
                     true
                 }
             }
 
     override fun onStateDone(it: State.Done) {
         super.onStateDone(it)
-        if (swiperefresh.isRefreshing) {
-            swiperefresh.isRefreshing = false
-            viewModel.postEvent(TweetListEvent.Init)
-        }
+        swiperefresh.isRefreshing = false
+        if (viewModel.selectedList.isNotEmpty())
+            viewModel.postEvent(TweetListEvent.ToggleSelectAllItem(false))
     }
 
     override fun onStateFailure(error: ErrorModel) {
@@ -71,6 +69,11 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
         when (error.code) {
             Constants.NEED_LOGIN_ERROR_CODE -> findNavController().navigate(R.id.loginDialogFragment)
         }
+    }
+
+    override fun onStateInit() {
+        super.onStateInit()
+        viewModel.postEvent(TweetListEvent.Idle)
     }
 }
 

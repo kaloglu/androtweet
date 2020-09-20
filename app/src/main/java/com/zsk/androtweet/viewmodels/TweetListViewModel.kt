@@ -35,27 +35,14 @@ class TweetListViewModel(
     var deletedList by bindable(listOf<TweetFromDao>())
 
     override suspend fun onEvent(event: TweetListEvent) {
+        postEvent(TweetListEvent.Idle)
         when (event) {
-            is TweetListEvent.Init -> postState(TweetListState.Init)
+            is TweetListEvent.Idle -> postState(TweetListState.Idle)
             is TweetListEvent.GetTweetList -> getTweetList()
             is TweetListEvent.RefreshTweetList -> getTweetListFromRemote()
-//            is TweetListEvent.ToggleSelectItem -> toggleSelectItem(event.item)
-//            is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem()
+            is TweetListEvent.ToggleSelectItem -> toggleSelectItem(event.item)
+            is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem(event.selectAll)
         }
-    }
-
-    private fun toggleSelectItem(item: TweetFromDao, force: Boolean) {
-        val newSelection = selectedList.toMutableList()
-        when {
-            item.isSelected || force -> {
-                newSelection.add(item)
-            }
-            else -> {
-                newSelection.remove(item)
-            }
-        }
-        selectedList = newSelection
-
     }
 
     private suspend fun getTweetList() {
@@ -69,8 +56,10 @@ class TweetListViewModel(
     }
 
     private suspend fun getTweetListFromRemote() {
-        if (repository.getTweetsRemote())
+        val tweetsRemote = repository.getTweetsRemote()
+        if (tweetsRemote)
             postState(TweetListState.UpdateUI)
+
     }
 
     override fun <VM : BaseViewModel<*, *>> attachViewModel(vararg viewModels: VM) {
@@ -99,6 +88,24 @@ class TweetListViewModel(
         viewModelScope.onIO {
 //            repository.delete(list.filter { it.isSelected })
         }
+    }
+
+    private fun toggleSelectItem(item: TweetFromDao) {
+        item.isSelected = !item.isSelected
+        checkHasSelected()
+    }
+
+    private fun toggleSelectAllItem(selectAll: Boolean) {
+
+        val tempList = tweetList
+        val hasNotSelected = selectedList.size != tweetList.size && selectAll
+        tempList.map { temp -> temp.isSelected = hasNotSelected }
+        tweetList = tempList
+        checkHasSelected()
+    }
+
+    private fun checkHasSelected() {
+        selectedList = tweetList.filter { it.isSelected }
     }
 
 }
