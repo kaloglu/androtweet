@@ -129,6 +129,23 @@ interface CustomStatusesService {
     ): Response<List<Tweet>>
 
     /**
+     * Destroys the status specified by the required ID parameter. The authenticating user must be
+     * the author of the specified status. Returns the destroyed status if successful.
+     *
+     * @param id (required) The numerical ID of the desired Tweet.
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+     * will include a user object including only the status authors numerical ID.
+     * Omit this parameter to receive the complete user object.
+     */
+    @FormUrlEncoded
+    @POST("/1.1/statuses/destroy/{id}.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
+    suspend fun destroy(
+            @Path("id") id: Long?,
+            @Field("trim_user") trimUser: Boolean?
+    ): Tweet?
+
+    /**
      * Returns a collection of the most recent Tweets and retweets posted by the authenticating user
      * and the users they follow. The home timeline is central to how most users interact with the
      * Twitter service.
@@ -345,23 +362,6 @@ interface CustomStatusesService {
     @POST("/1.1/statuses/retweet/{id}.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     suspend fun retweet(
-            @Path("id") id: Long?,
-            @Field("trim_user") trimUser: Boolean?
-    ): Tweet?
-
-    /**
-     * Destroys the status specified by the required ID parameter. The authenticating user must be
-     * the author of the specified status. Returns the destroyed status if successful.
-     *
-     * @param id (required) The numerical ID of the desired Tweet.
-     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
-     * will include a user object including only the status authors numerical ID.
-     * Omit this parameter to receive the complete user object.
-     */
-    @FormUrlEncoded
-    @POST("/1.1/statuses/destroy/{id}.json?" +
-            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    suspend fun destroy(
             @Path("id") id: Long?,
             @Field("trim_user") trimUser: Boolean?
     ): Tweet?

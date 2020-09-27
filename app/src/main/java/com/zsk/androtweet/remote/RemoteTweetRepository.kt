@@ -97,4 +97,11 @@ class RemoteTweetRepository(
                     listType == ListType.RETWEETS
             )
 
+    suspend fun destroy(tweetId: Long) = AndroTweetApp.apiClient
+            .getCustomStatusesService()
+            .destroy(
+                    tweetId,
+                    false
+            )
+
 }

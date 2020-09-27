@@ -65,7 +65,7 @@ class MainActivity : ATBaseActivity(R.layout.main_activity), NavigationView.OnNa
 
             R.id.action_Settings -> showToast("not implemented!")
 
-            R.id.action_LogOut -> loginViewModel.postEvent(LoginEvent.LogOut)
+            R.id.action_LogOut -> loginViewModel.logout()
 
             R.id.action_Home -> showToast("not implemented!")
 

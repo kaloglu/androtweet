@@ -6,6 +6,8 @@ import android.view.Window
 import androidx.databinding.ViewDataBinding
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.dialogFragments.BindingDialogFragment
+import com.kaloglu.library.viewmodel.mvi.Event
+import com.kaloglu.library.viewmodel.mvi.State
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.zsk.androtweet.BR
 import com.zsk.androtweet.ui.activities.base.ATBaseActivity
@@ -16,8 +18,9 @@ import kotlinx.android.synthetic.main.login_dialog_fragment.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-abstract class ATBaseDialogFragment<VDB, VM, S>(resourceLayoutId: Int) : BindingDialogFragment<VDB, VM, S>(resourceLayoutId)
-        where  VDB : ViewDataBinding, VM : BindableViewModel<*, S>, S : com.kaloglu.library.viewmodel.mvi.State {
+abstract class ATBaseDialogFragment<VDB, VM, E, S>(resourceLayoutId: Int) : BindingDialogFragment<VDB, VM, E, S>(resourceLayoutId)
+        where  VDB : ViewDataBinding, VM : BindableViewModel<E, S>, E : Event, S : State {
+
     override val activity by lazy { getActivity() as ATBaseActivity }
     override val application by lazy { activity.application }
 

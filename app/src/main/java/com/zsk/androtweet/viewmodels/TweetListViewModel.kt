@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
 import com.kaloglu.library.viewmodel.BaseViewModel
+import com.kaloglu.library.viewmodel.mvi.Event
+import com.kaloglu.library.viewmodel.mvi.State
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.TweetFromDao
 import com.zsk.androtweet.mvi.LoginState
@@ -22,6 +24,9 @@ class TweetListViewModel(
         private val repository: TweetListRepository = TweetListRepository.getInstance()
 ) : BindableViewModel<TweetListEvent, TweetListState>(AndroTweetApp.instance), LifecycleObserver {
 
+    override val idleState: State.Idle = TweetListState.Idle
+    override val idleEvent: Event.Idle = TweetListEvent.Idle
+
     @get:Bindable
     var tweetList by bindable(listOf<TweetFromDao>())
 
@@ -34,34 +39,6 @@ class TweetListViewModel(
     @get:Bindable
     var deletedList by bindable(listOf<TweetFromDao>())
 
-    override suspend fun onEvent(event: TweetListEvent) {
-        postEvent(TweetListEvent.Idle)
-        when (event) {
-            is TweetListEvent.Idle -> postState(TweetListState.Idle)
-            is TweetListEvent.GetTweetList -> getTweetList()
-            is TweetListEvent.RefreshTweetList -> getTweetListFromRemote()
-            is TweetListEvent.ToggleSelectItem -> toggleSelectItem(event.item)
-            is TweetListEvent.ToggleSelectAllItem -> toggleSelectAllItem(event.selectAll)
-        }
-    }
-
-    private suspend fun getTweetList() {
-        viewModelScope.onIO {
-            repository.getTweets()
-                    .collectLatest {
-                        if (it != null)
-                            tweetList = it
-                    }
-        }
-    }
-
-    private suspend fun getTweetListFromRemote() {
-        val tweetsRemote = repository.getTweetsRemote()
-        if (tweetsRemote)
-            postState(TweetListState.UpdateUI)
-
-    }
-
     override fun <VM : BaseViewModel<*, *>> attachViewModel(vararg viewModels: VM) {
         viewModels.forEach { viewModel ->
             when (viewModel) {
@@ -70,42 +47,65 @@ class TweetListViewModel(
         }
     }
 
-    private fun onAttachLoginViewModel(viewModel: LoginViewModel) {
+    suspend fun getTweetList() {
         viewModelScope.onIO {
-            viewModel.stateFlow
-                    .collect { loginState ->
-                        when (loginState) {
-                            is LoginState.UnAuthenticated -> postState(TweetListState.NeedLogin)
-                            is LoginState.Authenticated -> {
-                                postEvent(TweetListEvent.GetTweetList)
-                            }
-                        }
+            repository.clearDao()
+            repository.getTweets()
+                    .collectLatest {
+                        if (it != null)
+                            tweetList = it
                     }
         }
     }
 
     fun deleteSelectedTweets() {
         viewModelScope.onIO {
-//            repository.delete(list.filter { it.isSelected })
+            deletedList = repository.deleteWithReturn(selectedList)
         }
     }
 
-    private fun toggleSelectItem(item: TweetFromDao) {
+    fun getTweetListFromRemote() {
+        viewModelScope.onIO {
+            val tweetsRemote = repository.getTweetsRemote()
+
+            if (tweetsRemote)
+                postState(TweetListState.UpdateUI)
+
+        }
+
+    }
+
+    fun toggleSelectItem(item: TweetFromDao) {
         item.isSelected = !item.isSelected
         checkHasSelected()
     }
 
-    private fun toggleSelectAllItem(selectAll: Boolean) {
+    fun toggleSelectAllItem(selectAll: Boolean = true) {
 
         val tempList = tweetList
         val hasNotSelected = selectedList.size != tweetList.size && selectAll
         tempList.map { temp -> temp.isSelected = hasNotSelected }
         tweetList = tempList
         checkHasSelected()
+
     }
 
     private fun checkHasSelected() {
         selectedList = tweetList.filter { it.isSelected }
+    }
+
+    private fun onAttachLoginViewModel(loginViewModel: LoginViewModel) {
+        viewModelScope.onIO {
+            loginViewModel.stateFlow
+                    .collect { loginState ->
+                        when (loginState) {
+                            is LoginState.UnAuthenticated -> postState(TweetListState.NeedLogin)
+                            is LoginState.Authenticated -> {
+                                getTweetList()
+                            }
+                        }
+                    }
+        }
     }
 
 }

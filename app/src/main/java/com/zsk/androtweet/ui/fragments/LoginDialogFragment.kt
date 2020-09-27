@@ -16,12 +16,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class LoginDialogFragment
-    : ATBaseDialogFragment<LoginDialogFragmentBinding, LoginViewModel, LoginState>(R.layout.login_dialog_fragment) {
+    : ATBaseDialogFragment<LoginDialogFragmentBinding, LoginViewModel, LoginEvent, LoginState>(R.layout.login_dialog_fragment) {
     override val viewModel by lazy { loginViewModel }
 
     private val loginCallback = object : LoginCallback {
-        override fun login(user: UserFromDao) = viewModel.postEvent(LoginEvent.LogIn(user))
-        override fun failure(exception: TwitterException?) = viewModel.postEvent(LoginEvent.LogOut)
+        override fun login(user: UserFromDao) = viewModel.login(user)
+        override fun failure(exception: TwitterException?) = viewModel.logout()
     }
 
     override fun initUserInterface(dialog: Dialog) {

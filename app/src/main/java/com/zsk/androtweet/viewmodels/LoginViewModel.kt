@@ -4,6 +4,8 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.kaloglu.library.databinding4vm.BindableViewModel
 import com.kaloglu.library.databinding4vm.bindable
+import com.kaloglu.library.viewmodel.mvi.Event
+import com.kaloglu.library.viewmodel.mvi.State
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.models.UserFromDao
 import com.zsk.androtweet.mvi.LoginEvent
@@ -19,6 +21,9 @@ class LoginViewModel(
         private val repository: UserRepository = UserRepository.getInstance()
 ) : BindableViewModel<LoginEvent, LoginState>(AndroTweetApp.instance) {
 
+    override val idleState: State.Idle = LoginState.Idle
+    override val idleEvent: Event.Idle = LoginEvent.Idle
+
     @get:Bindable
     var user by bindable(UserFromDao())
 
@@ -29,14 +34,6 @@ class LoginViewModel(
         getUser()
     }
 
-    override suspend fun onEvent(event: LoginEvent) {
-        when (event) {
-            is LoginEvent.LogIn -> addUser(event.user)
-            is LoginEvent.LogOut -> logoutUser()
-            is LoginEvent.LoggedOut -> postState(LoginState.UnAuthenticated)
-        }
-    }
-
     private fun getUser() {
         viewModelScope.onUndispatchedIO {
             repository.getUser()
@@ -44,19 +41,17 @@ class LoginViewModel(
                         user = it ?: UserFromDao()
                         when {
                             it != null -> postState(LoginState.Authenticated(user))
-                            else -> postEvent(LoginEvent.LoggedOut)
+                            else -> postState(LoginState.UnAuthenticated)
                         }
                     }
         }
     }
 
-    private suspend fun logoutUser() {
-        viewModelScope.onIO {
-            repository.clean()
-        }
+    fun logout() = viewModelScope.onIO {
+        repository.clean()
     }
 
-    private suspend fun addUser(user: UserFromDao) = viewModelScope.onIO {
+    fun login(user: UserFromDao) = viewModelScope.onIO {
         repository.insert(user)
     }
 

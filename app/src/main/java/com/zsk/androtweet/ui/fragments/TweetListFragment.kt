@@ -1,6 +1,5 @@
 package com.zsk.androtweet.ui.fragments
 
-import android.os.Bundle
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,34 +23,30 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListViewModel, TweetListState>(R.layout.tweet_list_fragment) {
+class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListViewModel, TweetListEvent, TweetListState>(R.layout.tweet_list_fragment) {
 
     private lateinit var adapter: TimelineAdapter
     override val viewModel: TweetListViewModel by navGraphViewModels {
         TweetListViewModelFactory(lifecycle, loginViewModel)
     }
 
-    override fun initUserInterface(savedInstanceState: Bundle?) {
-        setDatabindingParams()
-    }
-
-    private fun setDatabindingParams() {
+    override fun setDatabindingParams() {
         adapter = createTimeLineAdapter()
         viewDataBinding.tweetsRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         viewDataBinding.tweetsRecyclerView.adapter = adapter
         swiperefresh.setOnRefreshListener {
             Log.i(viewTag, "onRefresh called from SwipeRefreshLayout")
-            viewModel.postEvent(TweetListEvent.RefreshTweetList)
+            viewModel.getTweetListFromRemote()
         }
     }
 
     private fun createTimeLineAdapter() =
             TimelineAdapter().apply {
                 setItemClickListener { item, _ ->
-                    viewModel.postEvent(TweetListEvent.ToggleSelectItem(item))
+                    viewModel.toggleSelectItem(item)
                 }
                 setItemLongClickListener { _, _ ->
-                    viewModel.postEvent(TweetListEvent.ToggleSelectAllItem())
+                    viewModel.toggleSelectAllItem()
                     true
                 }
             }
@@ -60,7 +55,7 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
         super.onStateDone(it)
         swiperefresh.isRefreshing = false
         if (viewModel.selectedList.isNotEmpty())
-            viewModel.postEvent(TweetListEvent.ToggleSelectAllItem(false))
+            viewModel.toggleSelectAllItem(false)
     }
 
     override fun onStateFailure(error: ErrorModel) {
@@ -71,9 +66,5 @@ class TweetListFragment : ATBaseFragment<TweetListFragmentBinding, TweetListView
         }
     }
 
-    override fun onStateInit() {
-        super.onStateInit()
-        viewModel.postEvent(TweetListEvent.Idle)
-    }
 }
 

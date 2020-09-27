@@ -1,56 +1,51 @@
 package com.zsk.androtweet.repositories
 
 import androidx.annotation.WorkerThread
+import com.kaloglu.library.ktx.isNotNullOrEmpty
 import com.kaloglu.library.ui.interfaces.Repository
-import com.twitter.sdk.android.core.*
-import com.twitter.sdk.android.core.models.Tweet
+import com.twitter.sdk.android.core.TwitterSession
 import com.zsk.androtweet.AndroTweetApp
 import com.zsk.androtweet.database.AndroTweetDatabase
 import com.zsk.androtweet.models.TweetFromDao
 import com.zsk.androtweet.remote.RemoteTweetRepository
 import com.zsk.androtweet.utils.Constants
+import com.zsk.androtweet.utils.extensions.RoomExtensions.asPersistModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.coroutines.suspendCoroutine
 
 @ExperimentalCoroutinesApi
 class TweetListRepository private constructor(
-        private val db: AndroTweetDatabase
+        private val db: AndroTweetDatabase,
+        private var remote: RemoteTweetRepository = RemoteTweetRepository(db)
 ) : Repository<List<TweetFromDao>> {
 
+    private val deletedTweets: MutableList<TweetFromDao> = mutableListOf()
     private val currentUser: TwitterSession
         get() = AndroTweetApp.activeSession
 
-    var remote: RemoteTweetRepository = RemoteTweetRepository(db)
     private val tweetListDao by lazy {
         db.tweetListDao()
     }
 
     @WorkerThread
+    suspend fun deleteWithReturn(deleteList: List<TweetFromDao>): List<TweetFromDao> {
+        delete(deleteList)
+        return deletedTweets
+    }
+
+    @WorkerThread
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override suspend fun delete(deleteList: List<TweetFromDao>) {
-        tweetListDao.delete(
-                deleteList
-                        .map { tweet ->
-
-                            suspendCoroutine<TweetFromDao> { continuation ->
-
-                                AndroTweetApp.apiClient.statusesService
-                                        .destroy(tweet.id.toLong(), true)
-                                        .enqueue(object : Callback<Tweet>() {
-                                            override fun success(result: Result<Tweet>?) {
-//                                        tweet.isDeleted = true
-                                                continuation.resumeWith(kotlin.Result.success(tweet))
-
-                                            }
-
-                                            override fun failure(exception: TwitterException?) {
-                                                continuation.resumeWith(kotlin.Result.failure((exception as TwitterApiException)))
-                                            }
-
-                                        })
+        deleteList
+                .forEach { tweet ->
+                    remote.destroy(tweet.id.toLong())
+                            ?.asPersistModel()
+                            ?.let {
+                                deletedTweets.add(it)
                             }
-                        }
-        )
+                }.apply {
+                    if (deletedTweets.isNotNullOrEmpty())
+                        tweetListDao.delete(deletedTweets)
+                }
     }
 
     @WorkerThread
@@ -63,6 +58,8 @@ class TweetListRepository private constructor(
     suspend fun getTweetsRemote(size: Int = Constants.pageSize) = remote.getTweets(size)
 
     fun getTweets() = tweetListDao.getTweets(currentUser.id)
+
+    suspend fun clearDao() = tweetListDao.deletePersist()
 
     companion object {
 
