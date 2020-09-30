@@ -40,6 +40,9 @@ data class TweetFromDao(
 
 ) : RecyclerBindableItem(), BaseModel {
 
+    val idLong
+        get() = id.toLong()
+
     @get:Bindable
     @delegate:Ignore
     var isSelected by bindable(false)
@@ -49,6 +52,7 @@ data class TweetFromDao(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getID() = id as T
+
     //endregion
 
     companion object {

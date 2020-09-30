@@ -18,6 +18,9 @@ interface TweetListDao {
     @Update(onConflict = REPLACE)
     suspend fun update(list: List<TweetFromDao>)
 
+    @Update(onConflict = REPLACE)
+    suspend fun update(tweet: TweetFromDao)
+
     @Query("SELECT * FROM tweets WHERE tweet_user_id=:userId ORDER BY createdAt desc")
     fun getTweets(userId: Long): Flow<List<TweetFromDao>?>
 

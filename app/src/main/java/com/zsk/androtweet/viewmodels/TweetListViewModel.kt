@@ -15,6 +15,7 @@ import com.zsk.androtweet.mvi.TweetListEvent
 import com.zsk.androtweet.mvi.TweetListState
 import com.zsk.androtweet.repositories.TweetListRepository
 import com.zsk.androtweet.utils.extensions.RoomExtensions.onIO
+import com.zsk.androtweet.utils.extensions.updateBy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -60,7 +61,11 @@ class TweetListViewModel(
 
     fun deleteSelectedTweets() {
         viewModelScope.onIO {
-            deletedList = repository.deleteWithReturn(selectedList)
+            val deletedList = repository.deleteWithReturn(selectedList)
+            tweetList = tweetList.updateBy(deletedList) { target, source ->
+                target.isDeleted = source.isDeleted
+                target.isSelected = !source.isDeleted
+            }
         }
     }
 

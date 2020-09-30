@@ -1,3 +1,5 @@
+@file:JvmName("KtxRoomUtilLocal")
+
 package com.zsk.androtweet.utils.extensions
 
 import com.twitter.sdk.android.core.models.Tweet
